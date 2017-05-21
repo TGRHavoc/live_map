@@ -1,16 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Sockets;
-using System.Text;
-using System.Threading.Tasks;
+using System.Configuration;
 using System.IO;
 
 using Newtonsoft.Json.Linq;
 using System.Security.Cryptography;
 using System.Threading;
 using WebSocketSharp.Server;
+using System.Security.Cryptography.X509Certificates;
+using System.Text;
 
 namespace Havoc.Live_Map
 {
@@ -30,10 +28,37 @@ namespace Havoc.Live_Map
 
         public LiveMap(int listenPort)
         {
-            wssv = new WebSocketServer(listenPort);
+            wssv = new WebSocketServer(listenPort, true);
+            Console.WriteLine("creating websocket c#");
+
+            //var passwd = ConfigurationManager.AppSettings["CertFilePassword
+
+            string base64Encoded = @"base64encodedpfx here";
+            X509Certificate2 cert = null;
+            try
+            {
+                Console.WriteLine("importing base4 encoded string");
+                cert = new X509Certificate2(Convert.FromBase64String(base64Encoded), string.Empty);
+                Console.WriteLine("data imported.. hopefully");
+            }
+            catch (CryptographicException e)
+            {
+                Console.WriteLine("Error creating cert");
+                Console.WriteLine(e.StackTrace);
+            }
+
+            Console.WriteLine("cert: " + cert);
+
+            wssv.SslConfiguration.ServerCertificate = cert;
+
+            Console.WriteLine("setting routes");
 
             wssv.AddWebSocketService<PlayerLocations>("/");
+        }
 
+        public void start()
+        {
+            Console.WriteLine("Starting..");
             wssv.Start();
             if (wssv.IsListening)
             {
@@ -139,7 +164,7 @@ namespace Havoc.Live_Map
                 blipLocations = JArray.Parse(blipJson);
             }
 
-            Console.WriteLine("blips: " + blipJson);
+            //Console.WriteLine("blips: " + blipJson);
         }
 
     }
