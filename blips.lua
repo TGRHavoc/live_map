@@ -288,5 +288,7 @@ BLIPS = {
     -- Yacht
     {name="Yacht", type="boat", x=-2045.800, y=-1031.200, z=11.900},
     {name="Cargoship", type="boat", x=-90.000, y=-2365.800, z=14.300},
-
 }
+
+
+print("blips loaded..")
