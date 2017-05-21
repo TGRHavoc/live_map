@@ -48,6 +48,9 @@ namespace Havoc.Live_Map
 
         public void stop()
         {
+            playerLocations.Clear();
+            blipLocations.Clear();
+
             file.Flush();
             wssv.Stop();
         }
