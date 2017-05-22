@@ -1,11 +1,12 @@
 -- The port the websocket will listen on (change if needed)
 local liveMapPort = 30121
+local useSsl = false
 
 -- Load our library
 clr.System.Reflection.Assembly.LoadFrom("resources/live_map/libs/Live Map.dll")
 
 print("creating websocket")
-local liveMap = clr.Havoc.Live_Map.LiveMap(liveMapPort) -- Start the websocket
+local liveMap = clr.Havoc.Live_Map.LiveMap(liveMapPort, useSsl) -- Start the websocket
 
 print("nil :" .. (liveMap == nil))
 
