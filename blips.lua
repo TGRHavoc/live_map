@@ -101,7 +101,10 @@ BLIPS = {
     {name="Gang", type="bigCircleOutline", x=960.24, y=-140.31, z=74.50},
     {name="Gang", type="bigCircleOutline", x=-1042.29, y=4910.17, z=94.92},
     -- Gas stations
-    {name="Gas Station", type="jerryCan", x=49.4187,   y=2778.793,  z=58.043},
+    
+    --]]
+	
+	{name="Gas Station", type="jerryCan", x=49.4187,   y=2778.793,  z=58.043},
     {name="Gas Station", type="jerryCan", x=263.894,   y=2606.463,  z=44.983},
     {name="Gas Station", type="jerryCan", x=1039.958,  y=2671.134,  z=39.550},
     {name="Gas Station", type="jerryCan", x=1207.260,  y=2660.175,  z=37.899},
@@ -125,7 +128,7 @@ BLIPS = {
     {name="Gas Station", type="jerryCan", x=1181.381, y= -330.847,  z=69.316},
     {name="Gas Station", type="jerryCan", x=620.843,  y= 269.100,  z=103.089},
     {name="Gas Station", type="jerryCan", x=2581.321, y=362.039, 108.468},
-    --]]
+	
     -- Police Stations
     {name="Police Station", type="policeStation", x=425.130, y=-979.558, z=30.711},
     --{name="Police Station", type="policeStation", x=1859.234, y= 3678.742, z=33.690},
