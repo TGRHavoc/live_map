@@ -20,9 +20,10 @@ AddEventHandler("live_map:updatePositions", function(newX, newY, newZ)
     local ids = GetPlayerIdentifiers(source)
     --[[
         below could be written as
-        liveMap.addFloat(ids[1], newX)
-        liveMap.addFloat(ids[1], newY)
-        liveMap.addFloat(ids[1], newZ)
+        liveMap.addFloat(ids[1], "x", newX)
+        liveMap.addFloat(ids[1], "y", newY)
+        liveMap.addFloat(ids[1], "z", newZ)
+        liveMap.addString(ids[1], "name", GetPlayerName(source))
     ]]
     liveMap.addPlayer(ids[1], GetPlayerName(source), newX, newY, newZ) -- Adds or updates the player's location
 end)
