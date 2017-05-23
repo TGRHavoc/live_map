@@ -76,7 +76,7 @@ BLIPS = {
     {name="Lifeinvader", type="lester", x=-1047.900, y=-233.000, z=39.000},
     {name="Cluckin Bell", type="safehouse", x=-72.68752, y=6253.72656, z=31.08991},
     {name="Tequil-La La", type="bar", x=-565.171, y=276.625, z=83.286},
-    {name="O'Neil Ranch", type="jail2", x=2441.200, y=4968.500, z=51.700},
+    {name="O'Neil Ranch", type="animal", x=2441.200, y=4968.500, z=51.700},
     {name="Play Boy Mansion", type="castle", x=-1475.234, y=167.088, z=55.841},
     {name="Hippy Camp", type="marijuana", x=2476.712, y=3789.645, z=41.226},
     {name="Chop shop", type="garage", x=479.056, y=-1316.825, z=28.203},
@@ -101,9 +101,9 @@ BLIPS = {
     {name="Gang", type="bigCircleOutline", x=960.24, y=-140.31, z=74.50},
     {name="Gang", type="bigCircleOutline", x=-1042.29, y=4910.17, z=94.92},
     -- Gas stations
-    
+
     --]]
-	
+
 	{name="Gas Station", type="jerryCan", x=49.4187,   y=2778.793,  z=58.043},
     {name="Gas Station", type="jerryCan", x=263.894,   y=2606.463,  z=44.983},
     {name="Gas Station", type="jerryCan", x=1039.958,  y=2671.134,  z=39.550},
@@ -128,7 +128,7 @@ BLIPS = {
     {name="Gas Station", type="jerryCan", x=1181.381, y= -330.847,  z=69.316},
     {name="Gas Station", type="jerryCan", x=620.843,  y= 269.100,  z=103.089},
     {name="Gas Station", type="jerryCan", x=2581.321, y=362.039, 108.468},
-	
+
     -- Police Stations
     {name="Police Station", type="policeStation", x=425.130, y=-979.558, z=30.711},
     --{name="Police Station", type="policeStation", x=1859.234, y= 3678.742, z=33.690},
