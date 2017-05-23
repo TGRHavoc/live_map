@@ -125,14 +125,14 @@ DgMCGgUABBTjLj4+jkUY5TU/C2COoJBrpOZvQwQI3lqIXM8T/fgCAggA";
             wssv.Stop();
         }
 
-        public void addPlayer(string name, float x = 0f, float y = 0f, float z = 0f)
+        public void addPlayer(string identifier, string name, float x = 0f, float y = 0f, float z = 0f)
         {
             lock (playerLocations)
             {
                 bool updatedPlayer = false;
                 foreach (var item in playerLocations)
                 {
-                    if (item["name"].ToString() == name)
+                    if (item["id"].ToString() == identifier)
                     {
                         // Update it
                         item["x"] = x;
@@ -151,6 +151,7 @@ DgMCGgUABBTjLj4+jkUY5TU/C2COoJBrpOZvQwQI3lqIXM8T/fgCAggA";
                 {
                     // Add them
                     JObject playerObj = new JObject();
+                    playerObj.Add("id", identifier);
                     playerObj.Add("name", name);
                     playerObj.Add("x", x);
                     playerObj.Add("y", y);
@@ -160,15 +161,43 @@ DgMCGgUABBTjLj4+jkUY5TU/C2COoJBrpOZvQwQI3lqIXM8T/fgCAggA";
                 }
             }
         }
+        public void addPlayerString(string id, string key, string data)
+        {
+            lock (playerLocations)
+            {
+                foreach (var item in playerLocations)
+                {
+                    if (item["id"].ToString() == id)
+                    {
+                        // Update it
+                        item[key] = data;
+                    }
+                }
+            }
+        }
+        public void addPlayerFloat(string id, string key, float data)
+        {
+            lock (playerLocations)
+            {
+                foreach (var item in playerLocations)
+                {
+                    if (item["id"].ToString() == id)
+                    {
+                        // Update it
+                        item[key] = data;
+                    }
+                }
+            }
+        }
 
-        public void removePlayer(string name)
+        public void removePlayer(string identifier)
         {
             lock (playerLocations)
             {
                 JToken token = null;
                 foreach (var item in playerLocations)
                 {
-                    if (item["name"].ToString() == name)
+                    if (item["id"].ToString() == identifier)
                     {
                         token = item;
                     }
@@ -181,16 +210,17 @@ DgMCGgUABBTjLj4+jkUY5TU/C2COoJBrpOZvQwQI3lqIXM8T/fgCAggA";
 
             JObject obj = new JObject();
             obj["type"] = "playerLeft";
-            obj["payload"] = name;
+            obj["payload"] = identifier;
 
             wssv.WebSocketServices["/"].Sessions.Broadcast(obj.ToString(Newtonsoft.Json.Formatting.None));
         }
 
-        public void addBlip(string name, string type = "waypoint", float x = 0f, float y = 0f, float z = 0f)
+        public void addBlip(string name, string desc="", string type = "waypoint", float x = 0f, float y = 0f, float z = 0f)
         {
             JObject blip = new JObject();
 
             blip["name"] = name;
+            blip["description"] = desc;
             blip["type"] = type;
             blip["x"] = x;
             blip["y"] = y;
