@@ -26,7 +26,7 @@ local useSsl = false -- Set to true if you want to use WSS (secure websocket)
 
 At the moment, this file contains all the blips you want to appear on the map when it's loaded in the browser.
 
-All blips in this file __must__ follow the format of `{name="Airport", type="airport", x=-1032.690, y=-2728.141, z=13.757}`.
+All blips in this file __must__ follow the format of `{name="NAME", type="TYPE", x=-0, y=0.000, z=0}`.
 
 ```
 name - The name of the blip (shown when clicked on the map)
