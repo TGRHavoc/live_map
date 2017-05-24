@@ -7,14 +7,13 @@ using Newtonsoft.Json.Linq;
 using System.Security.Cryptography;
 using WebSocketSharp.Server;
 using System.Security.Cryptography.X509Certificates;
+using System.Diagnostics;
 
 namespace Havoc.Live_Map
 {
     public class LiveMap
     {
         WebSocketServer wssv;
-
-        public static StreamWriter file = new StreamWriter("live_map.log");
 
         public static JArray playerLocations = new JArray();
         public static JArray blipLocations = new JArray();
@@ -27,7 +26,7 @@ namespace Havoc.Live_Map
         public LiveMap(int listenPort, bool useSsl)
         {
             wssv = new WebSocketServer(listenPort, useSsl);
-            Console.WriteLine("creating websocket c#");
+            Debug.WriteLine("creating websocket c#");
 
             //var passwd = ConfigurationManager.AppSettings["CertFilePassword
 
@@ -81,37 +80,44 @@ DgMCGgUABBTjLj4+jkUY5TU/C2COoJBrpOZvQwQI3lqIXM8T/fgCAggA";
                 X509Certificate2 cert = null;
                 try
                 {
-                    Console.WriteLine("importing base4 encoded string");
+                    Debug.WriteLine("importing base4 encoded string");
                     cert = new X509Certificate2(Convert.FromBase64String(base64Encoded), string.Empty);
-                    Console.WriteLine("data imported.. hopefully");
+                    Debug.WriteLine("data imported.. hopefully");
+
+                    Debug.WriteLine("cert: " + cert);
+                    wssv.SslConfiguration.ServerCertificate = cert;
                 }
                 catch (CryptographicException e)
                 {
+                    Debug.WriteLine("Error creating cert");
+                    Debug.WriteLine(e.StackTrace);
+
+                    // Console.Write is shown on the linux servers, might as well show that we didn't import the cert
                     Console.WriteLine("Error creating cert");
                     Console.WriteLine(e.StackTrace);
+
+                    // Default to insecure sockets
+                    wssv = new WebSocketServer(listenPort, false);
                 }
 
-                Console.WriteLine("cert: " + cert);
-
-                wssv.SslConfiguration.ServerCertificate = cert;
+                
             }
 
-            Console.WriteLine("setting routes");
+            Debug.WriteLine("setting routes");
 
             wssv.AddWebSocketService<PlayerLocations>("/");
         }
 
         public void start()
         {
-            Console.WriteLine("Starting..");
+            Debug.WriteLine("Starting..");
             wssv.Start();
             if (wssv.IsListening)
             {
-                file.WriteLine("Listening on port {0}", wssv.Port);
-                Console.WriteLine("Listening on port {0}, and providing WebSocket services:", wssv.Port);
+                Debug.WriteLine("Listening on port {0}, and providing WebSocket servvices:", wssv.Port);
                 foreach (var path in wssv.WebSocketServices.Paths)
                 {
-                    file.WriteLine("- {0}", path);
+                    Debug.WriteLine("- {0}", path);
                 }
             }
         }
@@ -121,8 +127,8 @@ DgMCGgUABBTjLj4+jkUY5TU/C2COoJBrpOZvQwQI3lqIXM8T/fgCAggA";
             playerLocations.Clear();
             blipLocations.Clear();
 
-            file.Flush();
             wssv.Stop();
+            Debug.WriteLine("Stopped server");
         }
 
         public void addPlayer(string identifier, string name, float x = 0f, float y = 0f, float z = 0f)
@@ -163,6 +169,7 @@ DgMCGgUABBTjLj4+jkUY5TU/C2COoJBrpOZvQwQI3lqIXM8T/fgCAggA";
         }
         public void addPlayerString(string id, string key, string data)
         {
+            Debug.WriteLine("Adding string data \"{0}\" with value \"{1}\"", key, data);
             lock (playerLocations)
             {
                 foreach (var item in playerLocations)
@@ -177,6 +184,7 @@ DgMCGgUABBTjLj4+jkUY5TU/C2COoJBrpOZvQwQI3lqIXM8T/fgCAggA";
         }
         public void addPlayerFloat(string id, string key, float data)
         {
+            Debug.WriteLine("Adding float data \"{0}\" with value \"{1}\"", key, data);
             lock (playerLocations)
             {
                 foreach (var item in playerLocations)
@@ -192,6 +200,7 @@ DgMCGgUABBTjLj4+jkUY5TU/C2COoJBrpOZvQwQI3lqIXM8T/fgCAggA";
 
         public void removePlayer(string identifier)
         {
+            Debug.WriteLine("Removing player \"{0}\"", identifier);
             lock (playerLocations)
             {
                 JToken token = null;
@@ -217,6 +226,7 @@ DgMCGgUABBTjLj4+jkUY5TU/C2COoJBrpOZvQwQI3lqIXM8T/fgCAggA";
 
         public void addBlip(string name, string desc="", string type = "waypoint", float x = 0f, float y = 0f, float z = 0f)
         {
+            Debug.WriteLine("Adding blip with name \"{0}\" of type \"{1}\"", name, type);
             JObject blip = new JObject();
 
             blip["name"] = name;
@@ -232,14 +242,13 @@ DgMCGgUABBTjLj4+jkUY5TU/C2COoJBrpOZvQwQI3lqIXM8T/fgCAggA";
             }
         }
 
-        public void addBlips(string blipJson)
+        public void initBlips(string blipJson)
         {
+            Debug.WriteLine("Initilizing blips from string \"{0}\"", blipJson);
             lock (blipLocations)
             {
                 blipLocations = JArray.Parse(blipJson);
             }
-
-            //Console.WriteLine("blips: " + blipJson);
         }
 
     }
