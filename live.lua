@@ -5,8 +5,8 @@ local useSsl = false
 -- Load our library
 clr.System.Reflection.Assembly.LoadFrom("resources/live_map/libs/Live Map.dll")
 
-print("creating websocket")
 local liveMap = clr.Havoc.Live_Map.LiveMap(liveMapPort, useSsl) -- Start the websocket
+print("created websocket server")
 
 -- When the resource is stoped, close the websockett
 AddEventHandler('onResourceStop', function(resourceName)
@@ -73,6 +73,7 @@ end)
 -- Send the blips from blips.lua to the DLL.
 -- Allows our map to show the blips when it's loaded.
 local enc = json.encode(BLIPS)
-liveMap.addBlips( enc )
+liveMap.initBlips( enc )
 
+-- Start the websocket server
 liveMap.start()
