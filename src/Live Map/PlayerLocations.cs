@@ -16,8 +16,9 @@ namespace Havoc.Live_Map
         protected override void OnMessage(MessageEventArgs e)
         {
             if (e.IsText)
-            {   
-                if (e.Data == "getLocations")
+            {
+                string[] args = e.Data.Split(' ');
+                if (args[0] == "getLocations")
                 {
                     JObject obj = new JObject();
                     obj["type"] = "players";
@@ -29,7 +30,7 @@ namespace Havoc.Live_Map
                     Debug.WriteLine("Sending locations\n{0}", obj.ToString(Newtonsoft.Json.Formatting.None));
                     Send(obj.ToString(Newtonsoft.Json.Formatting.None));
                 }
-                else if(e.Data == "getBlips")
+                else if(args[0] == "getBlips")
                 {
                     JObject obj = new JObject();
                     obj["type"] = "blips";
