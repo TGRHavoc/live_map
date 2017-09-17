@@ -6,6 +6,9 @@
 RegisterServerEvent("livemap:AddPlayerData")
 RegisterServerEvent("livemap:UpdatePlayerData")
 
+RegisterServerEvent("livemap:RemovePlayerData")
+RegisterServerEvent("livemap:RemovePlayer")
+
 RegisterServerEvent("livemap:playerSpawned")
 
 AddEventHandler("livemap:AddPlayerData", function(k, d)
