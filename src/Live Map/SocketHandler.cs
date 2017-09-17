@@ -70,6 +70,7 @@ namespace Havoc.Live_Map
 
         public void AddPlayerData(string identifier, string key, object data)
         {
+            LiveMap.Log("Adding player {0}'s \"{1}\"", identifier, key);
             MakeSurePlayerExists(identifier);
             lock (playerData)
             {
@@ -84,6 +85,7 @@ namespace Havoc.Live_Map
 
         public void UpdatePlayerData(string identifier, string key, object newData)
         {
+            LiveMap.Log("Updating player {0}'s \"{1}\"", identifier, key);
             MakeSurePlayerExists(identifier);
             lock (playerData)
             {
@@ -95,6 +97,41 @@ namespace Havoc.Live_Map
             LiveMap.Log("Updated player {0}'s \"{1}\" to \"{2}\"", identifier, key, newData);
         }
 
+        public void RemovePlayerData(string identifier, string key)
+        {
+            MakeSurePlayerExists(identifier);
+            lock (playerData)
+            {
+                JObject playerObj = (JObject)playerData[identifier];
+                if (playerObj[key] != null)
+                {
+                    if (playerObj.Remove(key))
+                    {
+                        LiveMap.Log("Removed \"{0}\" from player {1}", key, identifier);
+                    }else
+                    {
+                        LiveMap.Log("Couldn't remove \"{0}\" from player {1}", key, identifier);
+                    }
+                }// else = already removed
+            }
+        }
+
+        public void RemovePlayer(string identifier)
+        {
+            lock (playerData)
+            {
+                if (playerData[identifier] != null)
+                {
+                    if (playerData.Remove(identifier))
+                    {
+                        LiveMap.Log("Removed player {0}", identifier);
+                    }else
+                    {
+                        LiveMap.Log("Couldn't remove player {0}... Seriously, there's something fucking wrong here...", identifier);
+                    }
+                }
+            }
+        }
 
     }
 }
