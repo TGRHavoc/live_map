@@ -1,255 +1,93 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using System.IO;
+using CitizenFX.Core;
+using CitizenFX.Core.Native;
+
+using vtortola.WebSockets;
 
 using Newtonsoft.Json.Linq;
-using System.Security.Cryptography;
-using WebSocketSharp.Server;
-using System.Security.Cryptography.X509Certificates;
-using System.Diagnostics;
 
 namespace Havoc.Live_Map
 {
-    public class LiveMap
+    public class LiveMap : BaseScript
     {
-        WebSocketServer wssv;
 
-        public static JArray playerLocations = new JArray();
-        public static JArray blipLocations = new JArray();
+        public static bool doDebug = false;
 
-        public bool isOpen()
+        WebSocketServer server;
+        SocketHandler handler;
+
+        public static void Log(string format, params object[] vars)
         {
-            return wssv.IsListening;
+            if (doDebug)
+            {
+                Debug.WriteLine("Havoc's LiveMap:\n\t" + format + "\n", vars);
+            }
         }
 
-        public LiveMap(int listenPort, bool useSsl)
+        public LiveMap()
         {
-            wssv = new WebSocketServer(listenPort, useSsl);
-            Debug.WriteLine("creating websocket c#");
+            int port = API.GetConvarInt("socket_port", 30121);
 
-            //var passwd = ConfigurationManager.AppSettings["CertFilePassword
+            string debugEnabled = API.GetConvar("livemap_debug", bool.FalseString);
+            bool suc = bool.TryParse(debugEnabled, out doDebug);
 
-            if (useSsl)
+            if (!suc)
             {
-                // From the server.txt file (base64 encoded pfx file)
-                string base64Encoded = @"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";
-                X509Certificate2 cert = null;
+                Debug.WriteLine("Couldn't parse \"{0}\". Apparently it isn't a boolean (\"{1}\" or \"{2}\")\n\tDefaulting to {2}", debugEnabled, bool.TrueString, bool.FalseString);
+            }
+
+            Log("Starting on port {0}", port);
+
+            server = new WebSocketServer(port);
+            handler = new SocketHandler(server);
+
+            EventHandlers["onResourceStart"] += new Action<string>(OnStart);
+            EventHandlers["onResourceStop"] += new Action<string>(OnStop);
+
+            EventHandlers["livemap:internal_AddPlayerData"] += new Action<string, string, dynamic>(InternalAddPlayerData);
+            EventHandlers["livemap:internal_UpdatePlayerData"] += new Action<string, string, dynamic>(InternalUpdatePlayerData);
+        }
+
+        private void InternalAddPlayerData(string identifier, string key, dynamic data)
+        {
+            handler.AddPlayerData(identifier, key, data);
+        }
+
+        private void InternalUpdatePlayerData(string identifier, string key, dynamic data)
+        {
+            handler.UpdatePlayerData(identifier, key, data);
+        }
+
+        public void OnStart(string name)
+        {
+            if (name == API.GetCurrentResourceName())
+            {
                 try
                 {
-                    Debug.WriteLine("importing base4 encoded string");
-                    cert = new X509Certificate2(Convert.FromBase64String(base64Encoded), string.Empty);
-                    Debug.WriteLine("data imported.. hopefully");
+                    server.Start();
+                    Tick += server.ListenAsync;
 
-                    Debug.WriteLine("cert: " + cert);
-                    wssv.SslConfiguration.ServerCertificate = cert;
-                }
-                catch (CryptographicException e)
+                }catch(Exception e)
                 {
-                    Debug.WriteLine("Error creating cert");
-                    Debug.WriteLine(e.StackTrace);
-
-                    // Console.Write is shown on the linux servers, might as well show that we didn't import the cert
-                    Console.WriteLine("Error creating cert");
-                    Console.WriteLine(e.StackTrace);
-
-                    // Default to insecure sockets
-                    wssv = new WebSocketServer(listenPort, false);
+                    Debug.WriteLine("Couldn't start {0}: {1}", name, e.StackTrace);
                 }
+            }
+        }
 
+        public void OnStop(string name)
+        {
+            if (name == API.GetCurrentResourceName())
+            {
+
+                if (server != null) // Apparently this is a thing that can happen :/
+                {
+                    server.Stop();
+                    server.Dispose();
+                }
                 
             }
-
-            Debug.WriteLine("setting routes");
-
-            wssv.AddWebSocketService<PlayerLocations>("/");
         }
-
-        public void start()
-        {
-            Debug.WriteLine("Starting..");
-            wssv.Start();
-            if (wssv.IsListening)
-            {
-                Debug.WriteLine("Listening on port {0}, and providing WebSocket servvices:", wssv.Port);
-                foreach (var path in wssv.WebSocketServices.Paths)
-                {
-                    Debug.WriteLine("- {0}", path);
-                }
-            }
-        }
-
-        public void stop()
-        {
-            playerLocations.Clear();
-            blipLocations.Clear();
-
-            wssv.Stop();
-            Debug.WriteLine("Stopped server");
-        }
-
-        public void addPlayer(string identifier, string name, float x = 0f, float y = 0f, float z = 0f)
-        {
-            lock (playerLocations)
-            {
-                bool updatedPlayer = false;
-                foreach (var item in playerLocations)
-                {
-                    if (item["id"].ToString() == identifier)
-                    {
-                        // Update it
-                        item["x"] = x;
-                        item["y"] = y;
-                        item["z"] = z;
-
-                        updatedPlayer = true;
-                    }
-                    else
-                    {
-                        continue;
-                    }
-                }
-
-                if (!updatedPlayer)
-                {
-                    // Add them
-                    JObject playerObj = new JObject();
-                    playerObj.Add("id", identifier);
-                    playerObj.Add("name", name);
-                    playerObj.Add("x", x);
-                    playerObj.Add("y", y);
-                    playerObj.Add("z", z);
-
-                    playerLocations.Add(playerObj);
-                }
-            }
-        }
-        public void addPlayerString(string id, string key, string data)
-        {
-            Debug.WriteLine("Adding string data \"{0}\" with value \"{1}\"", key, data);
-            lock (playerLocations)
-            {
-                foreach (var item in playerLocations)
-                {
-                    if (item["id"].ToString() == id)
-                    {
-                        // Update it
-                        item[key] = data;
-                    }
-                }
-            }
-        }
-        public void addPlayerFloat(string id, string key, float data)
-        {
-            Debug.WriteLine("Adding float data \"{0}\" with value \"{1}\"", key, data);
-            lock (playerLocations)
-            {
-                foreach (var item in playerLocations)
-                {
-                    if (item["id"].ToString() == id)
-                    {
-                        // Update it
-                        item[key] = data;
-                    }
-                }
-            }
-        }
-
-        public void removePlayer(string identifier)
-        {
-            Debug.WriteLine("Removing player \"{0}\"", identifier);
-            lock (playerLocations)
-            {
-                JToken token = null;
-                foreach (var item in playerLocations)
-                {
-                    if (item["id"].ToString() == identifier)
-                    {
-                        token = item;
-                    }
-                }
-                if(token != null)
-                {
-                    playerLocations.Remove(token);
-                }
-            }
-
-            JObject obj = new JObject();
-            obj["type"] = "playerLeft";
-            obj["payload"] = identifier;
-
-            wssv.WebSocketServices["/"].Sessions.Broadcast(obj.ToString(Newtonsoft.Json.Formatting.None));
-        }
-
-        public void addBlip(string name, string desc="", string type = "waypoint", float x = 0f, float y = 0f, float z = 0f)
-        {
-            Debug.WriteLine("Adding blip with name \"{0}\" of type \"{1}\"", name, type);
-            JObject blip = new JObject();
-
-            blip["name"] = name;
-            blip["description"] = desc;
-            blip["type"] = type;
-            blip["x"] = x;
-            blip["y"] = y;
-            blip["z"] = z;
-
-            lock (blipLocations)
-            {
-                blipLocations.Add(blip);
-            }
-        }
-
-        public void initBlips(string blipJson)
-        {
-            Debug.WriteLine("Initilizing blips from string \"{0}\"", blipJson);
-            lock (blipLocations)
-            {
-                blipLocations = JArray.Parse(blipJson);
-            }
-        }
-
     }
 }
