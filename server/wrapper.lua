@@ -22,6 +22,20 @@ AddEventHandler("livemap:UpdatePlayerData", function(k, d)
     TriggerEvent("livemap:internal_UpdatePlayerData", id, k, d)
 end)
 
+AddEventHandler("livemap:RemovePlayerData", function(k)
+    local id = GetPlayerIdentifier(source, 0)
+
+    print("Removing " .. k .. " from " .. id)
+    TriggerEvent("livemap:internal_RemovePlayerData", id, k)
+end)
+
+AddEventHandler("livemap:RemovePlayer", function()
+    local id = GetPlayerIdentifier(source, 0)
+    print("Removing player " ..  id)
+
+    TriggerEvent("livemap:internal_RemovePlayer", id)
+end)
+
 
 function setStaticDataFor(index, id)
     TriggerEvent("livemap:internal_AddPlayerData", id, "identifer", id)

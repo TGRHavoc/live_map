@@ -4,10 +4,6 @@ using System.Collections.Generic;
 using CitizenFX.Core;
 using CitizenFX.Core.Native;
 
-using vtortola.WebSockets;
-
-using Newtonsoft.Json.Linq;
-
 namespace Havoc.Live_Map
 {
     public class LiveMap : BaseScript
@@ -48,16 +44,9 @@ namespace Havoc.Live_Map
 
             EventHandlers["livemap:internal_AddPlayerData"] += new Action<string, string, dynamic>(InternalAddPlayerData);
             EventHandlers["livemap:internal_UpdatePlayerData"] += new Action<string, string, dynamic>(InternalUpdatePlayerData);
-        }
 
-        private void InternalAddPlayerData(string identifier, string key, dynamic data)
-        {
-            handler.AddPlayerData(identifier, key, data);
-        }
-
-        private void InternalUpdatePlayerData(string identifier, string key, dynamic data)
-        {
-            handler.UpdatePlayerData(identifier, key, data);
+            EventHandlers["livemap:internal_RemovePlayerData"] += new Action<string, string>(InternalRemovePlayerData);
+            EventHandlers["livemap:internal_RemovePlayer"] += new Action<string>(InternalRemovePlayer);
         }
 
         public void OnStart(string name)
@@ -89,5 +78,25 @@ namespace Havoc.Live_Map
                 
             }
         }
+
+        private void InternalAddPlayerData(string identifier, string key, dynamic data)
+        {
+            handler.AddPlayerData(identifier, key, data);
+        }
+
+        private void InternalUpdatePlayerData(string identifier, string key, dynamic data)
+        {
+            handler.UpdatePlayerData(identifier, key, data);
+        }
+        private void InternalRemovePlayerData(string id, string key)
+        {
+            handler.RemovePlayerData(id, key);
+        }
+        private void InternalRemovePlayer(string id)
+        {
+            handler.RemovePlayer(id);
+        }
+
+
     }
 }
