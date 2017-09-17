@@ -9,16 +9,23 @@ namespace Havoc.Live_Map
     public class LiveMap : BaseScript
     {
 
-        public static bool doDebug = false;
+        public static int debugLevel = 0;
+
+        public enum LogLevel
+        {
+            None = 0,
+            Basic = 1,
+            All = 2
+        }
 
         WebSocketServer server;
         SocketHandler handler;
 
-        public static void Log(string format, params object[] vars)
+        public static void Log(LogLevel level, string format, params object[] vars)
         {
-            if (doDebug)
+            if (debugLevel >= (int)level)
             {
-                Debug.WriteLine("Havoc's LiveMap:\n\t" + format + "\n", vars);
+                Debug.WriteLine("Havoc's LiveMap(" + level + "):\n\t" + format + "\n", vars);
             }
         }
 
@@ -26,15 +33,15 @@ namespace Havoc.Live_Map
         {
             int port = API.GetConvarInt("socket_port", 30121);
 
-            string debugEnabled = API.GetConvar("livemap_debug", bool.FalseString);
-            bool suc = bool.TryParse(debugEnabled, out doDebug);
+            string debugEnabled = API.GetConvar("livemap_debug", "0");
+            bool suc = int.TryParse(debugEnabled, out debugLevel);
 
             if (!suc)
             {
-                Debug.WriteLine("Couldn't parse \"{0}\". Apparently it isn't a boolean (\"{1}\" or \"{2}\")\n\tDefaulting to {2}", debugEnabled, bool.TrueString, bool.FalseString);
+                Debug.WriteLine("Couldn't parse \"{0}\". Apparently it isn't a int \n\tDefaulting to {2}", debugEnabled, 0);
             }
 
-            Log("Starting on port {0}", port);
+            Log(LogLevel.Basic, "Starting on port {0}", port);
 
             server = new WebSocketServer(port);
             handler = new SocketHandler(server);

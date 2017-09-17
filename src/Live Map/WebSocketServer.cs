@@ -34,7 +34,7 @@ namespace Havoc.Live_Map
 
             listener = new WebSocketListener(new System.Net.IPEndPoint(System.Net.IPAddress.Loopback, port), opts);
 
-            LiveMap.Log("Created websocket server");
+            LiveMap.Log(LiveMap.LogLevel.Basic, "Created websocket server");
         }
 
 
