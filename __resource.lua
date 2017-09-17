@@ -1,4 +1,4 @@
-resource_manifest_version("f15e72ec-3972-4fe4-9c7d-afc5394ae207")
+resource_manifest_version "44febabe-d386-4d18-afbe-5e627f4af937"
 
 client_script("client.lua")
 
