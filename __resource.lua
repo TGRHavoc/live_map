@@ -1,9 +1,10 @@
 resource_manifest_version "44febabe-d386-4d18-afbe-5e627f4af937"
 
-client_script("client.lua")
+client_scripts{
+    "client/client.lua"
+}
 
-server_scripts {
-    "blips.lua",
-    "blip_helper.lua",
-    "live.lua"
+server_scripts{
+    "server/live_map.net.dll",
+    "server/wrapper.lua"
 }

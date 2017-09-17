@@ -1,54 +1,63 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using vtortola.WebSockets.Async;
 using CitizenFX.Core;
 using CitizenFX.Core.Native;
+
 using vtortola.WebSockets;
+
+using Newtonsoft.Json.Linq;
 
 namespace Havoc.Live_Map
 {
     public class LiveMap : BaseScript
     {
 
+        public static bool doDebug = false;
+
         WebSocketServer server;
-        List<WebSocket> clients;
+        SocketHandler handler;
+
+        public static void Log(string format, params object[] vars)
+        {
+            if (doDebug)
+            {
+                Debug.WriteLine("Havoc's LiveMap:\n\t" + format + "\n", vars);
+            }
+        }
 
         public LiveMap()
         {
             int port = API.GetConvarInt("socket_port", 30121);
-            Debug.WriteLine("Starting on port {0}", port);
+
+            string debugEnabled = API.GetConvar("livemap_debug", bool.FalseString);
+            bool suc = bool.TryParse(debugEnabled, out doDebug);
+
+            if (!suc)
+            {
+                Debug.WriteLine("Couldn't parse \"{0}\". Apparently it isn't a boolean (\"{1}\" or \"{2}\")\n\tDefaulting to {2}", debugEnabled, bool.TrueString, bool.FalseString);
+            }
+
+            Log("Starting on port {0}", port);
 
             server = new WebSocketServer(port);
+            handler = new SocketHandler(server);
 
             EventHandlers["onResourceStart"] += new Action<string>(OnStart);
             EventHandlers["onResourceStop"] += new Action<string>(OnStop);
 
-
-            server.OnConnect += Server_OnConnect;
-            server.OnDisconnect += Server_OnDisconnect;
-            server.OnError += Server_OnError;
-            server.OnMessage += Server_OnMessage;
+            EventHandlers["livemap:internal_AddPlayerData"] += new Action<string, string, dynamic>(InternalAddPlayerData);
+            EventHandlers["livemap:internal_UpdatePlayerData"] += new Action<string, string, dynamic>(InternalUpdatePlayerData);
         }
 
-        private void Server_OnMessage(WebSocket ws, string msg)
+        private void InternalAddPlayerData(string identifier, string key, dynamic data)
         {
-            throw new NotImplementedException();
+            handler.AddPlayerData(identifier, key, data);
         }
 
-        private void Server_OnError(WebSocket ws, Exception ex)
+        private void InternalUpdatePlayerData(string identifier, string key, dynamic data)
         {
-            throw new NotImplementedException();
-        }
-
-        private void Server_OnDisconnect(WebSocket ws)
-        {
-            throw new NotImplementedException();
-        }
-
-        private void Server_OnConnect(vtortola.WebSockets.WebSocket ws)
-        {
-            throw new NotImplementedException();
+            handler.UpdatePlayerData(identifier, key, data);
         }
 
         public void OnStart(string name)
@@ -62,7 +71,7 @@ namespace Havoc.Live_Map
 
                 }catch(Exception e)
                 {
-                    Debug.WriteLine("Couldn't start {0}: {1}", name, e.Message);
+                    Debug.WriteLine("Couldn't start {0}: {1}", name, e.StackTrace);
                 }
             }
         }
@@ -71,36 +80,14 @@ namespace Havoc.Live_Map
         {
             if (name == API.GetCurrentResourceName())
             {
-                server.Stop();
-                server.Dispose();
+
+                if (server != null) // Apparently this is a thing that can happen :/
+                {
+                    server.Stop();
+                    server.Dispose();
+                }
+                
             }
         }
-
-        public void addPlayer(string identifier, string name, float x = 0f, float y = 0f, float z = 0f)
-        {
-        }
-        public void addPlayerString(string id, string key, string data)
-        {
-            Debug.WriteLine("Adding string data \"{0}\" with value \"{1}\"", key, data);
-        }
-        public void addPlayerFloat(string id, string key, float data)
-        {
-            Debug.WriteLine("Adding float data \"{0}\" with value \"{1}\"", key, data);
-        }
-
-        public void removePlayer(string identifier)
-        {
-            Debug.WriteLine("Removing player \"{0}\"", identifier);
-        }
-
-        public void addBlip(string name, string desc="", string type = "waypoint", float x = 0f, float y = 0f, float z = 0f)
-        {
-            Debug.WriteLine("Adding blip with name \"{0}\" of type \"{1}\"", name, type);
-        }
-
-        public void initBlips(string blipJson)
-        {
-        }
-
     }
 }

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using vtortola.WebSockets;
+using vtortola.WebSockets.Rfc6455;
 
 namespace Havoc.Live_Map
 {
@@ -25,13 +26,21 @@ namespace Havoc.Live_Map
 
         public WebSocketServer(int port)
         {
-            listener = new WebSocketListener(new System.Net.IPEndPoint(System.Net.IPAddress.Any, port));
+            WebSocketListenerOptions opts = new WebSocketListenerOptions()
+            {
+                SubProtocols = new string[] { "text" }
+            };
+            opts.Standards.RegisterRfc6455();
+
+            listener = new WebSocketListener(new System.Net.IPEndPoint(System.Net.IPAddress.Loopback, port), opts);
+
+            LiveMap.Log("Created websocket server");
         }
 
 
         public void Start()
         {
-            listener.StartAsync().Wait();
+            listener.StartAsync().Wait();            
         }
 
         public void Stop()
