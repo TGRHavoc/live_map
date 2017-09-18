@@ -39,16 +39,18 @@ AddEventHandler("livemap:getBlipsFromClient", function()
     for _,spriteId in pairs(blip_types) do
         local blip = GetFirstBlipInfoId(spriteId)
 
-        if DoesBlipExist(blip) then -- If the first blip exists, we're going to need an entry 
+        if DoesBlipExist(blip) then -- If the first blip exists, we're going to need an entry
             blipTable[spriteId] = {}
         end
         while (DoesBlipExist(blip)) do
 
             local x,y,z = table.unpack(GetBlipCoords(blip))
-            Citizen.Trace("Blip1: " .. x .. " " .. y .. " " .. z .. "")
 
+            -- Damn! There's no way to get the fucking display text for the blip :(
             table.insert(blipTable[spriteId], {
-                x = x, y = y, z = z
+                x = tonumber(string.format("%.2f", x)), -- Round them to 2dp
+                y = tonumber(string.format("%.2f", y)),
+                z = tonumber(string.format("%.2f", z))
             })
 
             blip = GetNextBlipInfoId(spriteId)
