@@ -7,6 +7,13 @@ using System.Threading.Tasks;
 using vtortola.WebSockets;
 using vtortola.WebSockets.Rfc6455;
 
+/*
+    Copyright (c) 2017 Kevin Poirot
+    Original file can be found at: https://github.com/Hellslicer/WebSocketServer/blob/master/WebSocketEventListener.cs
+    
+    Modified (slighly) by Jordan Dalton
+*/
+
 namespace Havoc.Live_Map
 {
 
@@ -40,7 +47,7 @@ namespace Havoc.Live_Map
 
         public void Start()
         {
-            listener.StartAsync().Wait();            
+            listener.StartAsync().Wait();
         }
 
         public void Stop()
