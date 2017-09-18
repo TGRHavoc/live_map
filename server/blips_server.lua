@@ -37,6 +37,9 @@ function cacheIsEmpty()
 end
 
 function sendBlips(res)
+    -- Restrict the origin if set, otherwise allow everyone
+    res.writeHead(200, { ["Access-Control-Allow-Origin"] = GetConvar("livemap_access_control", "*")} )
+    
     if not cacheIsEmpty() then
         res.send(json.encode(cache))
         return
@@ -85,7 +88,7 @@ RegisterCommand("blips", function(source, args, rawCommand)
         playerWhoGeneratedBlips = playerId
 
         TriggerClientEvent("livemap:getBlipsFromClient", source)
-        
+
         return
     end
 
