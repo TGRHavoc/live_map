@@ -34,10 +34,13 @@ namespace Havoc.Live_Map
         WebSocketServer server;
         JObject playerData;
 
+        List<WebSocket> clients;
+
         public SocketHandler(WebSocketServer server)
         {
             this.server = server;
             playerData = new JObject();
+            clients = new List<WebSocket>();
 
             server.OnConnect += Server_OnConnect;
             server.OnDisconnect += Server_OnDisconnect;
@@ -50,6 +53,7 @@ namespace Havoc.Live_Map
             string[] args = msg.Split(' ');
             LiveMap.Log(LiveMap.LogLevel.All, "Recieved message from client {0}:\n\t\"{1}\"", ws.RemoteEndpoint.ToString(), msg);
 
+            /*
             if(args[0] == "getLocations")
             {
                 // TODO: Send them the "playerData"
@@ -73,22 +77,34 @@ namespace Havoc.Live_Map
 
                 ws.WriteStringAsync(payload.ToString(Newtonsoft.Json.Formatting.None), CancellationToken.None).Wait();
             }
-
+            */
         }
 
         private void Server_OnError(WebSocket ws, Exception ex)
         {
             LiveMap.Log(LiveMap.LogLevel.Basic, "Socket error from {0}: {1}", ws == null ? "Unknown" : ws.RemoteEndpoint.ToString(), ex.Message);
+            lock (clients)
+            {
+                clients.Remove(ws);
+            }
         }
 
         private void Server_OnDisconnect(WebSocket ws)
         {
             LiveMap.Log(LiveMap.LogLevel.Basic, "Socket connection was closed at {0}", ws.RemoteEndpoint.ToString());
+            lock (clients)
+            {
+                clients.Remove(ws);
+            }
         }
 
         private void Server_OnConnect(WebSocket ws)
         {
             LiveMap.Log(LiveMap.LogLevel.Basic, "Socket connection opened at {0}", ws.RemoteEndpoint.ToString());
+            lock (clients)
+            {
+                clients.Add(ws);
+            }
         }
 
         private void MakeSurePlayerExists(string identifier)
@@ -100,6 +116,48 @@ namespace Havoc.Live_Map
                 {
                     playerData[identifier] = new JObject();
                 }
+            }
+        }
+
+        public async Task SendWebsocketData()
+        {
+            while (true)
+            {
+                // Only send the data every .5 seconds
+                await Task.Delay(500).ConfigureAwait(false);
+
+                // Copy list into an array
+                WebSocket[] sendTo;
+                lock (clients)
+                {
+                    sendTo = new WebSocket[clients.Count];
+                    clients.CopyTo(sendTo);
+                }
+
+                // Generate the payload
+                JObject payload = new JObject();
+                JArray playerDataArray = new JArray();
+                lock (playerData)
+                {
+                    foreach (KeyValuePair<string, JToken> data in playerData)
+                    {
+                        playerDataArray.Add(data.Value);
+                    }
+                }
+
+                if(playerDataArray.Count == 0)
+                {
+                    return;
+                }
+                payload["type"] = "playerData";
+                payload["payload"] = playerDataArray;
+                
+                // Send it!
+                foreach(WebSocket ws in sendTo)
+                {
+                    ws.WriteStringAsync(payload.ToString(Newtonsoft.Json.Formatting.None), CancellationToken.None).Wait();
+                }
+
             }
         }
 
@@ -166,6 +224,19 @@ namespace Havoc.Live_Map
                     }
                 }
             }
+
+            // Tell the client's that someone has left
+            lock (clients)
+            {
+                foreach (WebSocket s in clients)
+                {
+                    JObject payload = new JObject();
+                    payload["type"] = "playerLeft";
+                    payload["payload"] = identifier;
+                    s.WriteStringAsync(payload.ToString(Newtonsoft.Json.Formatting.None), CancellationToken.None);
+                }
+            }
+
         }
 
     }

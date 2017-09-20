@@ -1,5 +1,9 @@
 ## Change Log
 
+### v2.1.1 (20/09/2017 17:28 +00:00)
+- [f130aad](https://github.com/TGRHavoc/live_map/commit/f130aad5e5cec6db39d2b69fd320b96e3199b041) Update how players are handled ([TGRHavoc](https://github.com/TGRHavoc))
+- [d884b37](https://github.com/TGRHavoc/live_map/commit/d884b3718cee569817da8aaf6a497a8bf350f77c) Add changelog ([TGRHavoc](https://github.com/TGRHavoc))
+
 ### v2.1.0 (19/09/2017 15:48 +00:00)
 - [f5c93ec](https://github.com/TGRHavoc/live_map/commit/f5c93ec3d896cbf6423a0b0a2bf3d6ee68b61231) Merge branch 'develop' ([TGRHavoc](https://github.com/TGRHavoc))
 - [dfdfb38](https://github.com/TGRHavoc/live_map/commit/dfdfb38c0480671582c02d104a75330f96ace456) Merge branch 'feature/vehicle_icons' into develop ([TGRHavoc](https://github.com/TGRHavoc))

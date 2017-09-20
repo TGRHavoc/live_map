@@ -84,6 +84,7 @@ namespace Havoc.Live_Map
                 {
                     server.Start();
                     Tick += server.ListenAsync;
+                    Tick += handler.SendWebsocketData;
 
                 }catch(Exception e)
                 {
@@ -96,13 +97,11 @@ namespace Havoc.Live_Map
         {
             if (name == API.GetCurrentResourceName())
             {
-
                 if (server != null) // Apparently this is a thing that can happen :/
                 {
                     server.Stop();
                     server.Dispose();
                 }
-
             }
         }
 

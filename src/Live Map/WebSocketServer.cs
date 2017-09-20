@@ -109,7 +109,5 @@ namespace Havoc.Live_Map
         {
             listener.Dispose();
         }
-
-
     }
 }
