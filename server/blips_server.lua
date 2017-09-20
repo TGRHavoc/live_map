@@ -170,6 +170,10 @@ AddEventHandler("onResourceStart", function(name)
     end
 end)
 
+AddEventHandler('playerDropped', function()
+    local id = GetPlayerIdentifier(source, 0)
+    TriggerEvent("livemap:internal_RemovePlayer", id)
+end)
 
 --[[
     Handle HTTP requests. Mainly used for getting the blips via ajax from the UI
