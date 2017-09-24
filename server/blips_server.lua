@@ -16,16 +16,65 @@ You should have received a copy of the GNU General Public License
 along with this program in the file "LICENSE".  If not, see <http://www.gnu.org/licenses/>.
 ]]
 
+--[[
+    When the client has generated the blips, this is called to save them.
+    @param blipTable A array that contains all the blips to save
+]]
 RegisterServerEvent("livemap:blipsGenerated")
+
+--[[
+    Adds a blip to the blips that the UI can see (will be saved)
+    @param blip A table that represents a blip.
+    Only the host of the session can use this event.
+
+    A blip follows the format:
+    {
+        sprite = Number (required)
+        x = Float (required)
+        y = Float (required)
+        z = Float (required)
+
+        name = String (optional)
+        description = String (optional)
+    }
+
+    sprite is the "spriteId" used when creating a blip.
+    x,y,z represents the position of the blip (rounded to 2dp)
+    name is the name of the blip shown on the UI
+    desscription is a description of what the blip does, shown on UI
+]]
 RegisterServerEvent("livemap:AddBlip")
+
+--[[
+    Updates the information that is associated with a blip.
+    Only the host of the session can use this event.
+
+    @param blip A table that represents a blip (see the above format)
+
+    Note: You cannot change the "sprite", "x", "y", "z" properties of the blip
+]]
 RegisterServerEvent("livemap:UpdateBlip")
 
+
+
+-- An array of blips that we have. This is encoded into JSON and sent over HTTP (when requested)
 local blips = {}
 
 -- Set this to the player who did the "blips generate" command. Should stop
 -- randomers triggering the event :)
 local playerWhoGeneratedBlips = nil
 
+--[[
+    ===================================
+    =           Functions             =
+    ===================================
+]]
+
+--[[
+    Checks to see if the "blips" array is empty.
+
+    @returns boolean True if the array is empty, False otherwise
+]]
 function blipsIsEmpty()
     for _, _ in pairs(blips) do
         return false
@@ -33,6 +82,16 @@ function blipsIsEmpty()
     return true
 end
 
+--[[
+    Checks if the "blips" array contains a certain blip.
+
+    @param id The sprite ID of the blip
+    @param x The x coordinate of the blip (rounded to 2dp)
+    @param y The y coordinate of the blip (rounded to 2dp)
+    @param z The z coordinate of the blip (rounded to 2dp)
+
+    @return int The index that the blip is found at, -1 if not found.
+]]
 function blipsContainsBlip(id, x, y, z)
     if blips[id] == nil then
         return -1
@@ -47,13 +106,18 @@ function blipsContainsBlip(id, x, y, z)
     return -1
 end
 
+--[[
+    Sends the encoded "blips" array to the client requesting it
+    If no blips, an error is sent instead
+
+    @param res The result object that can be sent data
+]]
 function sendBlips(res)
     -- Restrict the origin if set, otherwise allow everyone
     res.writeHead(200, { ["Access-Control-Allow-Origin"] = GetConvar("livemap_access_control", "*")} )
 
     if not blipsIsEmpty() then
         res.send(json.encode(blips))
-        return
     else
         res.send(json.encode({
             error = "blip cache is empty"
@@ -61,7 +125,38 @@ function sendBlips(res)
     end
 end
 
+--[[
+    Saves the "blips" array to a file on the server.
+    The filename is set in the server.cfg file with the convar `blip_file`
+]]
+function saveBlips()
+    if blipsIsEmpty() then
+        print("Blips are empty... No need to save")
+        return
+    end
+
+    local blipFile = GetConvar("blip_file", "server/blips.json")
+    local saved = SaveResourceFile(GetCurrentResourceName(), blipFile, json.encode(blips, {indent = true}), -1)
+
+    if not saved then
+        print("LiveMap couldn't save the blips to file.. Maybe the directory isn't writable?")
+    end
+
+end
+
+--[[
+    ===================================
+    =             Events              =
+    ===================================
+]]
+
+
 AddEventHandler("livemap:AddBlip", function(blip)
+    -- Only let the host of the session update the blips
+    if source ~= GetHostId() then
+        return
+    end
+
     if not blip["sprite"] or blip["sprite"] == nil then
         -- We don't have a sprite id... we can't save it :(
         print("LiveMap Error: AddBlip cannot run because no sprite was supplied.")
@@ -85,9 +180,14 @@ AddEventHandler("livemap:AddBlip", function(blip)
 end)
 
 AddEventHandler("livemap:UpdateBlip", function(blip)
+    -- Only let the host of the session update the blips
+    if source ~= GetHostId() then
+        return
+    end
+
     if not blip["sprite"] or blip["sprite"] == nil then
         -- We don't have a sprite id... we can't save it :(
-        print("LiveMap Error: AddBlip cannot run because no sprite was supplied.")
+        print("LiveMap Error: UpdateBlip cannot run because no sprite was supplied.")
         return
     end
     local id = tostring(blip["sprite"])
@@ -110,21 +210,6 @@ AddEventHandler("livemap:UpdateBlip", function(blip)
     end
 end)
 
-function saveBlips()
-    if blipsIsEmpty() then
-        print("Blips are empty... No need to save")
-        return
-    end
-
-    local blipFile = GetConvar("blip_file", "server/blips.json")
-    local saved = SaveResourceFile(GetCurrentResourceName(), blipFile, json.encode(blips, {indent = true}), -1)
-
-    if not saved then
-        print("LiveMap couldn't save the blips to file.. Maybe the directory isn't writable?")
-    end
-
-end
-
 AddEventHandler("livemap:blipsGenerated", function(blipTable)
     local id = GetPlayerIdentifier(source, 0)
 
@@ -137,20 +222,6 @@ AddEventHandler("livemap:blipsGenerated", function(blipTable)
 
     saveBlips()
 end)
-
-
-RegisterCommand("blips", function(source, args, rawCommand)
-    local playerId = GetPlayerIdentifier(source, 0)
-    if args[1] == "generate" then
-        print("Generating blips using the in-game native: Player " .. playerId .. " is generating (I hope you know them)")
-        playerWhoGeneratedBlips = playerId
-
-        TriggerClientEvent("livemap:getBlipsFromClient", source)
-
-        return
-    end
-
-end, true)
 
 AddEventHandler("onResourceStop", function(name)
     if name == GetCurrentResourceName() then
@@ -174,6 +245,30 @@ AddEventHandler('playerDropped', function()
     local id = GetPlayerIdentifier(source, 0)
     TriggerEvent("livemap:internal_RemovePlayer", id)
 end)
+
+--[[
+    ===================================
+    =              Misc               =
+    ===================================
+]]
+
+--[[
+    Register a command and can be used in-game by an admin to generate the inital
+        set of blips.
+
+]]
+RegisterCommand("blips", function(source, args, rawCommand)
+    local playerId = GetPlayerIdentifier(source, 0)
+    if args[1] == "generate" then
+        print("Generating blips using the in-game native: Player " .. playerId .. " is generating (I hope you know them)")
+        playerWhoGeneratedBlips = playerId
+
+        TriggerClientEvent("livemap:getBlipsFromClient", source)
+
+        return
+    end
+
+end, true)
 
 --[[
     Handle HTTP requests. Mainly used for getting the blips via ajax from the UI
