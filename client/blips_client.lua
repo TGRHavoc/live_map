@@ -16,6 +16,10 @@ You should have received a copy of the GNU General Public License
 along with this program in the file "LICENSE".  If not, see <http://www.gnu.org/licenses/>.
 ]]
 
+--[[
+    A utility event that is triggered from the server to generate the blips.
+    This will get all the blips that are shown on the map.
+]]
 RegisterNetEvent("livemap:getBlipsFromClient")
 
 local blip_types = {
@@ -30,9 +34,7 @@ local blip_types = {
 }
 
 AddEventHandler("livemap:getBlipsFromClient", function()
-    --TODO: Get blips
-
-    Citizen.Trace("Generating blip table.. This may take a while")
+    Citizen.Trace("Generating blip table.. This may take a while for a large amount of blips")
     local blipTable = {}
 
     -- Loop through ALL the fucking blips

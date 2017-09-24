@@ -28,12 +28,12 @@ namespace Havoc.Live_Map
 {
     public class LiveMap : BaseScript
     {
-
+        // The current debug level (from the "livemap_debug" convar)
         public static int debugLevel = 0;
 
         public enum LogLevel
         {
-            None = 0,
+            None = 0, // Don't display any log messages
             Basic = 1,
             All = 2
         }
@@ -43,7 +43,7 @@ namespace Havoc.Live_Map
 
         public static void Log(LogLevel level, string format, params object[] vars)
         {
-            if (debugLevel >= (int)level)
+            if (debugLevel >= (int)level && debugLevel != 0)
             {
                 Debug.WriteLine("Havoc's LiveMap(" + level + "):\n\t" + format + "\n", vars);
             }

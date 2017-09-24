@@ -52,32 +52,6 @@ namespace Havoc.Live_Map
         {
             string[] args = msg.Split(' ');
             LiveMap.Log(LiveMap.LogLevel.All, "Recieved message from client {0}:\n\t\"{1}\"", ws.RemoteEndpoint.ToString(), msg);
-
-            /*
-            if(args[0] == "getLocations")
-            {
-                // TODO: Send them the "playerData"
-                lock (playerData)
-                {
-                    LiveMap.Log(LiveMap.LogLevel.All, "Debug\n\n{0}\n\n", playerData.ToString(Newtonsoft.Json.Formatting.Indented));
-                }
-            }else if(args[0] == "getPlayerData")
-            {
-                JObject payload = new JObject();
-                JArray playerDataArray = new JArray();
-                lock (playerData)
-                {
-                    foreach(KeyValuePair<string, JToken> data in playerData)
-                    {
-                        playerDataArray.Add(data.Value);
-                    }
-                }
-                payload["type"] = "playerData";
-                payload["payload"] = playerDataArray;
-
-                ws.WriteStringAsync(payload.ToString(Newtonsoft.Json.Formatting.None), CancellationToken.None).Wait();
-            }
-            */
         }
 
         private void Server_OnError(WebSocket ws, Exception ex)
@@ -124,15 +98,7 @@ namespace Havoc.Live_Map
             while (true)
             {
                 // Only send the data every .5 seconds
-                await Task.Delay(500).ConfigureAwait(false);
-
-                // Copy list into an array
-                WebSocket[] sendTo;
-                lock (clients)
-                {
-                    sendTo = new WebSocket[clients.Count];
-                    clients.CopyTo(sendTo);
-                }
+                await Task.Delay(500).ConfigureAwait(false);                
 
                 // Generate the payload
                 JObject payload = new JObject();
@@ -151,11 +117,13 @@ namespace Havoc.Live_Map
                 }
                 payload["type"] = "playerData";
                 payload["payload"] = playerDataArray;
-                
-                // Send it!
-                foreach(WebSocket ws in sendTo)
+
+                lock (clients)
                 {
-                    ws.WriteStringAsync(payload.ToString(Newtonsoft.Json.Formatting.None), CancellationToken.None).Wait();
+                    foreach(WebSocket ws in clients)
+                    {
+                        ws.WriteStringAsync(payload.ToString(Newtonsoft.Json.Formatting.None), CancellationToken.None).Wait();
+                    }
                 }
 
             }
@@ -233,7 +201,8 @@ namespace Havoc.Live_Map
                     JObject payload = new JObject();
                     payload["type"] = "playerLeft";
                     payload["payload"] = identifier;
-                    s.WriteStringAsync(payload.ToString(Newtonsoft.Json.Formatting.None), CancellationToken.None);
+
+                    s.WriteStringAsync(payload.ToString(Newtonsoft.Json.Formatting.None), CancellationToken.None).Wait();
                 }
             }
 
