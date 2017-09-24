@@ -42,44 +42,6 @@ function updateData(name, value)
     defaultDataSet[name] = value
 end
 
-local firstSpawn = true
-
-RegisterNetEvent("chatMessage")
-AddEventHandler('chatMessage', function(author, color, text)
-    if text == "kill" then
-        Citizen.Trace("Killing player")
-        SetEntityHealth(GetPlayerPed(-1), 0)
-        CancelEvent()
-    end
-end)
-
---[[
-    When the player spawns, make sure we set their ID in the data that is going
-        to be sent via sockets.
-]]
-
-AddEventHandler("playerSpawned", function(spawn)
-    if firstSpawn then
-        TriggerServerEvent("livemap:playerSpawned") -- Set's the ID in "playerData" so it will get send va sockets
-
-        -- Now send the default data set
-        for key,val in pairs(defaultDataSet) do
-            TriggerServerEvent("livemap:AddPlayerData", key, val)
-        end
-
-        firstSpawn = false
-    end
-
-    -- TEMP
-    local weapons = { "WEAPON_PISTOL50", "WEAPON_STUNGUN", "WEAPON_NIGHTSTICK", "WEAPON_PUMPSHOTGUN", "WEAPON_FLAREGUN", "WEAPON_ASSAULTSMG" }
-
-    Citizen.CreateThread(function()
-        for _,w in pairs(weapons) do
-            GiveWeaponToPed(GetPlayerPed(-1), GetHashKey(w), 1000, 0, false)
-        end
-    end)
-end)
-
 function doVehicleUpdate()
     local vehicle = GetVehiclePedIsIn(GetPlayerPed(-1), 0)
 
@@ -149,8 +111,27 @@ function doIconUpdate()
     if defaultDataSet["icon"] ~= newSprite then
         updateData("icon", newSprite)
     end
-
 end
+
+local firstSpawn = true
+
+--[[
+    When the player spawns, make sure we set their ID in the data that is going
+        to be sent via sockets.
+]]
+
+AddEventHandler("playerSpawned", function(spawn)
+    if firstSpawn then
+        TriggerServerEvent("livemap:playerSpawned") -- Set's the ID in "playerData" so it will get send va sockets
+
+        -- Now send the default data set
+        for key,val in pairs(defaultDataSet) do
+            TriggerServerEvent("livemap:AddPlayerData", key, val)
+        end
+
+        firstSpawn = false
+    end
+end)
 
 Citizen.CreateThread(function()
     while true do

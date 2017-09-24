@@ -39,7 +39,7 @@ namespace Havoc.Live_Map
             };
             opts.Standards.RegisterRfc6455();
 
-            listener = new WebSocketListener(new System.Net.IPEndPoint(System.Net.IPAddress.Loopback, port), opts);
+            listener = new WebSocketListener(new System.Net.IPEndPoint(System.Net.IPAddress.Any, port), opts);
 
             LiveMap.Log(LiveMap.LogLevel.Basic, "Created websocket server");
         }

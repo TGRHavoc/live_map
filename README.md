@@ -9,7 +9,16 @@ web interface.
 
 Download the ZIP file. And extract the contents into `resources/live_map/`.
 
-<!-- TODO: How to start in FX server -->
+Add the following to your server.cfg file.
+
+```
+set socket_port 30121
+set livemap_debug 0
+set blip_file "servers/blips.json"
+set livemap_access_control "*"
+
+start live_map
+```
 
 ## Configuration
 
@@ -18,31 +27,71 @@ The following convars are available for you to change
 
 | Name                    | Type           | Default Value       | Description |
 | ----------------------- | -------------  | ------------------: | ----------- |
-| socket_port             | int            | 30120               | Sets the port the socket server should listen on |
+| socket_port             | int            | 30121               | Sets the port the socket server should listen on |
 | livemap_debug           | int            | 0                   | Sets how much information gets printed to the console (0 = none, 1 = basic information, 2 = all) |
 | blip_file               | string         | "server/blips.json" | Sets the file that will contain the generated blips that is exposed via HTTP |
-| livemap_access_control  | string         | "*"                 | Sets the domain that is allowed to access the blips.json file (E.g. "https://example.com"), "*" will allow everyone |
+| livemap_access_control  | string         | "*"                 | Sets the domain that is allowed to access the blips.json file (E.g. "https://example.com" will only allow the UI on http://example.com to get the blips), "*" will allow everyone |
 
 ## Events
 In an effort to make the addon useful to other developers, I've created a few events that can be used to make changes to the data being sent to the UI.
 
 #### Client to server
 
-Below you can find some info on the server events that can be triggered by the client.
+Below you can find some info on the server events that __must__ be triggered by the client.
+
+Note, when using `livemap:AddPlayerData` or `livemap:UpdatePlayerData` if the player has been removed using `livemap:RemovePlayer` they will be tracked again.
 
 | Name                     | Parameters               | Description |
 | ------------------------ | :----------------------: | ----------- |
-| livemap:AddPlayerData    | key (string), data (any) | Adds data to a player that get's sent over Websockets |
+| livemap:AddPlayerData    | key (string), data (any) | Adds data to a player that gets sent over Websockets |
 | livemap:UpdatePlayerData | key (string), data (any) | Updates the data that is associated with the player. Uses the same "key" as the above event. |
 | livemap:RemovePlayerData | key (string)             | Removed data associated with the player. Uses the same "key" as the above events. |
 | livemap:RemovePlayer     |                          | Stops sending a player data over Websockets |
 
 Example usage:
 ```lua
+-- Set the player's "Name" to "Havoc"
+TriggerServerEvent("livemap:AddPlayerData", "Name", "Havoc")
+
+-- Update the player's name to "John Doe"
+TriggerServerEvent("livemap:UpdatePlayerData", "Name", "John Doe")
+
+-- Remove "Name" from the player (stops displaying it in the UI)
+TriggerServerEvent("livemap:RemovePlayerData", "Name")
+
+-- Removes a player from the websockets (stops tracking them)
+TriggerServerEvent("livemap:RemovePlayer")
 ```
 
 #### Server Events
 
+Below you can find information on some server-only events. This can only be called on the server.
+
+| Name                              | Parameters                                     | Description |
+| --------------------------------- | :--------------------------------------------: | ----------- |
+| livemap:internal_AddPlayerData    | identifier (string), key (string), value (any) | Adds data with the key that gets sent over Websockets for the player with the specified identifier |
+| livemap:internal_UpdatePlayerData | identifier (string), key (string), value (any) | Updated the data that is associated with the player with the identifier |
+| livemap:internal_RemovePlayerData | identifier (string), key (string)              | Removed the data that is associated with the player with the identifier |
+| livemap:internal_RemovePlayer     | identifier (string)                            | Removes a player from the websocket data array (stops tracking the player) |
+
+Example usage:
+```lua
+-- Get the player's identifier
+identifiier = GetPlayerIdentifier(source, 0)
+
+-- Set the player's "Name" to "Havoc"
+TriggerEvent("livemap:internal_AddPlayerData", identifier, "Name", "Havoc")
+
+-- Update the player's "Name"  to "John Doe"
+TriggerEvent("livemap:internal_UpdatePlayerData", identifier, "Name", "John Doe")
+
+-- Removes the player's "Name"
+TriggerEvent("livemap:internal_RemovePlayerData", identifier, "Name")
+
+-- Removes the player
+TriggerEvent("livemap:internal_RemovePlayer", identifier)
+
+```
 
 ## Built with
 * [Hellslicer/WebSocketServer](https://github.com/Hellslicer/WebSocketServer/blob/master/WebSocketEventListener.cs)
