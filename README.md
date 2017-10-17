@@ -12,7 +12,7 @@ Download the ZIP file. And extract the contents into `resources/live_map/`.
 Add the following to your server.cfg file.
 
 ```
-set socket_port 30120
+set socket_port 30121
 set livemap_debug 0
 set blip_file "servers/blips.json"
 set livemap_access_control "*"
@@ -27,7 +27,7 @@ The following convars are available for you to change
 
 | Name                    | Type           | Default Value       | Description |
 | ----------------------- | -------------  | ------------------: | ----------- |
-| socket_port             | int            | 30120               | Sets the port the socket server should listen on |
+| socket_port             | int            | 30121               | Sets the port the socket server should listen on |
 | livemap_debug           | int            | 0                   | Sets how much information gets printed to the console (0 = none, 1 = basic information, 2 = all) |
 | blip_file               | string         | "server/blips.json" | Sets the file that will contain the generated blips that is exposed via HTTP |
 | livemap_access_control  | string         | "*"                 | Sets the domain that is allowed to access the blips.json file (E.g. "https://example.com" will only allow the UI on http://example.com to get the blips), "*" will allow everyone |
