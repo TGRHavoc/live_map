@@ -257,5 +257,3 @@ v0.0.0 (21-05-2017)
 - Add C# source. [Jordan Dalton]
 
   Added the C# source code needed for the game server.
-
-
