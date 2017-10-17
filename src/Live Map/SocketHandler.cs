@@ -98,7 +98,7 @@ namespace Havoc.Live_Map
             while (true)
             {
                 // Only send the data every .5 seconds
-                await Task.Delay(500).ConfigureAwait(false);                
+                await Task.Delay(500).ConfigureAwait(false);
 
                 // Generate the payload
                 JObject payload = new JObject();
@@ -121,8 +121,9 @@ namespace Havoc.Live_Map
                 lock (clients)
                 {
                     foreach(WebSocket ws in clients)
-                    {
-                        ws.WriteStringAsync(payload.ToString(Newtonsoft.Json.Formatting.None), CancellationToken.None).Wait();
+                    { 
+                        if (ws.IsConnected) // Some error occures when someone disconnects from the socket and this is called...
+                            ws.WriteStringAsync(payload.ToString(Newtonsoft.Json.Formatting.None), CancellationToken.None).Wait();
                     }
                 }
 
