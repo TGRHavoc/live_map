@@ -1,6 +1,6 @@
 
-local url = "https://gist.githubusercontent.com/TGRHavoc/581ec66730b7abafe49ab616db87b0bb/raw/f27c6f2573dd1df0692f97c78a73f5687d20f791/live_map.versions"
-local version = "2.1.4"
+local url = "https://raw.githubusercontent.com/TGRHavoc/live_map/master/version.json"
+local version = "2.1.5"
 local latest = true
 
 function checkForUpdate()
@@ -20,7 +20,7 @@ function checkForUpdate()
         end
 
     end, "GET", "",  { ["Content-Type"] = 'application/json' })
-    
+
 end
 
 
