@@ -2,17 +2,29 @@ Changelog
 =========
 
 
-(unreleased)
-------------
+v2.1.4 (20-10-2017)
+-------------------
 
 Changes
 ~~~~~~~
+- Update changelog file extension. [Jordan Dalton]
+
+  Apparently Github doesn't render RST text normally so hopefully putting the file extension will make it nice and pretty.
 - Update readme. [Jordan Dalton]
 
   Updated the readme to avoid confussion.. My bad.
 
+Fix
+~~~
+- Fixed rare error. [Jordan Dalton]
+
+  When a client disconnectes from the WS when the `SendWebsocketData` function is ran, an error is thrown.. It was pretty rare and I don't know if this has fixed it but, it looks like it should.
+
 Other
 ~~~~~
+- Add better changelog. [Jordan Dalton]
+
+  Hopefully this is nicer to deal with when geenerating and releasing changelogs.
 - Merge pull request #9 from TGRHavoc/develop. [Jordan Dalton]
 
   Fixed listener only listening on loopback address
@@ -257,3 +269,5 @@ v0.0.0 (21-05-2017)
 - Add C# source. [Jordan Dalton]
 
   Added the C# source code needed for the game server.
+
+
