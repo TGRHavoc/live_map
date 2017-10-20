@@ -55,7 +55,7 @@ function doVehicleUpdate()
     local plate = GetVehicleNumberPlateText(vehicle)
 
     if defaultDataSet["Licence Plate"] ~= plate then
-        Citizen.Trace("Updating plate: " .. plate)
+        --Citizen.Trace("Updating plate: " .. plate)
         updateData("Licence Plate", plate)
     end
 end
@@ -119,7 +119,6 @@ local firstSpawn = true
     When the player spawns, make sure we set their ID in the data that is going
         to be sent via sockets.
 ]]
-
 AddEventHandler("playerSpawned", function(spawn)
     if firstSpawn then
         TriggerServerEvent("livemap:playerSpawned") -- Set's the ID in "playerData" so it will get send va sockets
@@ -176,7 +175,7 @@ Citizen.CreateThread(function()
 
         -- Make sure the updated data is up-to-date on socket server as well
         for i,k in pairs(beenUpdated) do
-            Citizen.Trace("Updating " .. k)
+            --Citizen.Trace("Updating " .. k)
             TriggerServerEvent("livemap:UpdatePlayerData", k, defaultDataSet[k])
             table.remove(beenUpdated, i)
         end

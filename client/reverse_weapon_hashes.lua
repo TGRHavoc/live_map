@@ -90,6 +90,6 @@ function reverseWeaponHash(hash)
         return name
     end
 
-    print("Error reversing weapon hash \"" .. hash .. "\". Maybe it's not been added yet?")
+    Citizen.Trace("Error reversing weapon hash \"" .. hash .. "\". Maybe it's not been added yet?")
     return "Unarmed"
 end
