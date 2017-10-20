@@ -1,7 +1,12 @@
 
-local url = "https://gist.githubusercontent.com/TGRHavoc/581ec66730b7abafe49ab616db87b0bb/raw/f27c6f2573dd1df0692f97c78a73f5687d20f791/live_map.versions"
-local version = "2.1.4"
+local url = "https://raw.githubusercontent.com/TGRHavoc/live_map/master/version.json"
+local version = "2.1.6"
 local latest = true
+
+local rawData = LoadResourceFile(GetCurrentResourceName(), "version.json")
+
+rawData = json.decode(rawData)
+version = rawData["resource"]
 
 function checkForUpdate()
     PerformHttpRequest(url, function(err, data, headers)
@@ -10,6 +15,8 @@ function checkForUpdate()
         if (parsed["resource"] ~= version) then
             print("|===================================================|")
             print("|             Live Map Update Available             |")
+            print("|    Current : " .. version .. "                                |")
+            print("|    Latest  : " .. parsed["resource"] .. "                                |")
             print("| Download at: https://github.com/TGRHavoc/live_map |")
             print("|===================================================|")
             latest = false -- Stop running the timeout
@@ -20,7 +27,7 @@ function checkForUpdate()
         end
 
     end, "GET", "",  { ["Content-Type"] = 'application/json' })
-    
+
 end
 
 

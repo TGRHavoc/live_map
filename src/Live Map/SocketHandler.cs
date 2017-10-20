@@ -113,7 +113,7 @@ namespace Havoc.Live_Map
 
                 if(playerDataArray.Count == 0)
                 {
-                    return;
+                    continue;
                 }
                 payload["type"] = "playerData";
                 payload["payload"] = playerDataArray;
@@ -121,9 +121,12 @@ namespace Havoc.Live_Map
                 lock (clients)
                 {
                     foreach(WebSocket ws in clients)
-                    { 
-                        if (ws.IsConnected) // Some error occures when someone disconnects from the socket and this is called...
-                            ws.WriteStringAsync(payload.ToString(Newtonsoft.Json.Formatting.None), CancellationToken.None).Wait();
+                    {
+                        if (ws.IsConnected)
+                        { // Some error occures when someone disconnects from the socket and this is called...
+                            //LiveMap.Log(LiveMap.LogLevel.All, "Sent data payload to {0}", ws.RemoteEndpoint);
+                            ws.WriteStringAsync(payload.ToString(Newtonsoft.Json.Formatting.None), CancellationToken.None);
+                        }
                     }
                 }
 
@@ -194,6 +197,7 @@ namespace Havoc.Live_Map
                 }
             }
 
+            //LiveMap.Log(LiveMap.LogLevel.All, "Notifying ws clients that a player left.");
             // Tell the client's that someone has left
             lock (clients)
             {
@@ -202,8 +206,12 @@ namespace Havoc.Live_Map
                     JObject payload = new JObject();
                     payload["type"] = "playerLeft";
                     payload["payload"] = identifier;
-
-                    s.WriteStringAsync(payload.ToString(Newtonsoft.Json.Formatting.None), CancellationToken.None).Wait();
+                    //LiveMap.Log(LiveMap.LogLevel.All, "Sending playerLeft payload for {0}", identifier);
+                    if (s.IsConnected)
+                    {
+                        //LiveMap.Log(LiveMap.LogLevel.All, "Sent PlayerLeft payload to {0}", s.RemoteEndpoint);
+                        s.WriteStringAsync(payload.ToString(Newtonsoft.Json.Formatting.None), CancellationToken.None);
+                    }
                 }
             }
 

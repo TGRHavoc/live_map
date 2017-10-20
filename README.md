@@ -5,6 +5,8 @@ game server.
 It creates a websocket server so that it can communicate to the
 web interface.
 
+<!-- Testing webhook -->
+
 ## How to install
 
 Download the ZIP file. And extract the contents into `resources/live_map/`.
@@ -100,3 +102,4 @@ TriggerEvent("livemap:internal_RemovePlayer", identifier)
 * [Hellslicer/WebSocketServer](https://github.com/Hellslicer/WebSocketServer/blob/master/WebSocketEventListener.cs)
 * [deniszykov/WebSocketListener](https://github.com/deniszykov/WebSocketListener)
 * [JamesNK/Newtonsoft.Json](https://github.com/JamesNK/Newtonsoft.Json)
+
