@@ -136,48 +136,53 @@ Citizen.CreateThread(function()
     while true do
         Wait(10)
 
-        -- Update position, if it has changed
-        local x,y,z = table.unpack(GetEntityCoords(GetPlayerPed(-1)))
-        local x1,y1,z1 = defaultDataSet["pos"].x, defaultDataSet["pos"].y, defaultDataSet["pos"].z
+        if NetworkIsPlayerActive(PlayerId()) then
 
-        local dist = Vdist(x, y, z, x1, y1, z1)
+            -- Update position, if it has changed
+            local x,y,z = table.unpack(GetEntityCoords(GetPlayerPed(-1)))
+            local x1,y1,z1 = defaultDataSet["pos"].x, defaultDataSet["pos"].y, defaultDataSet["pos"].z
 
-        if (dist >= 5) then
-            -- Update every 5 meters.. Let's reduce the amount of spam
-            -- TODO: Maybe make this into a convar (e.g. accuracy_distance)
-            updateData("pos", {x = x, y=y, z=z} )
+            local dist = Vdist(x, y, z, x1, y1, z1)
+
+            if (dist >= 5) then
+                -- Update every 5 meters.. Let's reduce the amount of spam
+                -- TODO: Maybe make this into a convar (e.g. accuracy_distance)
+                updateData("pos", {x = x, y=y, z=z} )
+            end
+
+            -- Update weapons
+            local found,weapon = GetCurrentPedWeapon(GetPlayerPed(-1), true)
+            if found and temp["weapon"] ~= weapon then
+                local weaponName = exports[GetCurrentResourceName()]:reverseWeaponHash(tostring(weapon))
+                updateData("Weapon", weaponName)
+                -- To make sure we don't call this more than we need to
+                temp["weapon"] = weapon
+            end
+
+            -- Update Vehicle (and icon)
+            if IsPedInAnyVehicle(GetPlayerPed(-1)) then
+                doVehicleUpdate()
+
+            elseif defaultDataSet["Licence Plate"] ~= nil or defaultDataSet["Vehicle"] ~= nil then
+                -- No longer in a vehicle, remove "Licence Plate" if present
+                defaultDataSet["Licence Plate"] = nil
+                defaultDataSet["Vehicle"] = nil
+                temp["vehicle"] = nil
+                -- Remove it from socket communication
+                TriggerServerEvent("livemap:RemovePlayerData", "Licence Plate")
+                TriggerServerEvent("livemap:RemovePlayerData", "Vehicle")
+            end
+
+            doIconUpdate()
+
+            -- Make sure the updated data is up-to-date on socket server as well
+            for i,k in pairs(beenUpdated) do
+                --Citizen.Trace("Updating " .. k)
+                TriggerServerEvent("livemap:UpdatePlayerData", k, defaultDataSet[k])
+                table.remove(beenUpdated, i)
+            end
+
         end
 
-        -- Update weapons
-        local found,weapon = GetCurrentPedWeapon(GetPlayerPed(-1), true)
-        if found and temp["weapon"] ~= weapon then
-            local weaponName = exports[GetCurrentResourceName()]:reverseWeaponHash(tostring(weapon))
-            updateData("Weapon", weaponName)
-            -- To make sure we don't call this more than we need to
-            temp["weapon"] = weapon
-        end
-
-        -- Update Vehicle (and icon)
-        if IsPedInAnyVehicle(GetPlayerPed(-1)) then
-            doVehicleUpdate()
-
-        elseif defaultDataSet["Licence Plate"] ~= nil or defaultDataSet["Vehicle"] ~= nil then
-            -- No longer in a vehicle, remove "Licence Plate" if present
-            defaultDataSet["Licence Plate"] = nil
-            defaultDataSet["Vehicle"] = nil
-            temp["vehicle"] = nil
-            -- Remove it from socket communication
-            TriggerServerEvent("livemap:RemovePlayerData", "Licence Plate")
-            TriggerServerEvent("livemap:RemovePlayerData", "Vehicle")
-        end
-
-        doIconUpdate()
-
-        -- Make sure the updated data is up-to-date on socket server as well
-        for i,k in pairs(beenUpdated) do
-            --Citizen.Trace("Updating " .. k)
-            TriggerServerEvent("livemap:UpdatePlayerData", k, defaultDataSet[k])
-            table.remove(beenUpdated, i)
-        end
     end
 end)
