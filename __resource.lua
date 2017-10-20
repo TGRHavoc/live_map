@@ -11,6 +11,7 @@ exports{
 }
 
 server_scripts{
+    "server/update_check.lua",
     "server/live_map.net.dll",
     "server/wrapper.lua",
     "server/blips_server.lua"
