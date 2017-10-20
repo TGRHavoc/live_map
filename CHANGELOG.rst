@@ -16,6 +16,10 @@ New
 
 Changes
 ~~~~~~~
+- Update README. [Jordan Dalton]
+
+  Documented the `blips generate` command. Some poeple might not have known about it otherwise.
+- Update changelog. [Jordan Dalton]
 - Update changelog. [Jordan Dalton]
 - Update changelog file extension. [Jordan Dalton]
 
@@ -32,6 +36,9 @@ Fix
 
 Other
 ~~~~~
+- Removed spammy traces. [Jordan Dalton]
+
+  When updating stuff, I would trace to console. This could create spam (espesially with frequently updated values).
 - Merge pull request #9 from TGRHavoc/develop. [Jordan Dalton]
 
   Fixed listener only listening on loopback address
