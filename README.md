@@ -20,6 +20,9 @@ set livemap_access_control "*"
 start live_map
 ```
 
+To get the in-game blips to show on the interface, you will need to generate a "blips" file.
+This can be easily done with the in-game command `blips generate` (must be ran as admin).
+
 ## Configuration
 
 ### Convars

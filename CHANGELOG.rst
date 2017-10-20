@@ -5,8 +5,18 @@ Changelog
 v2.1.4 (20-10-2017)
 -------------------
 
+New
+~~~
+- Add update_check. [Jordan Dalton]
+
+  Resource now checks to see if it's running the latest version. Then, in 30 min intervals, checks if any updates are available.
+- Add better changelog. [Jordan Dalton]
+
+  Hopefully this is nicer to deal with when geenerating and releasing changelogs.
+
 Changes
 ~~~~~~~
+- Update changelog. [Jordan Dalton]
 - Update changelog file extension. [Jordan Dalton]
 
   Apparently Github doesn't render RST text normally so hopefully putting the file extension will make it nice and pretty.
@@ -22,9 +32,6 @@ Fix
 
 Other
 ~~~~~
-- Add better changelog. [Jordan Dalton]
-
-  Hopefully this is nicer to deal with when geenerating and releasing changelogs.
 - Merge pull request #9 from TGRHavoc/develop. [Jordan Dalton]
 
   Fixed listener only listening on loopback address
@@ -87,6 +94,12 @@ Other
 v2.1.1 (20-09-2017)
 -------------------
 
+New
+~~~
+- Add changelog. [Jordan Dalton]
+
+  There's now a changelog! Yey
+
 Changes
 ~~~~~~~
 - Update how players are handled. [Jordan Dalton]
@@ -95,15 +108,39 @@ Changes
 
   Socket data is now sent by the server every .5 seconds instead of waiting for the client to send a message.
 
-Other
-~~~~~
-- Add changelog. [Jordan Dalton]
-
-  There's now a changelog! Yey
-
 
 v2.1.0 (19-09-2017)
 -------------------
+
+New
+~~~
+- Add vehicle icons. [Jordan Dalton]
+
+  Player's icon now changes when they enter/exit vehicles.
+- Add allow-origin header. [Jordan Dalton]
+
+  Users can now restrict who can request the blip data via HTTP.
+- Added blip helper (Fixes #2) [Jordan Dalton]
+
+  Technically this doesn't fix #2 but, I have added all the available blips to the UI and this. So..
+- Add blips.json file (Fixes #5) [Jordan Dalton]
+
+  Blips that are generated are now saved to a file, this file is then exposed to the web and can be gotten by HTTP requets.
+- Add default client file. [Jordan Dalton]
+
+  Added the default live_map client file.
+
+  This keeps track of the following:
+  - Player position
+  - Vehicle (if in one)
+  - License Plate (if in vehicle)
+  - Weapon (uses a reverse hash function to get the name)
+- Add reverse hash file. [Jordan Dalton]
+
+  Added a file to make it easy to reverse a weapon's hash to get it's name. Also, something for the server owners to mess with f they want :P
+- Add ability to remove players and data. [Jordan Dalton]
+
+  You can now remove players or ttheir data from the object that is sent via websockets.
 
 Changes
 ~~~~~~~
@@ -138,45 +175,18 @@ Other
 ~~~~~
 - Merge branch 'develop' [Jordan Dalton]
 - Merge branch 'feature/vehicle_icons' into develop. [Jordan Dalton]
-- Add vehicle icons. [Jordan Dalton]
-
-  Player's icon now changes when they enter/exit vehicles.
-- Add allow-origin header. [Jordan Dalton]
-
-  Users can now restrict who can request the blip data via HTTP.
 - Removed old files. [Jordan Dalton]
 
   Old files aren't needed anymore and have been removed.
-- Added blip helper (Fixes #2) [Jordan Dalton]
-
-  Technically this doesn't fix #2 but, I have added all the available blips to the UI and this. So..
-- Add blips.json file (Fixes #5) [Jordan Dalton]
-
-  Blips that are generated are now saved to a file, this file is then exposed to the web and can be gotten by HTTP requets.
 - A wild license appears! [Jordan Dalton]
 
   Added a license to the project
-- Add default client file. [Jordan Dalton]
-
-  Added the default live_map client file.
-
-  This keeps track of the following:
-  - Player position
-  - Vehicle (if in one)
-  - License Plate (if in vehicle)
-  - Weapon (uses a reverse hash function to get the name)
 - Forgot to update __resource.lua. [Jordan Dalton]
 
   Shhh..
-- Add reverse hash file. [Jordan Dalton]
-
-  Added a file to make it easy to reverse a weapon's hash to get it's name. Also, something for the server owners to mess with f they want :P
 - Slighly better logging. [Jordan Dalton]
 
   Added a "log hierarchy" so that the console doesn't get spammed with text if the user doesn't want it to.
-- Add ability to remove players and data. [Jordan Dalton]
-
-  You can now remove players or ttheir data from the object that is sent via websockets.
 - FXServer Update (fixes #1) [Jordan Dalton]
 
   Main changes are that this version now works with FX server (only tested on 374)
@@ -205,6 +215,41 @@ Other
 v1.0.0 (24-05-2017)
 -------------------
 
+New
+~~~
+- Add vehicle data with player data. [Jordan Dalton]
+
+  Vehicle data is now attached to the player object and sent over websockets.
+- Add resource_manifest_version. [Jordan Dalton]
+
+  Apparently it's going to be required in future so, I'm going to add it now
+- Add readme. [Jordan Dalton]
+
+  Holy mother of... Documentation !!!
+- Add utility events. [Jordan Dalton]
+
+  Added events to allow developers to
+  - Add blipss to the map
+  - Add data to players (strings and floats)
+- Add blip helper. [Jordan Dalton]
+
+  "blip_helper.lua" is used to translate the blip type that GTA uses (integers) to the type the interface uses (strings).
+- Add ability to add custom data to players. [Jordan Dalton]
+
+  Making it easier to add custom data to player such as their job. Also moved from the player name being the identifier.
+- Add license and gas station blips. [Jordan Dalton]
+- Add default SSL stuff. [Jordan Dalton]
+
+  Secure websockets are now done over a self-signed certificate.
+  If you want to use SSL properly, I suggest using your own cert.
+- Add SSL support. [Jordan Dalton]
+- Add lua files. [Jordan Dalton]
+
+  Added the files for the FiveM server to interact with the live map library.
+- Add clear JArrays when stopped. [Jordan Dalton]
+
+  When the socket server is stopped, the JArrays are cleared.
+
 Changes
 ~~~~~~~
 - Update websocket handler. [Jordan Dalton]
@@ -223,49 +268,20 @@ Changes
 
 Other
 ~~~~~
-- Add vehicle data with player data. [Jordan Dalton]
-
-  Vehicle data is now attached to the player object and sent over websockets.
-- Add resource_manifest_version. [Jordan Dalton]
-
-  Apparently it's going to be required in future so, I'm going to add it now
 - Removed file writer and console.writelines. [Jordan Dalton]
 
   Pretty much all the Console.WriteLine's have been changed to Debug,WriteLine and I've removed the file writer.
 
   The websocket server now defaults back to the insecure websocket protocol when the certificate couldn't be loaded.
-- Add readme. [Jordan Dalton]
-
-  Holy mother of... Documentation !!!
-- Add utility events. [Jordan Dalton]
-
-  Added events to allow developers to
-  - Add blipss to the map
-  - Add data to players (strings and floats)
-- Add blip helper. [Jordan Dalton]
-
-  "blip_helper.lua" is used to translate the blip type that GTA uses (integers) to the type the interface uses (strings).
-- Add ability to add custom data to players. [Jordan Dalton]
-
-  Making it easier to add custom data to player such as their job. Also moved from the player name being the identifier.
 - Remove license. [Jordan Dalton]
-- Add license and gas station blips. [Jordan Dalton]
 - Remove self-signed certs. [Jordan Dalton]
-- Add default SSL stuff. [Jordan Dalton]
-
-  Secure websockets are now done over a self-signed certificate.
-  If you want to use SSL properly, I suggest using your own cert.
-- Add SSL support. [Jordan Dalton]
-- Add lua files. [Jordan Dalton]
-
-  Added the files for the FiveM server to interact with the live map library.
-- Add clear JArrays when stopped. [Jordan Dalton]
-
-  When the socket server is stopped, the JArrays are cleared.
 
 
 v0.0.0 (21-05-2017)
 -------------------
+
+New
+~~~
 - Add C# source. [Jordan Dalton]
 
   Added the C# source code needed for the game server.
