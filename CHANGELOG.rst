@@ -2,6 +2,38 @@ Changelog
 =========
 
 
+v2.1.6 (20-10-2017)
+-------------------
+
+Changes
+~~~~~~~
+- Update README.md. [Jordan Dalton]
+- Update README.md. [Jordan Dalton]
+- Update update_check. [Jordan Dalton]
+
+  Apparently usign Gist isn't a good idea..
+- Update version.json. [Jordan Dalton]
+- Update changelog. [Jordan Dalton]
+
+Fix
+~~~
+- Fixed clients crashing when player leaves. [Jordan Dalton]
+
+  I think that players were continuing to send data to the server (e.g. to update their position) when they were no longer in the session after they had already been removed. Causing some funcky bugs. @davwheat said this eased the crashing so, here it is.
+
+  Also, the updater now uses the version.json file for the current version (don't know why I didn't use that before).
+
+Other
+~~~~~
+- Merge remote-tracking branch 'origin/master' [Jordan Dalton]
+- Delete test.lua. [Jordan Dalton]
+- Create test.lua. [Jordan Dalton]
+- Create version.json. [Jordan Dalton]
+- Removed spammy prints. [Jordan Dalton]
+
+  Server had some spammy prints.. They're gone now.
+
+
 v2.1.4 (20-10-2017)
 -------------------
 
