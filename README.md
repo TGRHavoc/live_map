@@ -5,6 +5,8 @@ game server.
 It creates a websocket server so that it can communicate to the
 web interface.
 
+<!-- Testing webhook -->
+
 ## How to install
 
 Download the ZIP file. And extract the contents into `resources/live_map/`.
