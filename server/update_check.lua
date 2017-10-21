@@ -1,12 +1,18 @@
 
 local url = "https://raw.githubusercontent.com/TGRHavoc/live_map/master/version.json"
-local version = "2.1.6"
+local version = "2.1.7"
 local latest = true
 
 local rawData = LoadResourceFile(GetCurrentResourceName(), "version.json")
 
-rawData = json.decode(rawData)
-version = rawData["resource"]
+if not rawData then
+    print("Couldn't read \"versions.json\" file.. Please make sure it's readable and exists.")
+else
+    rawData = json.decode(rawData)
+    version = rawData["resource"]
+end
+
+
 
 function checkForUpdate()
     PerformHttpRequest(url, function(err, data, headers)
@@ -29,6 +35,5 @@ function checkForUpdate()
     end, "GET", "",  { ["Content-Type"] = 'application/json' })
 
 end
-
 
 checkForUpdate();
