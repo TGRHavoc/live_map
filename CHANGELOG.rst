@@ -2,6 +2,34 @@ Changelog
 =========
 
 
+v2.1.7 (24-10-2017)
+-------------------
+
+New
+~~~
+- Add livemap_milliseconds to convars. [Jordan Dalton]
+
+  Users can now change how often the data gets sent to the websockets by changing a variable in the server.cfg
+- Add error handling to update_check. [Jordan Dalton]
+
+  Hopefully the user gets an error if the resource can't read the contents of "version.json".
+
+Changes
+~~~~~~~
+- Update versions.json. [Jordan Dalton]
+
+  Version is now 2.1.7
+- Update changelog. [Jordan Dalton]
+
+Fix
+~~~
+- Fixed race condition and null data. [Jordan Dalton]
+
+  Added null checks to data being sent to the `AddPlayerData` and `UpdatePlayerData` functions to catch any errors cause by null variables.
+
+  Tasks now wait until they have sent the data to one socket before sending data to the next.
+
+
 v2.1.6 (20-10-2017)
 -------------------
 
