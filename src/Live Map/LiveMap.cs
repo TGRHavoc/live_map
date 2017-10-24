@@ -31,6 +31,8 @@ namespace Havoc.Live_Map
         // The current debug level (from the "livemap_debug" convar)
         public static int debugLevel = 0;
 
+        public static int waitSeconds = 500;
+
         public enum LogLevel
         {
             None = 0, // Don't display any log messages
@@ -60,6 +62,8 @@ namespace Havoc.Live_Map
             {
                 Debug.WriteLine("Couldn't parse \"{0}\". Apparently it isn't a int \n\tDefaulting to {2}", debugEnabled, 0);
             }
+
+            waitSeconds = API.GetConvarInt("livemap_milliseconds", 500);
 
             Log(LogLevel.Basic, "Starting on port {0}", port);
 
