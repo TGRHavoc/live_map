@@ -98,7 +98,7 @@ namespace Havoc.Live_Map
             while (true)
             {
                 // Only send the data every .5 seconds
-                await Task.Delay(500).ConfigureAwait(false);
+                await Task.Delay(TimeSpan.FromMilliseconds(LiveMap.waitSeconds)).ConfigureAwait(false);
 
                 // Generate the payload
                 JObject payload = new JObject();
@@ -124,8 +124,7 @@ namespace Havoc.Live_Map
                     {
                         if (ws.IsConnected)
                         { // Some error occures when someone disconnects from the socket and this is called...
-                            //LiveMap.Log(LiveMap.LogLevel.All, "Sent data payload to {0}", ws.RemoteEndpoint);
-                            ws.WriteStringAsync(payload.ToString(Newtonsoft.Json.Formatting.None), CancellationToken.None);
+                            ws.WriteStringAsync(payload.ToString(Newtonsoft.Json.Formatting.None), CancellationToken.None).Wait();
                         }
                     }
                 }
@@ -137,6 +136,13 @@ namespace Havoc.Live_Map
         {
             LiveMap.Log(LiveMap.LogLevel.All, "Adding player {0}'s \"{1}\"", identifier, key);
             MakeSurePlayerExists(identifier);
+
+            if (data == null)
+            {
+                LiveMap.Log(LiveMap.LogLevel.Basic, "Cannot add \"{1}\" to player ({0}) because it's null.", identifier, key);
+                return;
+            }
+
             lock (playerData)
             {
                 JObject playerObj = (JObject)playerData[identifier];
@@ -152,6 +158,14 @@ namespace Havoc.Live_Map
         {
             LiveMap.Log(LiveMap.LogLevel.All, "Updating player {0}'s \"{1}\"", identifier, key);
             MakeSurePlayerExists(identifier);
+
+            // Check if `data` is null
+            if (newData == null)
+            {
+                LiveMap.Log(LiveMap.LogLevel.Basic, "Cannot update \"{0}\" for {1} because it's null", key, identifier);
+                return;
+            }
+
             lock (playerData)
             {
                 JObject playerObj = (JObject)playerData[identifier];
@@ -210,7 +224,7 @@ namespace Havoc.Live_Map
                     if (s.IsConnected)
                     {
                         //LiveMap.Log(LiveMap.LogLevel.All, "Sent PlayerLeft payload to {0}", s.RemoteEndpoint);
-                        s.WriteStringAsync(payload.ToString(Newtonsoft.Json.Formatting.None), CancellationToken.None);
+                        s.WriteStringAsync(payload.ToString(Newtonsoft.Json.Formatting.None), CancellationToken.None).Wait();
                     }
                 }
             }
