@@ -45,14 +45,14 @@ namespace Havoc.Live_Map
         }
 
 
-        public void Start()
+        public async void Start()
         {
-            listener.StartAsync().Wait();
+            await listener.StartAsync();
         }
 
-        public void Stop()
+        public async void Stop()
         {
-            listener.StopAsync().Wait();
+            await listener.StopAsync();
         }
 
         public async Task ListenAsync()
@@ -70,6 +70,7 @@ namespace Havoc.Live_Map
 
                 }catch(Exception ex)
                 {
+                    LiveMap.Log(LiveMap.LogLevel.Basic, "Error in ListenAsync:\n{0}\n---Inner:\n{1} ", ex.Message, ex.InnerException);
                     if (OnError != null)
                         OnError.Invoke(null, ex);
                 }
@@ -96,6 +97,7 @@ namespace Havoc.Live_Map
 
             }catch(Exception e)
             {
+                LiveMap.Log(LiveMap.LogLevel.Basic, "Error in HandleSocket:\n{0}\n---Inner:\n{1}", e.Message, e.InnerException);
                 if (OnError != null)
                     OnError.Invoke(ws, e);
             }

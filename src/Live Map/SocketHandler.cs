@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -34,13 +35,12 @@ namespace Havoc.Live_Map
         WebSocketServer server;
         JObject playerData;
 
-        List<WebSocket> clients;
+        ConcurrentDictionary<string, WebSocket> clients = new ConcurrentDictionary<string, WebSocket>();
 
         public SocketHandler(WebSocketServer server)
         {
             this.server = server;
             playerData = new JObject();
-            clients = new List<WebSocket>();
 
             server.OnConnect += Server_OnConnect;
             server.OnDisconnect += Server_OnDisconnect;
@@ -57,28 +57,46 @@ namespace Havoc.Live_Map
         private void Server_OnError(WebSocket ws, Exception ex)
         {
             LiveMap.Log(LiveMap.LogLevel.Basic, "Socket error from {0}: {1}", ws == null ? "Unknown" : ws.RemoteEndpoint.ToString(), ex.Message);
-            lock (clients)
+
+            WebSocket destory;
+            if (clients.TryRemove(ws.RemoteEndpoint.ToString(), out destory))
             {
-                clients.Remove(ws);
+                destory.Dispose();
+                LiveMap.Log(LiveMap.LogLevel.All, "Removed {0} socket because of an error: {1}\nInner: {2}", ws.RemoteEndpoint.ToString(), ex.Message, ex.InnerException);
+            }else
+            {
+                LiveMap.Log(LiveMap.LogLevel.All, "Couldn't remove {0} from the clients dic.", ws.RemoteEndpoint.ToString());
             }
         }
 
         private void Server_OnDisconnect(WebSocket ws)
         {
             LiveMap.Log(LiveMap.LogLevel.Basic, "Socket connection was closed at {0}", ws.RemoteEndpoint.ToString());
-            lock (clients)
+
+            WebSocket destory;
+            if (clients.TryRemove(ws.RemoteEndpoint.ToString(), out destory))
             {
-                clients.Remove(ws);
+                destory.Dispose();
+                LiveMap.Log(LiveMap.LogLevel.All, "Removed {0} socket because it disconnected", ws.RemoteEndpoint.ToString());
+            }
+            else
+            {
+                LiveMap.Log(LiveMap.LogLevel.All, "Couldn't remove {0} from the clients dic.", ws.RemoteEndpoint.ToString());
             }
         }
 
         private void Server_OnConnect(WebSocket ws)
         {
             LiveMap.Log(LiveMap.LogLevel.Basic, "Socket connection opened at {0}", ws.RemoteEndpoint.ToString());
-            lock (clients)
+
+            if(clients.TryAdd(ws.RemoteEndpoint.ToString(), ws))
             {
-                clients.Add(ws);
+                LiveMap.Log(LiveMap.LogLevel.All, "Added client {0} to the client dictionary", ws.RemoteEndpoint.ToString());
+            }else
+            {
+                LiveMap.Log(LiveMap.LogLevel.All, "Couldn't add {0} to the client dic", ws.RemoteEndpoint.ToString());
             }
+
         }
 
         private void MakeSurePlayerExists(string identifier)
@@ -97,6 +115,7 @@ namespace Havoc.Live_Map
         {
             while (true)
             {
+
                 // Only send the data every .5 seconds
                 await Task.Delay(TimeSpan.FromMilliseconds(LiveMap.waitSeconds)).ConfigureAwait(false);
 
@@ -118,6 +137,24 @@ namespace Havoc.Live_Map
                 payload["type"] = "playerData";
                 payload["payload"] = playerDataArray;
 
+                foreach(KeyValuePair<string, WebSocket> keyPair in clients)
+                {
+                    string endpoint = keyPair.Key;
+                    WebSocket socket = keyPair.Value;
+                    LiveMap.Log(LiveMap.LogLevel.All, "Sending data to {0}", endpoint);
+
+                    if (!socket.IsConnected)
+                    {
+                        LiveMap.Log(LiveMap.LogLevel.All, "Disposing of websocket {0} because it's closed..", endpoint);
+                        socket.Dispose();
+                        return;
+                    }
+
+                    LiveMap.Log(LiveMap.LogLevel.All, "Waiting async write to {0}", endpoint);
+                    await socket.WriteStringAsync(payload.ToString(Newtonsoft.Json.Formatting.None)).ConfigureAwait(false);
+                    LiveMap.Log(LiveMap.LogLevel.All, "Written to {0}", endpoint);
+                }
+                /*
                 lock (clients)
                 {
                     foreach(WebSocket ws in clients)
@@ -128,7 +165,7 @@ namespace Havoc.Live_Map
                         }
                     }
                 }
-
+                */
             }
         }
 
@@ -195,39 +232,70 @@ namespace Havoc.Live_Map
             }
         }
 
-        public void RemovePlayer(string identifier)
+        public async void RemovePlayer(string identifier)
         {
+            bool playerLeftBool = false;
             lock (playerData)
             {
                 if (playerData[identifier] != null)
                 {
                     if (playerData.Remove(identifier))
                     {
+                        playerLeftBool = true;
                         LiveMap.Log(LiveMap.LogLevel.Basic, "Removed player {0}", identifier);
-                    }else
+                    }
+                    else
                     {
                         LiveMap.Log(LiveMap.LogLevel.Basic, "Couldn't remove player {0}... Seriously, there's something fucking wrong here...", identifier);
                     }
                 }
             }
 
-            //LiveMap.Log(LiveMap.LogLevel.All, "Notifying ws clients that a player left.");
-            // Tell the client's that someone has left
-            lock (clients)
+            LiveMap.Log(LiveMap.LogLevel.All, "Notifying ws clients that a player left? {0}", playerLeftBool);
+
+            if (playerLeftBool)
+            {
+                // Tell the client's that someone has left
+
+                JObject payload = new JObject();
+                payload["type"] = "playerLeft";
+                payload["payload"] = identifier;
+
+                foreach (KeyValuePair<string, WebSocket> pair in clients)
+                {
+                    string endpoint = pair.Key;
+                    WebSocket ws = pair.Value;
+
+                    if (!ws.IsConnected)
+                    {
+                        LiveMap.Log(LiveMap.LogLevel.All, "Disposing of websocket {0} because it's closed..", endpoint);
+                        ws.Dispose();
+                        return;
+                    }
+
+                    LiveMap.Log(LiveMap.LogLevel.Basic, "Sending playerleft payload to {0} for player: {1}", endpoint, identifier);
+
+                    await ws.WriteStringAsync(payload.ToString(Newtonsoft.Json.Formatting.None)).ConfigureAwait(false);
+
+                    LiveMap.Log(LiveMap.LogLevel.All, "Sent playerleft payload to {0}", endpoint);
+                }
+            }
+
+            /*lock (clients)
             {
                 foreach (WebSocket s in clients)
                 {
                     JObject payload = new JObject();
                     payload["type"] = "playerLeft";
                     payload["payload"] = identifier;
-                    //LiveMap.Log(LiveMap.LogLevel.All, "Sending playerLeft payload for {0}", identifier);
+                    LiveMap.Log(LiveMap.LogLevel.All, "Sending playerLeft payload for {0} to {1}", identifier, s.RemoteEndpoint);
                     if (s.IsConnected)
                     {
-                        //LiveMap.Log(LiveMap.LogLevel.All, "Sent PlayerLeft payload to {0}", s.RemoteEndpoint);
+                        LiveMap.Log(LiveMap.LogLevel.All, "Sent PlayerLeft payload to {0}", s.RemoteEndpoint);
                         s.WriteStringAsync(payload.ToString(Newtonsoft.Json.Formatting.None), CancellationToken.None).Wait();
                     }
                 }
-            }
+            }*/
 
         }
 
