@@ -1,6 +1,26 @@
 Changelog
 =========
 
+
+v2.1.9 (29-10-2017)
+-------------------
+
+Fix
+~~~
+- Fixed server freezing issues. [Jordan Dalton]
+
+  So, apparently the old resource would freeze the server when players left and when writing. A bunch of shit would break it and freeze the main thread. This fixes those issues and should make the resource usable...
+
+  The client list has now been changed to a ConcurrentDictionary because I thought my locks and stuff was breaking.. Turns out wasn't the problem.
+
+  Also fixed a error where the "playerLeft" would trigger when a player isn't in the "playerData" object.
+- Fixed changelog. [Jordan Dalton]
+
+Other
+~~~~~
+- Merge branch 'develop' [Jordan Dalton]
+
+
 v2.1.8 (24-10-2017)
 -------------------
 
@@ -362,3 +382,5 @@ New
 - Add C# source. [Jordan Dalton]
 
   Added the C# source code needed for the game server.
+
+
