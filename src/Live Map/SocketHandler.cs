@@ -58,15 +58,20 @@ namespace Havoc.Live_Map
         {
             LiveMap.Log(LiveMap.LogLevel.Basic, "Socket error from {0}: {1}", ws == null ? "Unknown" : ws.RemoteEndpoint.ToString(), ex.Message);
 
-            WebSocket destory;
-            if (clients.TryRemove(ws.RemoteEndpoint.ToString(), out destory))
+            if (ws != null)
             {
-                destory.Dispose();
-                LiveMap.Log(LiveMap.LogLevel.All, "Removed {0} socket because of an error: {1}\nInner: {2}", ws.RemoteEndpoint.ToString(), ex.Message, ex.InnerException);
-            }else
-            {
-                LiveMap.Log(LiveMap.LogLevel.All, "Couldn't remove {0} from the clients dic.", ws.RemoteEndpoint.ToString());
+                WebSocket destory;
+                if (clients.TryRemove(ws.RemoteEndpoint.ToString(), out destory))
+                {
+                    destory.Dispose();
+                    LiveMap.Log(LiveMap.LogLevel.All, "Removed {0} socket because of an error: {1}\nInner: {2}", ws.RemoteEndpoint.ToString(), ex.Message, ex.InnerException);
+                }
+                else
+                {
+                    LiveMap.Log(LiveMap.LogLevel.All, "Couldn't remove {0} from the clients dic.", ws.RemoteEndpoint.ToString());
+                }
             }
+            
         }
 
         private void Server_OnDisconnect(WebSocket ws)
