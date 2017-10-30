@@ -62,3 +62,55 @@ AddEventHandler("livemap:getBlipsFromClient", function()
     Citizen.Trace("Generated the blips!")
     TriggerServerEvent("livemap:blipsGenerated", blipTable)
 end)
+
+RegisterCommand("blip", function(source, args, raw)
+
+    for i=1, #args do
+        print(i .. " = " .. args[i] .. " " .. type(args[i]))
+    end
+
+    if(args[1] == "add") then
+        local pos = GetEntityCoords( PlayerPedId(), not IsPlayerDead(PlayerId()) )
+        local spriteId = tonumber(args[2])
+
+        if spriteId == nil then
+            print("Sorry, spriteId must be a number")
+            return
+        end
+        local name, description = "", ""
+        if args[3] then
+            name = args[3]
+        end
+        if args[4] then
+            description = args[4]
+        end
+
+        print(spriteId .. " " .. name .. " " .. description .. " " .. pos.x .. " " .. pos.y .. " " .. pos.z)
+
+        local blip = {
+            sprite = spriteId,
+            pos = {
+                x = pos.x,
+                y = pos.y,
+                z = pos.z
+            },
+            name = name,
+            description = description
+        }
+
+        TriggerServerEvent("livemap:AddBlip", blip)
+
+    elseif(args[1] == "remove") then
+        local pos = GetEntityCoords(PlayerPedId(), not IsPlayerDead(PlayerId()))
+        
+        TriggerServerEvent("livemap:RemoveClosestBlip", {x = pos.x, y = pos.y, z = pos.z})
+
+    elseif(args[1] == "update") then
+
+    else
+        print("Sorry, the available blip arguments are as follows:")
+        print("add <spriteId> [name] [descriptionn] -- Adds a blip at your current position")
+        print("remove [radius] -- Removed the closes blip within the radius")
+        print("update <spriteId> <name> <description> -- Updates the closes blip with this data")
+    end
+end, true)
