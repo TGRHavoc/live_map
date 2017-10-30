@@ -78,6 +78,10 @@ namespace Havoc.Live_Map
 
             EventHandlers["livemap:internal_RemovePlayerData"] += new Action<string, string>(InternalRemovePlayerData);
             EventHandlers["livemap:internal_RemovePlayer"] += new Action<string>(InternalRemovePlayer);
+
+            EventHandlers["livemap:internal_AddBlip"] += new Action<int, dynamic>(InternalAddBlip);
+            EventHandlers["livemap:internal_UpdateBlip"] += new Action<int, dynamic>(InternalUpdateBlip);
+            EventHandlers["livemap:internal_RemoveBlip"] += new Action<int, dynamic>(InternalRemoveBlip);
         }
 
         public void OnStart(string name)
@@ -126,5 +130,22 @@ namespace Havoc.Live_Map
         {
             handler.RemovePlayer(id);
         }
+
+        private void InternalAddBlip(int type, dynamic blip)
+        {
+            blip.type = type;
+            handler.AddBlip(blip);
+        }
+        private void InternalUpdateBlip(int type, dynamic blip)
+        {
+            blip.type = type;
+            handler.UpdateBlip(blip);
+        }
+        private void InternalRemoveBlip(int type, dynamic blip)
+        {
+            blip.type = type;
+            handler.RemoveBlip(blip);
+        }
+
     }
 }

@@ -128,7 +128,7 @@ AddEventHandler("onResourceStart", function(name)
     --print("NUMBER OF PLAYERS: " .. GetNumPlayerIndices())
     if name == GetCurrentResourceName() then
         if GetNumPlayerIndices() ~= 0 then -- There's players on the server :)
-            for i=0, GetNumPlayerIndices() do
+            for i=0, GetNumPlayerIndices()-1 do
                 local id = GetPlayerIdentifier(GetPlayerFromIndex(i), 0)
                 setStaticDataFor(GetPlayerFromIndex(i), id)
             end

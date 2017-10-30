@@ -30,16 +30,19 @@ RegisterServerEvent("livemap:blipsGenerated")
     A blip follows the format:
     {
         sprite = Number (required)
-        x = Float (required)
-        y = Float (required)
-        z = Float (required)
+
+        pos = Table (required){
+            x = Float (required)
+            y = Float (required)
+            z = Float (required)
+        }
 
         name = String (optional)
         description = String (optional)
     }
 
     sprite is the "spriteId" used when creating a blip.
-    x,y,z represents the position of the blip (rounded to 2dp)
+    x,y,z represents the position of the blip (rounded to 2dp) and is stored inside "pos"
     name is the name of the blip shown on the UI
     desscription is a description of what the blip does, shown on UI
 ]]
@@ -54,6 +57,9 @@ RegisterServerEvent("livemap:AddBlip")
     Note: You cannot change the "sprite", "x", "y", "z" properties of the blip
 ]]
 RegisterServerEvent("livemap:UpdateBlip")
+
+RegisterServerEvent("livemap:RemoveClosestBlip")
+RegisterServerEvent("livemap:RemoveBlip")
 
 
 
@@ -98,7 +104,7 @@ function blipsContainsBlip(id, x, y, z)
     end
 
     for k,v in ipairs(blips[id]) do
-        if v.x == x and v.y == y and v.z == z then
+        if v.pos.x == x and v.pos.y == y and v.pos.z == z then
             return k
         end
     end
@@ -152,54 +158,69 @@ end
 
 
 AddEventHandler("livemap:AddBlip", function(blip)
-    -- Only let the host of the session update the blips
-    if source ~= GetHostId() then
-        return
-    end
 
     if not blip["sprite"] or blip["sprite"] == nil then
         -- We don't have a sprite id... we can't save it :(
-        print("LiveMap Error: AddBlip cannot run because no sprite was supplied.")
+        print("LiveMap Error: AddBlip cannot run because no sprite wasn't supplied.")
         return
     end
+
+    if not blip["pos"] or blip["pos"] == nil then
+        print("LiveMap Error:: AddBlip cannot run because the pos wasn't supplied.")
+        return
+    end
+
     local id = tostring(blip["sprite"])
 
-    blip["x"] = tonumber(string.format("%.2f", blip["x"]))
-    blip["z"] = tonumber(string.format("%.2f", blip["z"]))
-    blip["y"] = tonumber(string.format("%.2f", blip["y"]))
+    blip["sprite"] = nil
 
-    if blipsContainsBlip(id, blip.x, blip.y, blip.z) == -1 then
+    -- Conveert coordinates to 2dp
+    blip["pos"].x = tonumber(string.format("%.2f", blip["pos"].x))
+    blip["pos"].y = tonumber(string.format("%.2f", blip["pos"].y))
+    blip["pos"].z = tonumber(string.format("%.2f", blip["pos"].z))
+
+    if blipsContainsBlip(id, blip.pos.x, blip.pos.y, blip.pos.z) == -1 then
         if blips[id] == nil then
             blips[id] = {}
         end
 
         table.insert(blips[id], blip)
+        TriggerEvent("livemap:internal_AddBlip", id, blip)
+        print("Sending addBlip for " .. id)
+
     else
-        print("Blip already exists at " .. blip.x .. "," .. blip.y .. "," .. blip.z)
+        print("Blip already exists at " .. blip.pos.x .. "," .. blip.pos.y .. "," .. blip.pos.z)
     end
 end)
 
 AddEventHandler("livemap:UpdateBlip", function(blip)
-    -- Only let the host of the session update the blips
-    if source ~= GetHostId() then
-        return
-    end
 
     if not blip["sprite"] or blip["sprite"] == nil then
         -- We don't have a sprite id... we can't save it :(
-        print("LiveMap Error: UpdateBlip cannot run because no sprite was supplied.")
+        print("LiveMap Error: UpdateBlip cannot run because no sprite wasn't supplied.")
         return
     end
+
+    if not blip["pos"] or blip["pos"] == nil then
+        print("LiveMap Error:: UpdateBlip cannot run because the pos wasn't supplied.")
+        return
+    end
+
     local id = tostring(blip["sprite"])
 
-    blip["x"] = tonumber(string.format("%.2f", blip["x"]))
-    blip["z"] = tonumber(string.format("%.2f", blip["z"]))
-    blip["y"] = tonumber(string.format("%.2f", blip["y"]))
+    blip["sprite"] = nil
 
-    local index = blipsContainsBlip(id, blip.x, blip.y, blip.z)
+    blip["pos"].x = tonumber(string.format("%.2f", blip["pos"].x))
+    blip["pos"].y = tonumber(string.format("%.2f", blip["pos"].y))
+    blip["pos"].y = tonumber(string.format("%.2f", blip["pos"].y))
+
+    local index = blipsContainsBlip(id, blip.pos.x, blip.pos.y, blip.pos.z)
 
     if index ~= -1 then
         blips[id][index] = blip
+
+        TriggerEvent("livemap:internal_UpdateBlip", id, blip)
+
     else
         -- Blip doesn't exist, add it?
         if blips[id] == nil then
@@ -207,8 +228,89 @@ AddEventHandler("livemap:UpdateBlip", function(blip)
         end
 
         table.insert(blips[id], blip)
+
+        TriggerEvent("livemap:internal_AddBlip", id, blip)
+
     end
 end)
+
+AddEventHandler("livemap:RemoveBlip", function(blip)
+
+    if not blip["sprite"] or blip["sprite"] == nil then
+        -- We don't have a sprite id... we can't save it :(
+        print("LiveMap Error: RemoveBlip cannot run because no sprite wasn't supplied.")
+        return
+    end
+
+    if not blip["pos"] or blip["pos"] == nil then
+        print("LiveMap Error:: RemoveBlip cannot run because the pos wasn't supplied.")
+        return
+    end
+
+    local id = tostring(blip["sprite"])
+
+    blip["sprite"] = nil
+
+    blip["pos"].x = tonumber(string.format("%.2f", blip["pos"].x))
+    blip["pos"].y = tonumber(string.format("%.2f", blip["pos"].y))
+    blip["pos"].y = tonumber(string.format("%.2f", blip["pos"].y))
+
+    local index = blipsContainsBlip(id, blip.pos.x, blip.pos.y, blip.pos.z)
+
+    if index == -1 then
+        print("LiveMap Error: Cannot remove blip as it isn't in the table")
+    else
+        blips[id][index] = nil
+        TriggerEvent("livemap:RemoveBlip", id, blip)
+    end
+end)
+
+function getDistanceBetween(p1, p2)
+    -- Apparently math.pow doesn't exist (nil value)
+    local x = (p2.x - p1.x) * (p2.x - p1.x)
+    local y = (p2.y - p1.y) * (p2.y - p1.y)
+    local z = (p2.z - p1.z) * (p2.z - p1.z)
+
+    -- sqrt works though!
+    return math.sqrt(x + y + z)
+end
+
+AddEventHandler("livemap:RemoveClosestBlip", function(playerPos)
+    local currentClosest = nil
+    local sprite = nil
+    local currentDistance = 999999
+
+    for spriteId, blipArray in pairs(blips) do
+        for _, blip in pairs(blipArray) do
+            local distance = getDistanceBetween(playerPos, blip.pos)
+
+            if (distance < currentDistance) then
+                currentDistance = distance
+                currentClosest = blip
+                sprite = spriteId
+            end
+
+        end
+    end
+
+    if currentClosest == nil then
+        -- No blips at all?
+        return
+    end
+
+    print("Removing closest blip ("..sprite..") located at: " .. currentClosest.pos.x .. ", " .. currentClosest.pos.y .. ", " .. currentClosest.pos.z)
+
+    local index = blipsContainsBlip(sprite, currentClosest.pos.x, currentClosest.pos.y, currentClosest.pos.z)
+
+    if index == -1 then
+        print("LiveMap Error: Umm... The closest blip doesn't have an index.. Something seriously wrong here!!!")
+    else
+        blips[sprite][index] = nil
+        TriggerEvent("livemap:internal_RemoveBlip", sprite, currentClosest)
+    end
+
+end)
+
 
 AddEventHandler("livemap:blipsGenerated", function(blipTable)
     local id = GetPlayerIdentifier(source, 0)
@@ -236,6 +338,17 @@ AddEventHandler("onResourceStart", function(name)
 
         if blipData then
             blips = json.decode(blipData)
+
+            -- Update all the old positions to use the new one :)
+            for spriteId, blipArray in pairs(blips) do
+                for _, blip in pairs(blipArray) do
+                    if not blip["pos"] then
+                        blip.pos = {x=blip.x, y=blip.y, z=blip.z}
+                        blip.x, blip.y, blip.z = nil,nil,nil
+                    end
+                end
+            end
+
             print("loaded blip cache from file")
         end
     end
