@@ -89,7 +89,6 @@ namespace Havoc.Live_Map
                     string message = await ws.ReadStringAsync(CancellationToken.None).ConfigureAwait(false);
                     if (message != null && OnMessage != null)
                         OnMessage.Invoke(ws, message);
-
                 }
 
                 if (OnDisconnect != null)
