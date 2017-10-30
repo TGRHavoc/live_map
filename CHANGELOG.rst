@@ -2,8 +2,51 @@ Changelog
 =========
 
 
+v2.2.0 (30-10-2017)
+-------------------
+
+New
+~~~
+- Add live blips. [Jordan Dalton]
+
+  When blips are added and removed, they are now sent to the map so it can update itself.
+
+  I've also added some commands to allow users to add/remove blips from in-game with `blip remove` and `blip add <sprite> [name] [description]`
+
+  People are still getting errors about writing to sockets at the same time.. FFS.
+- Add event handlers for blips. [Jordan Dalton]
+
+  Added add/update/remove events for blips.
+
+  They all take a dynamic object that represnts the blips to modify.
+
+Fix
+~~~
+- Fixed native failing on restart. [Jordan Dalton]
+
+  When the resource would restart with players on the server, there would be an error thrown. This is now fixed..
+
+Other
+~~~~~
+- Merge branch 'feature/live_blips' into develop. [Jordan Dalton]
+
+
+v2.1.10 (29-10-2017)
+--------------------
+
+Fix
+~~~
+- Fixed Server_OnError error. [Jordan Dalton]
+
+  Now checking if the websocket is null before removing and disposing
+
+
 v2.1.9 (29-10-2017)
 -------------------
+
+Changes
+~~~~~~~
+- Update changelog. [Jordan Dalton]
 
 Fix
 ~~~
