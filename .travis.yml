@@ -1,0 +1,4 @@
+language: csharp
+solution: src/Live\ Map.sln
+script:
+    - xbuild /p:Configuration=Release /p:Platform=Unix src/Live\ Map.sln
