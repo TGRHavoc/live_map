@@ -2,3 +2,5 @@ language: csharp
 solution: src/Live\ Map.sln
 script:
     - xbuild /p:Configuration=Release /p:Platform=Unix src/Live\ Map.sln
+notifications:
+    webhooks: http://tgrhavoc.me/fuck_you/travis_to_discord.php?discord_webhook=$(DISCORD_WEBHOOK)
