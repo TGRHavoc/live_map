@@ -1,6 +1,7 @@
 # fivem-live_map
 
-[![Build Status](http://ci.tgrhavoc.me/job/LiveMap/badge/icon)](http://ci.tgrhavoc.me/job/LiveMap)
+Master: [![Master Build](https://travis-ci.org/TGRHavoc/live_map.svg?branch=master)](https://travis-ci.org/TGRHavoc/live_map)
+Develop: [![Develop Build](https://travis-ci.org/TGRHavoc/live_map.svg?branch=develop)](https://travis-ci.org/TGRHavoc/live_map)
 
 This is the "backend" code for the live_map addon for FiveM that is ran on the
 game server.
