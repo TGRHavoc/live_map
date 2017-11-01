@@ -32,7 +32,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="CitizenFX.Core">
-      <HintPath>F:\fx-artifacts\374\citizen\clr2\lib\mono\4.5\CitizenFX.Core.dll</HintPath>
+      <HintPath>lib\CitizenFX.Core.dll</HintPath>
     </Reference>
     <Reference Include="deniszykov.WebSocketListener, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7f78616efb4a208d, processorArchitecture=MSIL">
       <HintPath>..\packages\deniszykov.WebSocketListener.4.0.0\lib\net45\deniszykov.WebSocketListener.dll</HintPath>
@@ -60,6 +60,9 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="lib\CitizenFX.Core.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
