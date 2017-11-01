@@ -65,12 +65,12 @@
     <Content Include="lib\CitizenFX.Core.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PostBuildEvent>if $(ConfigurationName) == Debug (
-    COPY /Y "$(TargetPath)" "F:\fx-server\resources\live_map\server"
+  <PropertyGroup Condition=" '$(Platform)' != 'Unix'">
+    <PostBuildEvent>
+	COPY /Y "$(TargetPath)" "F:\fx-server\resources\live_map\server"
     COPY /Y "$(TargetDir)\deniszykov.WebSocketListener.dll" "F:\fx-server\resources\live_map"
     COPY /Y "$(TargetDir)\Newtonsoft.Json.dll" "F:\fx-server\resources\live_map"
-)</PostBuildEvent>
+	</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
