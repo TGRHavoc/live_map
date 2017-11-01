@@ -2,6 +2,20 @@ Changelog
 =========
 
 
+v2.2.1 (01-11-2017)
+-------------------
+
+Fix
+~~~
+- Fixed typo in README.md. [Tom Grobbe]
+- Fixed async write errors. [Jordan Dalton]
+
+Other
+~~~~~
+- Merge remote-tracking branch 'origin/TomGrobbe-patch-1' into develop.
+  [Jordan Dalton]
+
+
 v2.2.0 (30-10-2017)
 -------------------
 
@@ -19,6 +33,10 @@ New
   Added add/update/remove events for blips.
 
   They all take a dynamic object that represnts the blips to modify.
+
+Changes
+~~~~~~~
+- Update version and changelog. [Jordan Dalton]
 
 Fix
 ~~~
