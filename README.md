@@ -1,5 +1,8 @@
 # fivem-live_map
 
+Master: [![Master Build](https://travis-ci.org/TGRHavoc/live_map.svg?branch=master)](https://travis-ci.org/TGRHavoc/live_map)
+Develop: [![Develop Build](https://travis-ci.org/TGRHavoc/live_map.svg?branch=develop)](https://travis-ci.org/TGRHavoc/live_map)
+
 This is the "backend" code for the live_map addon for FiveM that is ran on the
 game server.
 It creates a websocket server so that it can communicate to the
@@ -82,7 +85,7 @@ Below you can find information on some server-only events. This can only be call
 Example usage:
 ```lua
 -- Get the player's identifier
-identifiier = GetPlayerIdentifier(source, 0)
+identifier = GetPlayerIdentifier(source, 0)
 
 -- Set the player's "Name" to "Havoc"
 TriggerEvent("livemap:internal_AddPlayerData", identifier, "Name", "Havoc")
@@ -102,4 +105,3 @@ TriggerEvent("livemap:internal_RemovePlayer", identifier)
 * [Hellslicer/WebSocketServer](https://github.com/Hellslicer/WebSocketServer/blob/master/WebSocketEventListener.cs)
 * [deniszykov/WebSocketListener](https://github.com/deniszykov/WebSocketListener)
 * [JamesNK/Newtonsoft.Json](https://github.com/JamesNK/Newtonsoft.Json)
-

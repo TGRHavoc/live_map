@@ -30,9 +30,17 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|Unix' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin/Release/</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="CitizenFX.Core">
-      <HintPath>F:\fx-artifacts\374\citizen\clr2\lib\mono\4.5\CitizenFX.Core.dll</HintPath>
+      <HintPath>lib\CitizenFX.Core.dll</HintPath>
     </Reference>
     <Reference Include="deniszykov.WebSocketListener, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7f78616efb4a208d, processorArchitecture=MSIL">
       <HintPath>..\packages\deniszykov.WebSocketListener.4.0.0\lib\net45\deniszykov.WebSocketListener.dll</HintPath>
@@ -55,18 +63,22 @@
     <Compile Include="LiveMap.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SocketHandler.cs" />
-    <Compile Include="SocketWrapper.cs" />
     <Compile Include="WebSocketServer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="lib\CitizenFX.Core.dll" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PostBuildEvent>COPY /Y "$(TargetPath)" "F:\fx-server\resources\live_map\server"
-COPY /Y "$(TargetDir)\deniszykov.WebSocketListener.dll" "F:\fx-server\resources\live_map"
-COPY /Y "$(TargetDir)\Newtonsoft.Json.dll" "F:\fx-server\resources\live_map"</PostBuildEvent>
+  <PropertyGroup Condition=" '$(Platform)' != 'Unix'">
+    <PostBuildEvent>
+	COPY /Y "$(TargetPath)" "F:\fx-server\resources\live_map\server"
+    COPY /Y "$(TargetDir)\deniszykov.WebSocketListener.dll" "F:\fx-server\resources\live_map"
+    COPY /Y "$(TargetDir)\Newtonsoft.Json.dll" "F:\fx-server\resources\live_map"
+	</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
