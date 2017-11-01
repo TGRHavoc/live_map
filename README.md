@@ -82,7 +82,7 @@ Below you can find information on some server-only events. This can only be call
 Example usage:
 ```lua
 -- Get the player's identifier
-identifiier = GetPlayerIdentifier(source, 0)
+identifier = GetPlayerIdentifier(source, 0)
 
 -- Set the player's "Name" to "Havoc"
 TriggerEvent("livemap:internal_AddPlayerData", identifier, "Name", "Havoc")

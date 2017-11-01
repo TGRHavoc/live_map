@@ -36,6 +36,7 @@ namespace Havoc.Live_Map
         JObject playerData;
 
         ConcurrentDictionary<string, WebSocket> clients = new ConcurrentDictionary<string, WebSocket>();
+        static double writeLock = 0;
 
         public SocketHandler(WebSocketServer server)
         {
@@ -64,12 +65,13 @@ namespace Havoc.Live_Map
                 if (clients.TryRemove(ws.RemoteEndpoint.ToString(), out destory))
                 {
                     destory.Dispose();
-                    LiveMap.Log(LiveMap.LogLevel.All, "Removed {0} socket because of an error: {1}\nInner: {2}", ws.RemoteEndpoint.ToString(), ex.Message, ex.InnerException);
+                    LiveMap.Log(LiveMap.LogLevel.Basic, "Removed {0} socket because of an error: {1}\nInner: {2}", ws.RemoteEndpoint.ToString(), ex.Message, ex.InnerException);
                 }
                 else
                 {
-                    LiveMap.Log(LiveMap.LogLevel.All, "Couldn't remove {0} from the clients dic.", ws.RemoteEndpoint.ToString());
+                    LiveMap.Log(LiveMap.LogLevel.Basic, "Couldn't remove {0} from the clients dic.", ws.RemoteEndpoint.ToString());
                 }
+
             }
             
         }
@@ -94,14 +96,15 @@ namespace Havoc.Live_Map
         {
             LiveMap.Log(LiveMap.LogLevel.Basic, "Socket connection opened at {0}", ws.RemoteEndpoint.ToString());
 
-            if(clients.TryAdd(ws.RemoteEndpoint.ToString(), ws))
+            if (clients.TryAdd(ws.RemoteEndpoint.ToString(), ws))
             {
                 LiveMap.Log(LiveMap.LogLevel.All, "Added client {0} to the client dictionary", ws.RemoteEndpoint.ToString());
-            }else
-            {
-                LiveMap.Log(LiveMap.LogLevel.All, "Couldn't add {0} to the client dic", ws.RemoteEndpoint.ToString());
             }
+            else
+            {
+                LiveMap.Log(LiveMap.LogLevel.Basic, "Couldn't add {0} to the client dic", ws.RemoteEndpoint.ToString());
 
+            }
         }
 
         private void MakeSurePlayerExists(string identifier)
@@ -120,7 +123,6 @@ namespace Havoc.Live_Map
         {
             while (true)
             {
-
                 // Only send the data every .5 seconds
                 await Task.Delay(TimeSpan.FromMilliseconds(LiveMap.waitSeconds)).ConfigureAwait(false);
 
@@ -142,6 +144,7 @@ namespace Havoc.Live_Map
                 payload["type"] = "playerData";
                 payload["payload"] = playerDataArray;
 
+
                 foreach (KeyValuePair<string, WebSocket> keyPair in clients)
                 {
                     string endpoint = keyPair.Key;
@@ -155,9 +158,27 @@ namespace Havoc.Live_Map
                         return;
                     }
 
-                    socket.WriteStringAsync(payload.ToString(Newtonsoft.Json.Formatting.None)).Wait(500);
-                    
+                    if(Interlocked.CompareExchange(ref writeLock, 1, 0) == 1)
+                    {
+                       while(Interlocked.CompareExchange(ref writeLock, 1, 0) == 1)
+                        {
+                            LiveMap.Log(LiveMap.LogLevel.All, "Waiting untill writelock is 0");
+                            await Task.Delay(100);
+                        }
+                    }
+
+                    try
+                    {
+                        await socket.WriteStringAsync(payload.ToString(Newtonsoft.Json.Formatting.None)).ConfigureAwait(true);
+                    }
+                    catch (Exception)
+                    {
+                        LiveMap.Log(LiveMap.LogLevel.Basic, "Couldn't send playerData because of read/write stuff");
+                    }
                 }
+
+                writeLock = 0;
+
             }
         }
 
@@ -224,7 +245,7 @@ namespace Havoc.Live_Map
             }
         }
 
-        public void RemovePlayer(string identifier)
+        public async void RemovePlayer(string identifier)
         {
             bool playerLeftBool = false;
             lock (playerData)
@@ -253,6 +274,15 @@ namespace Havoc.Live_Map
                 payload["type"] = "playerLeft";
                 payload["payload"] = identifier;
 
+                if (Interlocked.CompareExchange(ref writeLock, 1, 0) == 1)
+                {
+                    while (Interlocked.CompareExchange(ref writeLock, 1, 0) == 1)
+                    {
+                        LiveMap.Log(LiveMap.LogLevel.All, "RemovePlayer waiting..");
+                        await Task.Delay(100);
+                    }
+                }
+
                 foreach (KeyValuePair<string, WebSocket> pair in clients)
                 {
                     string endpoint = pair.Key;
@@ -265,9 +295,11 @@ namespace Havoc.Live_Map
                         return;
                     }
 
-                    ws.WriteStringAsync(payload.ToString(Newtonsoft.Json.Formatting.None)).Wait(500);
+                    await ws.WriteStringAsync(payload.ToString(Newtonsoft.Json.Formatting.None)).ConfigureAwait(false);
 
                 }
+
+                writeLock = 0;
             }
         }
 
@@ -300,72 +332,115 @@ namespace Havoc.Live_Map
             return obj;
         }
 
-        public void AddBlip(dynamic blip)
+        public async void AddBlip(dynamic blip)
         {
             JObject payload = new JObject();
             payload["type"] = "addBlip";
             payload["payload"] = ConvertBlip(blip);
 
+            if (Interlocked.CompareExchange(ref writeLock, 1, 0) == 1)
+            {
+                while (Interlocked.CompareExchange(ref writeLock, 1, 0) == 1)
+                {
+                    LiveMap.Log(LiveMap.LogLevel.All, "AddBlip waiting..");
+                    await Task.Delay(100);
+                }
+            }
+
             foreach (KeyValuePair<string, WebSocket> pair in clients)
             {
                 string endpoint = pair.Key;
                 WebSocket ws = pair.Value;
 
+                LiveMap.Log(LiveMap.LogLevel.Basic, "addBlip for blip with id {0} to {1}", blip.type, endpoint);
+
                 if (!ws.IsConnected)
                 {
-                    LiveMap.Log(LiveMap.LogLevel.All, "Disposing of websocket {0} because it's not connected..", endpoint);
+                    LiveMap.Log(LiveMap.LogLevel.All, "Disposing of websocket {0} because it's closed..", endpoint);
                     ws.Dispose();
                     return;
                 }
 
-                LiveMap.Log(LiveMap.LogLevel.Basic, "addBlip for blip with id {0} to {1}", blip.type, endpoint);
-                ws.WriteStringAsync(payload.ToString(Newtonsoft.Json.Formatting.None)).Wait(500); 
+                await ws.WriteStringAsync(payload.ToString(Newtonsoft.Json.Formatting.None)).ConfigureAwait(false);
+                //ws.WriteStringAsync(payload.ToString(Newtonsoft.Json.Formatting.None)).Wait(500); 
             }
+
+            writeLock = 0;
+
         }
 
-        public void RemoveBlip(dynamic blip)
+        public async void RemoveBlip(dynamic blip)
         {
             JObject payload = new JObject();
             payload["type"] = "removeBlip";
             payload["payload"] = ConvertBlip(blip);
 
+            if(Interlocked.CompareExchange(ref writeLock, 1, 0) == 1)
+            {
+                while(Interlocked.CompareExchange(ref writeLock, 1, 0) == 1)
+                {
+                    LiveMap.Log(LiveMap.LogLevel.All, "RemoveBlip waiting..");
+                    await Task.Delay(100);
+                }
+            }
+
             foreach (KeyValuePair<string, WebSocket> pair in clients)
             {
                 string endpoint = pair.Key;
                 WebSocket ws = pair.Value;
 
+                LiveMap.Log(LiveMap.LogLevel.Basic, "removeBlip for blip with id {0} to {1}", blip.type, endpoint);
+
                 if (!ws.IsConnected)
                 {
-                    LiveMap.Log(LiveMap.LogLevel.All, "Disposing of websocket {0} because it's not connected..", endpoint);
+                    LiveMap.Log(LiveMap.LogLevel.All, "Disposing of websocket {0} because it's closed..", endpoint);
                     ws.Dispose();
                     return;
                 }
-                LiveMap.Log(LiveMap.LogLevel.Basic, "removeBlip for blip with id {0} to {1}", blip.type, endpoint);
-                ws.WriteStringAsync(payload.ToString(Newtonsoft.Json.Formatting.None)).Wait(500);
+
+                await ws.WriteStringAsync(payload.ToString(Newtonsoft.Json.Formatting.None)).ConfigureAwait(false);
+
+                //ws.WriteStringAsync(payload.ToString(Newtonsoft.Json.Formatting.None)).Wait(500);
             }
+
+            writeLock = 0;
+
         }
 
-        public void UpdateBlip(dynamic blip)
+        public async void UpdateBlip(dynamic blip)
         {
             JObject payload = new JObject();
             payload["type"] = "updateBlip";
             payload["payload"] = ConvertBlip(blip);
 
+            if (Interlocked.CompareExchange(ref writeLock, 1, 0) == 1)
+            {
+                while (Interlocked.CompareExchange(ref writeLock, 1, 0) == 1)
+                {
+                    LiveMap.Log(LiveMap.LogLevel.All, "UpdateBlip waiting..");
+                    await Task.Delay(100);
+                }
+            }
+
             foreach (KeyValuePair<string, WebSocket> pair in clients)
             {
                 string endpoint = pair.Key;
                 WebSocket ws = pair.Value;
 
+                LiveMap.Log(LiveMap.LogLevel.Basic, "updateBlip for blip with id {0} to {1}", blip.type, endpoint);
+
                 if (!ws.IsConnected)
                 {
-                    LiveMap.Log(LiveMap.LogLevel.All, "Disposing of websocket {0} because it's not connected..", endpoint);
+                    LiveMap.Log(LiveMap.LogLevel.All, "Disposing of websocket {0} because it's closed..", endpoint);
                     ws.Dispose();
                     return;
                 }
 
-                LiveMap.Log(LiveMap.LogLevel.Basic, "updateBlip for blip with id {0} to {1}", blip.type, endpoint);
-                ws.WriteStringAsync(payload.ToString(Newtonsoft.Json.Formatting.None)).Wait();
+                ws.WriteStringAsync(payload.ToString(Newtonsoft.Json.Formatting.None)).Wait(2000);
+
+                //ws.WriteStringAsync(payload.ToString(Newtonsoft.Json.Formatting.None)).Wait();
             }
+            writeLock = 0;
         }
 
     }
