@@ -1,5 +1,7 @@
 # fivem-live_map
 
+[![Build Status](http://ci.tgrhavoc.me/job/LiveMap/badge/icon)](http://ci.tgrhavoc.me/job/LiveMap)
+
 This is the "backend" code for the live_map addon for FiveM that is ran on the
 game server.
 It creates a websocket server so that it can communicate to the
@@ -102,4 +104,3 @@ TriggerEvent("livemap:internal_RemovePlayer", identifier)
 * [Hellslicer/WebSocketServer](https://github.com/Hellslicer/WebSocketServer/blob/master/WebSocketEventListener.cs)
 * [deniszykov/WebSocketListener](https://github.com/deniszykov/WebSocketListener)
 * [JamesNK/Newtonsoft.Json](https://github.com/JamesNK/Newtonsoft.Json)
-
