@@ -92,6 +92,7 @@ namespace Havoc.Live_Map
                 {
                     server.Start();
                     Tick += server.ListenAsync;
+
                     Tick += handler.SendWebsocketData;
 
                 }catch(Exception e)

@@ -2,6 +2,25 @@ Changelog
 =========
 
 
+v2.2.3 (02-11-2017)
+-------------------
+
+Changes
+~~~~~~~
+- Update changelog. [Jordan Dalton]
+
+  Now it just shows the master build status as that's all we're building.
+- Update travis.yml. [Jordan Dalton]
+
+  Hopefully this makes it only build the master branch and merge/PRs.
+
+Fix
+~~~
+- Fixed async issues. [Jordan Dalton]
+
+  Ok. So, last update broke when multiple people connected because the writelock wasn't being re-set to 0. Hopefully this design keeps everything in sync and doesn't crash.
+
+
 v2.2.2 (02-11-2017)
 -------------------
 
@@ -19,6 +38,7 @@ New
 
 Changes
 ~~~~~~~
+- Update changelog. [Jordan Dalton]
 - Update version.json. [Jordan Dalton]
 
   Now it's 2.2.2
