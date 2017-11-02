@@ -2,8 +2,70 @@ Changelog
 =========
 
 
+v2.2.3 (02-11-2017)
+-------------------
+
+Changes
+~~~~~~~
+- Update changelog. [Jordan Dalton]
+
+  Now it just shows the master build status as that's all we're building.
+- Update travis.yml. [Jordan Dalton]
+
+  Hopefully this makes it only build the master branch and merge/PRs.
+
+Fix
+~~~
+- Fixed async issues. [Jordan Dalton]
+
+  Ok. So, last update broke when multiple people connected because the writelock wasn't being re-set to 0. Hopefully this design keeps everything in sync and doesn't crash.
+
+
+v2.2.2 (02-11-2017)
+-------------------
+
+New
+~~~
+- Add more null checks to the API. [Jordan Dalton]
+
+  Someone complained that they were crashing when null data was being sent to the API (specifically the `RemovePlayer`) so, I've added null checks to hopefully catch any null data being passed and not do anything with it.
+- Add Discord notifications for builds. [Jordan Dalton]
+
+  Hopefully this works...
+- Add build status to Readme. [Jordan Dalton]
+- Add Unix configuration for building. [Jordan Dalton]
+- Add CitizenFX library to source files. [Jordan Dalton]
+
+Changes
+~~~~~~~
+- Update changelog. [Jordan Dalton]
+- Update version.json. [Jordan Dalton]
+
+  Now it's 2.2.2
+
+Fix
+~~~
+- Fixed travis webhook. [Jordan Dalton]
+- Fixed post-build events being tiggered on Linux. [Jordan Dalton]
+
+Other
+~~~~~
+- Merge branch 'develop' [Jordan Dalton]
+- Changed CI to Travis. [Jordan Dalton]
+
+  Travis is more secure and I trust it more..
+- Create .travis.yml. [Jordan Dalton]
+- Changed the post-build parameters. [Jordan Dalton]
+- Getting ready for Jenkins! [Jordan Dalton]
+- Merge branch 'develop' [Jordan Dalton]
+
+
 v2.2.1 (01-11-2017)
 -------------------
+
+Changes
+~~~~~~~
+- Update version and changelog. [Jordan Dalton]
 
 Fix
 ~~~
