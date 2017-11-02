@@ -84,11 +84,11 @@ namespace Havoc.Live_Map
             if (clients.TryRemove(ws.RemoteEndpoint.ToString(), out destory))
             {
                 destory.Dispose();
-                LiveMap.Log(LiveMap.LogLevel.All, "Removed {0} socket because it disconnected", ws.RemoteEndpoint.ToString());
+                LiveMap.Log(LiveMap.LogLevel.Basic, "Removed {0} socket because it disconnected", ws.RemoteEndpoint.ToString());
             }
             else
             {
-                LiveMap.Log(LiveMap.LogLevel.All, "Couldn't remove {0} from the clients dic.", ws.RemoteEndpoint.ToString());
+                LiveMap.Log(LiveMap.LogLevel.Basic, "Couldn't remove {0} from the clients dic.", ws.RemoteEndpoint.ToString());
             }
         }
 
@@ -98,7 +98,7 @@ namespace Havoc.Live_Map
 
             if (clients.TryAdd(ws.RemoteEndpoint.ToString(), ws))
             {
-                LiveMap.Log(LiveMap.LogLevel.All, "Added client {0} to the client dictionary", ws.RemoteEndpoint.ToString());
+                LiveMap.Log(LiveMap.LogLevel.Basic, "Added client {0} to the client dictionary", ws.RemoteEndpoint.ToString());
             }
             else
             {
@@ -111,7 +111,6 @@ namespace Havoc.Live_Map
         {
             lock (playerData)
             {
-
                 if (playerData[identifier] == null)
                 {
                     playerData[identifier] = new JObject();
@@ -187,6 +186,17 @@ namespace Havoc.Live_Map
             LiveMap.Log(LiveMap.LogLevel.All, "Adding player {0}'s \"{1}\"", identifier, key);
             MakeSurePlayerExists(identifier);
 
+            if (string.IsNullOrEmpty(identifier))
+            {
+                LiveMap.Log(LiveMap.LogLevel.Basic, "Identifier is null or empty");
+                return;
+            }
+            if (string.IsNullOrEmpty(key))
+            {
+                LiveMap.Log(LiveMap.LogLevel.Basic, "Cannot add key to player ({0}) because it's null or empty", identifier);
+                return;
+            }
+
             if (data == null)
             {
                 LiveMap.Log(LiveMap.LogLevel.Basic, "Cannot add \"{1}\" to player ({0}) because it's null.", identifier, key);
@@ -209,6 +219,17 @@ namespace Havoc.Live_Map
             LiveMap.Log(LiveMap.LogLevel.All, "Updating player {0}'s \"{1}\"", identifier, key);
             MakeSurePlayerExists(identifier);
 
+            if (string.IsNullOrEmpty(identifier))
+            {
+                LiveMap.Log(LiveMap.LogLevel.Basic, "Identifier is null or empty. Cannot update player data");
+                return;
+            }
+            if (string.IsNullOrEmpty(key))
+            {
+                LiveMap.Log(LiveMap.LogLevel.Basic, "Cannot update player ({0}) because key is null or empty", identifier);
+                return;
+            }
+
             // Check if `data` is null
             if (newData == null)
             {
@@ -228,6 +249,18 @@ namespace Havoc.Live_Map
 
         public void RemovePlayerData(string identifier, string key)
         {
+
+            if (string.IsNullOrEmpty(identifier))
+            {
+                LiveMap.Log(LiveMap.LogLevel.Basic, "Identifier is null or empty.. Cannot remove player data");
+                return;
+            }
+            if (string.IsNullOrEmpty(key))
+            {
+                LiveMap.Log(LiveMap.LogLevel.Basic, "Cannot remove data from player ({0}) because key is null or empty", identifier);
+                return;
+            }
+
             MakeSurePlayerExists(identifier);
             lock (playerData)
             {
@@ -247,6 +280,12 @@ namespace Havoc.Live_Map
 
         public async void RemovePlayer(string identifier)
         {
+            if (string.IsNullOrEmpty(identifier))
+            {
+                LiveMap.Log(LiveMap.LogLevel.Basic, "Identifier is null or empty. Cannot remove player");
+                return;
+            }
+
             bool playerLeftBool = false;
             lock (playerData)
             {
@@ -334,6 +373,12 @@ namespace Havoc.Live_Map
 
         public async void AddBlip(dynamic blip)
         {
+            if(blip == null)
+            {
+                LiveMap.Log(LiveMap.LogLevel.Basic, "Cannot add blip as it's null");
+                return;
+            }
+
             JObject payload = new JObject();
             payload["type"] = "addBlip";
             payload["payload"] = ConvertBlip(blip);
@@ -371,6 +416,12 @@ namespace Havoc.Live_Map
 
         public async void RemoveBlip(dynamic blip)
         {
+            if (blip == null)
+            {
+                LiveMap.Log(LiveMap.LogLevel.Basic, "Cannot remove blip as it's null");
+                return;
+            }
+
             JObject payload = new JObject();
             payload["type"] = "removeBlip";
             payload["payload"] = ConvertBlip(blip);
@@ -409,6 +460,12 @@ namespace Havoc.Live_Map
 
         public async void UpdateBlip(dynamic blip)
         {
+            if (blip == null)
+            {
+                LiveMap.Log(LiveMap.LogLevel.Basic, "Cannot update blip as it's null");
+                return;
+            }
+
             JObject payload = new JObject();
             payload["type"] = "updateBlip";
             payload["payload"] = ConvertBlip(blip);
