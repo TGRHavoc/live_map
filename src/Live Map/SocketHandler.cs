@@ -39,7 +39,6 @@ namespace Havoc.Live_Map
 
         ConcurrentQueue<JObject> sendQueue = new ConcurrentQueue<JObject>();
 
-
         public SocketHandler(WebSocketServer server)
         {
             this.server = server;
@@ -127,9 +126,9 @@ namespace Havoc.Live_Map
                 // Only send the data every .5 seconds
                 await Task.Delay(TimeSpan.FromMilliseconds(LiveMap.waitSeconds)).ConfigureAwait(false);
 
+                //LiveMap.Log(LiveMap.LogLevel.All, "Checking send queue");
                 if (sendQueue.Count != 0)
                 {
-
                     JObject payload;
                     if (sendQueue.TryDequeue(out payload))
                     {
@@ -151,9 +150,41 @@ namespace Havoc.Live_Map
                         LiveMap.Log(LiveMap.LogLevel.Basic, "Couldn't get the latest payload to send.");
                     }
 
-                }else
+                }
+                else
                 {
-                    //LiveMap.Log(LiveMap.LogLevel.All, "No payload to send... Waiting..");
+                    // No payload in the queue, may as well send player data
+
+                    // Generate the payload
+                    JObject payload = new JObject();
+                    JArray playerDataArray = new JArray();
+                    lock (playerData)
+                    {
+                        foreach (KeyValuePair<string, JToken> data in playerData)
+                        {
+                            playerDataArray.Add(data.Value);
+                        }
+                    }
+
+                    if (playerDataArray.Count == 0)
+                    {
+                        //LiveMap.Log(LiveMap.LogLevel.All, "playerDataArray.Count is 0");
+                        continue;
+                    }
+                    payload["type"] = "playerData";
+                    payload["payload"] = playerDataArray;
+
+                    foreach (KeyValuePair<string, WebSocket> pair in clients)
+                    {
+                        string endpoint = pair.Key;
+                        WebSocket ws = pair.Value;
+
+                        //LiveMap.Log(LiveMap.LogLevel.All, "Sending payload of \"{0}\" to {1}", payload["type"], endpoint);
+
+                        await ws.WriteStringAsync(payload.ToString(Newtonsoft.Json.Formatting.None)).ConfigureAwait(false);
+                         
+                    }
+
                 }
             }
         }
@@ -200,7 +231,7 @@ namespace Havoc.Live_Map
                 if(playerObj[key] == null)
                     playerObj.Add(key, JToken.FromObject(data));
 
-                PlayerHadBeenUpdated(identifier, playerObj);
+                //PlayerHadBeenUpdated(identifier, playerObj);
             }
 
             LiveMap.Log(LiveMap.LogLevel.Basic, "Added \"{1}\" to player {0} with value of \"{2}\"", identifier, key, data);
@@ -235,7 +266,7 @@ namespace Havoc.Live_Map
                 playerObj[key] = JToken.FromObject(newData);
                 playerData[identifier] = playerObj;
 
-                PlayerHadBeenUpdated(identifier, playerObj);
+                //PlayerHadBeenUpdated(identifier, playerObj);
             }
 
             LiveMap.Log(LiveMap.LogLevel.All, "Updated player {0}'s \"{1}\" to \"{2}\"", identifier, key, newData);
@@ -264,8 +295,7 @@ namespace Havoc.Live_Map
                     if (playerObj.Remove(key))
                     {
                         LiveMap.Log(LiveMap.LogLevel.Basic, "Removed \"{0}\" from player {1}", key, identifier);
-                        PlayerHadBeenUpdated(identifier, playerObj);
-
+                        //PlayerHadBeenUpdated(identifier, playerObj);
                     }
                     else
                     {
