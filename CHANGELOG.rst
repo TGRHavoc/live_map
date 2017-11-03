@@ -2,6 +2,33 @@ Changelog
 =========
 
 
+v2.2.4 (03-11-2017)
+-------------------
+
+Fix
+~~~
+- Fixed #21. [Jordan Dalton]
+
+  Player location and data is now guaranteed too be sent to the sockets.
+- Fixed linux post-build errors. [Jordan Dalton]
+
+  Fuck Visual Studio... I added the condition for a reason!
+- Fixed async issues. [Jordan Dalton]
+
+  Ok. So, last update broke when multiple people connected because the writelock wasn't being re-set to 0. Hopefully this design keeps everything in sync and doesn't crash.
+
+  Update changelog
+
+Other
+~~~~~
+- Merge pull request #20 from TGRHavoc/develop. [Jordan Dalton]
+
+  Fixed async issues
+- Merge pull request #19 from TGRHavoc/develop. [Jordan Dalton]
+
+  v2.2.2
+
+
 v2.2.3 (02-11-2017)
 -------------------
 
