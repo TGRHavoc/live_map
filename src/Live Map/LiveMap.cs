@@ -31,6 +31,9 @@ namespace Havoc.Live_Map
         // The current debug level (from the "livemap_debug" convar)
         public static int debugLevel = 0;
 
+        // Access-origin
+        public static string accessOrigin = "*";
+
         public static int waitSeconds = 500;
 
         public enum LogLevel
@@ -64,6 +67,8 @@ namespace Havoc.Live_Map
             }
 
             waitSeconds = API.GetConvarInt("livemap_milliseconds", 500);
+
+            accessOrigin = API.GetConvar("livemap_access_control", "*");
 
             Log(LogLevel.Basic, "Starting on port {0}", port);
 
