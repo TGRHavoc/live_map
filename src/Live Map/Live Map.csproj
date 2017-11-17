@@ -42,8 +42,8 @@
     <Reference Include="CitizenFX.Core">
       <HintPath>lib\CitizenFX.Core.dll</HintPath>
     </Reference>
-    <Reference Include="deniszykov.WebSocketListener, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7f78616efb4a208d, processorArchitecture=MSIL">
-      <HintPath>..\packages\deniszykov.WebSocketListener.4.0.0\lib\net45\deniszykov.WebSocketListener.dll</HintPath>
+    <Reference Include="deniszykov.WebSocketListener, Version=4.1.3.0, Culture=neutral, PublicKeyToken=7f78616efb4a208d, processorArchitecture=MSIL">
+      <HintPath>..\packages\deniszykov.WebSocketListener.4.1.3\lib\net45\deniszykov.WebSocketListener.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
@@ -52,6 +52,10 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Threading.Tasks.Dataflow, Version=4.5.24.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Tpl.Dataflow.4.5.24\lib\portable-net45+win8+wpa81\System.Threading.Tasks.Dataflow.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -82,7 +86,7 @@
   </PropertyGroup>
   <PropertyGroup>
     <PostBuildEvent>
-	</PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

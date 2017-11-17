@@ -53,7 +53,7 @@ namespace Havoc.Live_Map
         private void Server_OnMessage(WebSocket ws, string msg)
         {
             string[] args = msg.Split(' ');
-            LiveMap.Log(LiveMap.LogLevel.All, "Recieved message from client {0}:\n\t\"{1}\"", ws.RemoteEndpoint.ToString(), msg);
+            LiveMap.Log(LiveMap.LogLevel.Basic, "Recieved message from client {0}:\n\t\"{1}\"", ws.RemoteEndpoint.ToString(), msg);
         }
 
         private void Server_OnError(WebSocket ws, Exception ex)
@@ -72,9 +72,7 @@ namespace Havoc.Live_Map
                 {
                     LiveMap.Log(LiveMap.LogLevel.Basic, "Couldn't remove {0} from the clients dic.", ws.RemoteEndpoint.ToString());
                 }
-
             }
-            
         }
 
         private void Server_OnDisconnect(WebSocket ws)
@@ -127,6 +125,7 @@ namespace Havoc.Live_Map
                 await Task.Delay(TimeSpan.FromMilliseconds(LiveMap.waitSeconds)).ConfigureAwait(false);
 
                 //LiveMap.Log(LiveMap.LogLevel.All, "Checking send queue");
+                List<string> disconnectedClients = new List<string>();
                 if (sendQueue.Count != 0)
                 {
                     JObject payload;
@@ -138,12 +137,16 @@ namespace Havoc.Live_Map
                             string endpoint = pair.Key;
                             WebSocket ws = pair.Value;
 
+                            if (!ws.IsConnected)
+                            {
+                                disconnectedClients.Add(endpoint);
+                                continue;
+                            }
+
                             LiveMap.Log(LiveMap.LogLevel.All, "Sending payload of \"{0}\" to {1}", payload["type"], endpoint);
 
-                            await ws.WriteStringAsync(payload.ToString(Newtonsoft.Json.Formatting.None)).ConfigureAwait(false);
-
+                            await ws.WriteStringAsync(payload.ToString(Newtonsoft.Json.Formatting.None), CancellationToken.None).ConfigureAwait(false);
                         }
-
                     }
                     else
                     {
@@ -179,13 +182,28 @@ namespace Havoc.Live_Map
                         string endpoint = pair.Key;
                         WebSocket ws = pair.Value;
 
+                        if (!ws.IsConnected)
+                        {
+                            disconnectedClients.Add(endpoint);
+                            continue;
+                        }
+
                         //LiveMap.Log(LiveMap.LogLevel.All, "Sending payload of \"{0}\" to {1}", payload["type"], endpoint);
-
-                        await ws.WriteStringAsync(payload.ToString(Newtonsoft.Json.Formatting.None)).ConfigureAwait(false);
-                         
+                        await ws.WriteStringAsync(payload.ToString(Newtonsoft.Json.Formatting.None), CancellationToken.None).ConfigureAwait(false);
                     }
+                } // end of payload sending.. Time to disconnect clients that are no longer connected
 
+                //LiveMap.Log(LiveMap.LogLevel.All, "Client size: {0}", clients.Count);
+                foreach(string endpoint in disconnectedClients)
+                {
+                    WebSocket des;
+                    if(clients.TryRemove(endpoint, out des))
+                    {
+                        LiveMap.Log(LiveMap.LogLevel.All, "Garbage cleanup.. Removed disconnected client {0}", endpoint);
+                        des.Dispose();
+                    }
                 }
+
             }
         }
 

@@ -2,8 +2,53 @@ Changelog
 =========
 
 
+v2.2.7 (22-11-2017)
+-------------------
+- Possibly fixed "Too many files open" error. [Jordan Dalton]
+
+
+v2.2.6 (21-11-2017)
+-------------------
+
+Changes
+~~~~~~~
+- Update to v2.2.6. [Jordan Dalton]
+
+Other
+~~~~~
+- Potentially fixed too many connections crashing server. [Jordan
+  Dalton]
+
+  Hoopefully this fixes the issue where the server crashes when too many people join.
+
+
+v2.2.5 (17-11-2017)
+-------------------
+
+New
+~~~
+- Add access-control to sockets. [Jordan Dalton]
+
+  If sockets don't come from the domain set in the CFG file, they get rejected. I don't know why I didn't implement this sooner but, it's here now :)
+
+Changes
+~~~~~~~
+- Update version and changelog. [Jordan Dalton]
+- Update socket library. [Jordan Dalton]
+
+  Socket library is at version 4.1.3.0 now
+
+Other
+~~~~~
+- Merge branch 'develop' [Jordan Dalton]
+
+
 v2.2.4 (03-11-2017)
 -------------------
+
+Changes
+~~~~~~~
+- Update changelog. [Jordan Dalton]
 
 Fix
 ~~~
