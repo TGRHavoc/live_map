@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using vtortola.WebSockets;
+using vtortola.WebSockets.Http;
 using vtortola.WebSockets.Rfc6455;
 
 /*
@@ -35,15 +36,29 @@ namespace Havoc.Live_Map
         {
             WebSocketListenerOptions opts = new WebSocketListenerOptions()
             {
-                SubProtocols = new string[] { "text" }
+                SubProtocols = new string[] { "text" },
+                NegotiationQueueCapacity = 128,
+                ParallelNegotiations = 16,
+                HttpAuthenticationHandler = async (request, response) => {
+                    await Task.Delay(0); // To shut the fucking IDE up
+
+                    if (LiveMap.accessOrigin == "*") // If they're allowing anyone
+                    {
+                        return true;
+                    }
+
+                    // Check if the origin is the same as the accessOrigin in CFG file
+                    return request.Headers["Origin"].Equals(LiveMap.accessOrigin, StringComparison.CurrentCultureIgnoreCase);
+                }
             };
             opts.Standards.RegisterRfc6455();
+
+            //opts.HttpAuthenticationHandler = OnHttpNegotiationDelegate;
 
             listener = new WebSocketListener(new System.Net.IPEndPoint(System.Net.IPAddress.Any, port), opts);
 
             LiveMap.Log(LiveMap.LogLevel.Basic, "Created websocket server");
         }
-
 
         public async void Start()
         {
@@ -70,7 +85,7 @@ namespace Havoc.Live_Map
 
                 }catch(Exception ex)
                 {
-                    LiveMap.Log(LiveMap.LogLevel.Basic, "Error in ListenAsync:\n{0}\n---Inner:\n{1} ", ex.Message, ex.InnerException);
+                    //LiveMap.Log(LiveMap.LogLevel.Basic, "Error in ListenAsync:\n{0}\n---Inner:\n{1} ", ex.Message, ex.InnerException);
                     if (OnError != null)
                         OnError.Invoke(null, ex);
                 }

@@ -140,8 +140,8 @@ namespace Havoc.Live_Map
 
                             LiveMap.Log(LiveMap.LogLevel.All, "Sending payload of \"{0}\" to {1}", payload["type"], endpoint);
 
-                            await ws.WriteStringAsync(payload.ToString(Newtonsoft.Json.Formatting.None)).ConfigureAwait(false);
-
+                            await ws.WriteStringAsync(payload.ToString(Newtonsoft.Json.Formatting.None), CancellationToken.None).ConfigureAwait(false);
+                            
                         }
 
                     }
@@ -181,8 +181,7 @@ namespace Havoc.Live_Map
 
                         //LiveMap.Log(LiveMap.LogLevel.All, "Sending payload of \"{0}\" to {1}", payload["type"], endpoint);
 
-                        await ws.WriteStringAsync(payload.ToString(Newtonsoft.Json.Formatting.None)).ConfigureAwait(false);
-                         
+                        await ws.WriteStringAsync(payload.ToString(Newtonsoft.Json.Formatting.None), CancellationToken.None).ConfigureAwait(false);
                     }
 
                 }
