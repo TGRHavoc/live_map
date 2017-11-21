@@ -37,7 +37,7 @@ namespace Havoc.Live_Map
             WebSocketListenerOptions opts = new WebSocketListenerOptions()
             {
                 SubProtocols = new string[] { "text" },
-                NegotiationQueueCapacity = 128,
+                //NegotiationQueueCapacity = 128,
                 ParallelNegotiations = 16,
                 HttpAuthenticationHandler = async (request, response) => {
                     await Task.Delay(0); // To shut the fucking IDE up
