@@ -2,6 +2,14 @@ Changelog
 =========
 
 
+v2.2.6 (21-11-2017)
+-------------------
+- Potentially fixed too many connections crashing server. [Jordan
+  Dalton]
+
+  Hoopefully this fixes the issue where the server crashes when too many people join.
+
+
 v2.2.5 (17-11-2017)
 -------------------
 
@@ -13,9 +21,14 @@ New
 
 Changes
 ~~~~~~~
+- Update version and changelog. [Jordan Dalton]
 - Update socket library. [Jordan Dalton]
 
   Socket library is at version 4.1.3.0 now
+
+Other
+~~~~~
+- Merge branch 'develop' [Jordan Dalton]
 
 
 v2.2.4 (03-11-2017)
