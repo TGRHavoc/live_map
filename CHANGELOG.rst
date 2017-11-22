@@ -2,8 +2,20 @@ Changelog
 =========
 
 
+v2.2.7 (22-11-2017)
+-------------------
+- Possibly fixed "Too many files open" error. [Jordan Dalton]
+
+
 v2.2.6 (21-11-2017)
 -------------------
+
+Changes
+~~~~~~~
+- Update to v2.2.6. [Jordan Dalton]
+
+Other
+~~~~~
 - Potentially fixed too many connections crashing server. [Jordan
   Dalton]
 
