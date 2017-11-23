@@ -77,31 +77,32 @@ namespace Havoc.Live_Map
 
         private void Server_OnDisconnect(WebSocket ws)
         {
-            LiveMap.Log(LiveMap.LogLevel.Basic, "Socket connection was closed at {0}", ws.RemoteEndpoint.ToString());
+            LiveMap.Log(LiveMap.LogLevel.All, "Socket connection was closed at {0}", ws.RemoteEndpoint.ToString());
 
             WebSocket destory;
             if (clients.TryRemove(ws.RemoteEndpoint.ToString(), out destory))
             {
+                destory.CloseAsync().GetAwaiter().GetResult();
                 destory.Dispose();
-                LiveMap.Log(LiveMap.LogLevel.Basic, "Removed {0} socket because it disconnected", ws.RemoteEndpoint.ToString());
+                LiveMap.Log(LiveMap.LogLevel.All, "Removed {0} socket because it disconnected", ws.RemoteEndpoint.ToString());
             }
             else
             {
-                LiveMap.Log(LiveMap.LogLevel.Basic, "Couldn't remove {0} from the clients dic.", ws.RemoteEndpoint.ToString());
+                LiveMap.Log(LiveMap.LogLevel.All, "Couldn't remove {0} from the clients dic.", ws.RemoteEndpoint.ToString());
             }
         }
 
         private void Server_OnConnect(WebSocket ws)
         {
-            LiveMap.Log(LiveMap.LogLevel.Basic, "Socket connection opened at {0}", ws.RemoteEndpoint.ToString());
+            LiveMap.Log(LiveMap.LogLevel.All, "Socket connection opened at {0}", ws.RemoteEndpoint.ToString());
 
             if (clients.TryAdd(ws.RemoteEndpoint.ToString(), ws))
             {
-                LiveMap.Log(LiveMap.LogLevel.Basic, "Added client {0} to the client dictionary", ws.RemoteEndpoint.ToString());
+                LiveMap.Log(LiveMap.LogLevel.All, "Added client {0} to the client dictionary", ws.RemoteEndpoint.ToString());
             }
             else
             {
-                LiveMap.Log(LiveMap.LogLevel.Basic, "Couldn't add {0} to the client dic", ws.RemoteEndpoint.ToString());
+                LiveMap.Log(LiveMap.LogLevel.All, "Couldn't add {0} to the client dic", ws.RemoteEndpoint.ToString());
 
             }
         }
@@ -205,19 +206,6 @@ namespace Havoc.Live_Map
                 }
 
             }
-        }
-
-        private void PlayerHadBeenUpdated(string identifier, JToken playerData)
-        {
-            JObject payload = new JObject();
-
-            payload["type"] = "playerData";
-
-            JArray arr = new JArray();
-            arr.Add(playerData);
-            payload["payload"] = arr;
-
-            sendQueue.Enqueue(payload);
         }
 
         public void AddPlayerData(string identifier, string key, object data)

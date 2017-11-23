@@ -96,7 +96,7 @@ function doIconUpdate()
                 newSprite = 56 -- PoliceCar
             elseif vehicleModel == h("taxi") then
                 newSprite = 198
-            elseif (vehicleModel == h("brickade") or vehicleModel == h("stoackage") or vehicleModel == h("stoackage2")) then
+            elseif (vehicleModel == h("brickade") or vehicleModel == h("stockage") or vehicleModel == h("stockage2")) then
                 newSprite = 66 -- ArmoredTruck
             elseif (vehicleModel == h("towtruck") or vehicleModel == h("towtruck")) then
                 newSprite = 68
