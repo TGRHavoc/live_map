@@ -2,8 +2,33 @@ Changelog
 =========
 
 
+v2.2.8 (24-11-2017)
+-------------------
+
+Changes
+~~~~~~~
+- Update where access-control is being written. [Jordan Dalton]
+
+  Before, the access-control-origin was only being written when sending the blips, this fixes that so, the iterface can see any errors.
+
+Fix
+~~~
+- Fixed small mistake. [Jordan Dalton]
+
+Other
+~~~~~
+- Shhh. [Jordan Dalton]
+
+
 v2.2.7 (22-11-2017)
 -------------------
+
+Changes
+~~~~~~~
+- Update to v2.2.7. [Jordan Dalton]
+
+Other
+~~~~~
 - Possibly fixed "Too many files open" error. [Jordan Dalton]
 
 
