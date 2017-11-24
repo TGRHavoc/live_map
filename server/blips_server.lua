@@ -119,9 +119,6 @@ end
     @param res The result object that can be sent data
 ]]
 function sendBlips(res)
-    -- Restrict the origin if set, otherwise allow everyone
-    res.writeHead(200, { ["Access-Control-Allow-Origin"] = GetConvar("livemap_access_control", "*")} )
-
     if not blipsIsEmpty() then
         res.send(json.encode(blips))
     else
@@ -388,6 +385,9 @@ end, true)
 ]]
 SetHttpHandler(function(req, res)
 	local path = req.path
+
+    -- Restrict the origin if set, otherwise allow everyone
+    res.writeHead(200, { ["Access-Control-Allow-Origin"] = GetConvar("livemap_access_control", "*")} )
 
     if path == "/blips" or path == "/blips.json" then
         return sendBlips(res)
