@@ -2,11 +2,24 @@ Changelog
 =========
 
 
+v2.2.9 (26-11-2017)
+-------------------
+
+Fix
+~~~
+- Fixed #24. [Jordan Dalton]
+
+  Moved where the null checks are in the internal functions. This makes sure that the `MakeSurePlayerExists` doesn't get passed a null value.
+
+
 v2.2.8 (24-11-2017)
 -------------------
 
 Changes
 ~~~~~~~
+- Update to v2.2.8. [Jordan Dalton]
+
+  Thanks to glitch for pointing out my spelling mistakes (hence the "Fixed small mistake" and "Shhh." commits).
 - Update where access-control is being written. [Jordan Dalton]
 
   Before, the access-control-origin was only being written when sending the blips, this fixes that so, the iterface can see any errors.
