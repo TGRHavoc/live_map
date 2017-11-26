@@ -210,9 +210,6 @@ namespace Havoc.Live_Map
 
         public void AddPlayerData(string identifier, string key, object data)
         {
-            LiveMap.Log(LiveMap.LogLevel.All, "Adding player {0}'s \"{1}\"", identifier, key);
-            MakeSurePlayerExists(identifier);
-
             if (string.IsNullOrEmpty(identifier))
             {
                 LiveMap.Log(LiveMap.LogLevel.Basic, "Identifier is null or empty");
@@ -230,6 +227,9 @@ namespace Havoc.Live_Map
                 return;
             }
 
+            LiveMap.Log(LiveMap.LogLevel.All, "Adding player {0}'s \"{1}\"", identifier, key);
+            MakeSurePlayerExists(identifier);
+
             lock (playerData)
             {
                 JObject playerObj = (JObject)playerData[identifier];
@@ -245,9 +245,6 @@ namespace Havoc.Live_Map
 
         public void UpdatePlayerData(string identifier, string key, object newData)
         {
-            LiveMap.Log(LiveMap.LogLevel.All, "Updating player {0}'s \"{1}\"", identifier, key);
-            MakeSurePlayerExists(identifier);
-
             if (string.IsNullOrEmpty(identifier))
             {
                 LiveMap.Log(LiveMap.LogLevel.Basic, "Identifier is null or empty. Cannot update player data");
@@ -265,6 +262,8 @@ namespace Havoc.Live_Map
                 LiveMap.Log(LiveMap.LogLevel.Basic, "Cannot update \"{0}\" for {1} because it's null", key, identifier);
                 return;
             }
+            LiveMap.Log(LiveMap.LogLevel.All, "Updating player {0}'s \"{1}\"", identifier, key);
+            MakeSurePlayerExists(identifier);
 
             lock (playerData)
             {
