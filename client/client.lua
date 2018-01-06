@@ -29,7 +29,8 @@ local defaultDataSet = {
     ["Vehicle"] = "none", -- Vehicle player is in (if any)
     ["Weapon"] = "Unarmed", -- Weapon player has equiped (if any)
     ["icon"] = 6, -- Player blip id (will change with vehicles)
-    ["Licence Plate"] = nil -- To showcase the removal off data :D
+    ["Licence Plate"] = nil, -- To showcase the removal off data :D
+    ["Location"] = "State of San Andreas" -- Set the default Location value to San Andreas.
 }
 
 local temp = {}
@@ -43,12 +44,14 @@ function updateData(name, value)
 end
 
 function doVehicleUpdate()
-    local vehicle = GetVehiclePedIsIn(GetPlayerPed(-1), 0)
+    local vehicle = GetVehiclePedIsIn(PlayerPedId(), 0)
 
     if temp["vehicle"] ~= vehicle and vehicle ~= 0 then
         -- Update it
         local vehicleClass = GetVehicleClass(vehicle)
-        updateData("Vehicle", GetDisplayNameFromVehicleModel(GetEntityModel(vehicle)))
+        
+        -- Added GetLabelText() to the vehicle display name to convert the vehicle name to a nicer version.
+        updateData("Vehicle", GetLabelText(GetDisplayNameFromVehicleModel(GetEntityModel(vehicle))))
         temp["vehicle"] = vehicle
     end
 
@@ -61,7 +64,7 @@ function doVehicleUpdate()
 end
 
 function doIconUpdate()
-    local ped = GetPlayerPed(-1)
+    local ped = PlayerPedId()
     local newSprite = 6 -- Default to the player one
 
     if IsEntityDead(ped) then
@@ -139,7 +142,7 @@ Citizen.CreateThread(function()
         if NetworkIsPlayerActive(PlayerId()) then
 
             -- Update position, if it has changed
-            local x,y,z = table.unpack(GetEntityCoords(GetPlayerPed(-1)))
+            local x,y,z = table.unpack(GetEntityCoords(PlayerPedId()))
             local x1,y1,z1 = defaultDataSet["pos"].x, defaultDataSet["pos"].y, defaultDataSet["pos"].z
 
             local dist = Vdist(x, y, z, x1, y1, z1)
@@ -147,11 +150,41 @@ Citizen.CreateThread(function()
             if (dist >= 5) then
                 -- Update every 5 meters.. Let's reduce the amount of spam
                 -- TODO: Maybe make this into a convar (e.g. accuracy_distance)
-                updateData("pos", {x = x, y=y, z=z} )
+                updateData("pos", {x = x, y=y, z=z})
+                
+                
+                -- Added nearest streetname, general area and Los Santos/Blaine County location display.
+                -- Example screenshot: https://vespura.com/hi/i/f00941500bb.png
+                
+                -- Get the street name hash from the player's position, convert it to a real street name and
+                -- convert that into a string to make sure a "nil" value won't crash the script.
+                local streetname = tostring(GetStreetNameFromHashKey(GetStreetNameAtCoord(x,y,z)))
+                
+                -- Get the general area/zone name from the player's position, get the label text of that zone name.
+                -- (example: GetLabelText("ALAMO") --> "Alamo Sea") and convert that into a string to preven't "nil" crashes.
+                local zone = tostring(GetLabelText(GetNameOfZone(x, y, z)))
+                
+                -- Get the state area hash (Blaine County / City of Los Santos).
+                -- Also convert this into a string to make sure a "nil" value won't crash the script.
+                local area = tostring(GetHashOfMapAreaAtCoords(x, y, z))
+                
+                -- Check the hash to determine in which part of the map the player is.
+                if area == "2072609373" then -- Player is in Blaine County.
+                    area = " (Blaine County)"
+                elseif area == "-289320599" then -- Player is in the City of Los Santos.
+                    area = " (Los Santos)"
+                else -- If by some magical event the player isn't on the map or whatever the area will be set to "".
+                    area = ""
+                end
+                
+                -- Create the location string.
+                local location = streetname .. ", " .. zone .. area
+                -- Update the data with the new location info.
+                updateData("Location", location)
             end
 
             -- Update weapons
-            local found,weapon = GetCurrentPedWeapon(GetPlayerPed(-1), true)
+            local found,weapon = GetCurrentPedWeapon(PlayerPedId(), true)
             if found and temp["weapon"] ~= weapon then
                 local weaponName = exports[GetCurrentResourceName()]:reverseWeaponHash(tostring(weapon))
                 updateData("Weapon", weaponName)
@@ -160,7 +193,7 @@ Citizen.CreateThread(function()
             end
 
             -- Update Vehicle (and icon)
-            if IsPedInAnyVehicle(GetPlayerPed(-1)) then
+            if IsPedInAnyVehicle(PlayerPedId()) then
                 doVehicleUpdate()
 
             elseif defaultDataSet["Licence Plate"] ~= nil or defaultDataSet["Vehicle"] ~= nil then
