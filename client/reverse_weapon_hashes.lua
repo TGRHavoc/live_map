@@ -85,6 +85,10 @@ local WEAPON_HASHES = {
 }
 
 function reverseWeaponHash(hash)
+    if type(hash) ~= "string" then
+        hash = tostring(hash)
+    end
+    
     local name = WEAPON_HASHES[hash]
     if name ~= nil then
         return name
