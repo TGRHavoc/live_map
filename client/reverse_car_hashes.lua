@@ -329,6 +329,7 @@ local VEHICLE_HASHES = {
     [tostring(GetHashKey("schafter5"))] = "Schafter V12 (Armored)",
     [tostring(GetHashKey("schafter6"))] = "Schafter LWB (Armored)",
     [tostring(GetHashKey("schwarzer"))] = "Schwartzer",
+    [tostring(GetHashKey("schwarze"))] = "Schwartzer",
     [tostring(GetHashKey("scorcher"))] = "Scorcher",
     [tostring(GetHashKey("scrap"))] = "Scrap Truck",
     [tostring(GetHashKey("seashark"))] = "Seashark",
