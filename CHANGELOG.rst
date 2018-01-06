@@ -2,8 +2,62 @@ Changelog
 =========
 
 
+v2.2.10 (06-01-2018)
+--------------------
+
+New
+~~~
+- Add reverse_car_hashes. [Jordan Dalton]
+
+  Car names can now be reversed to their English names. You can change this by modifying the "reverse_car_hashes.lua" file.
+
+  Also added a check to the reverse hash functions to make sure the hash being passed is a string.
+- Added location display and more. [Tom Grobbe]
+
+  Changes:
+  - Replaced all `GetPlayerPed(-1)` with `PlayerPedId()`
+  - Added `["Location"]` to the Blip DataSet, providing a default value.
+  - The Location data will be shown on all player blips and will look like this:
+  "Glory Way, East Vinewood (Los Santos)"
+  (street name, area name, city/county)
+
+Changes
+~~~~~~~
+- Update client.lua with plate check. [Jordan Dalton]
+
+  Vehicles that are spawned in are given the plate " FIVE M " so, now the map detects this and marks the plate with "(Spawned In)".
+
+  Also, added "schwarze" to the hash table for the vehicles.. Turns out R* missed the r on the end :/
+- Update client.lua to use new reverse function. [Jordan Dalton]
+
+  The client.lua now uses the reverseVehicleHash function to get a "nice" vehicle name.
+- Removed location data. [Jordan Dalton]
+
+  The location strings were localised to the client thiis ment that Chinese players would be sending Chinese strrings to the interface.
+
+  I might add this back in but, it would require another file like the "reverse_weapon_hash" file for location data. This would allow the server owners to translate the locations to their prefered language.
+
+Fix
+~~~
+- Fix typo in readme. [Tom Grobbe]
+
+  Reported here: https://forum.fivem.net/t/release-livemap/49901/134
+
+Other
+~~~~~
+- Merge branch 'TomGrobbe-master' into develop. [Jordan Dalton]
+- Merge pull request #27 from TGRHavoc/TomGrobbe-patch-1. [Jordan
+  Dalton]
+
+  Fix typo in readme
+
+
 v2.2.9 (26-11-2017)
 -------------------
+
+Changes
+~~~~~~~
+- Update to v2.2.9. [Jordan Dalton]
 
 Fix
 ~~~
@@ -152,6 +206,10 @@ Changes
 - Update version.json. [Jordan Dalton]
 
   Now it's 2.2.2
+- Changed CI to Travis. [Jordan Dalton]
+
+  Travis is more secure and I trust it more..
+- Changed the post-build parameters. [Jordan Dalton]
 
 Fix
 ~~~
@@ -161,11 +219,7 @@ Fix
 Other
 ~~~~~
 - Merge branch 'develop' [Jordan Dalton]
-- Changed CI to Travis. [Jordan Dalton]
-
-  Travis is more secure and I trust it more..
 - Create .travis.yml. [Jordan Dalton]
-- Changed the post-build parameters. [Jordan Dalton]
 - Getting ready for Jenkins! [Jordan Dalton]
 - Merge branch 'develop' [Jordan Dalton]
 
@@ -304,6 +358,9 @@ Changes
 
   Apparently usign Gist isn't a good idea..
 - Update version.json. [Jordan Dalton]
+- Removed spammy prints. [Jordan Dalton]
+
+  Server had some spammy prints.. They're gone now.
 - Update changelog. [Jordan Dalton]
 
 Fix
@@ -320,9 +377,6 @@ Other
 - Delete test.lua. [Jordan Dalton]
 - Create test.lua. [Jordan Dalton]
 - Create version.json. [Jordan Dalton]
-- Removed spammy prints. [Jordan Dalton]
-
-  Server had some spammy prints.. They're gone now.
 
 
 v2.1.4 (20-10-2017)
@@ -339,6 +393,9 @@ New
 
 Changes
 ~~~~~~~
+- Removed spammy traces. [Jordan Dalton]
+
+  When updating stuff, I would trace to console. This could create spam (espesially with frequently updated values).
 - Update README. [Jordan Dalton]
 
   Documented the `blips generate` command. Some poeple might not have known about it otherwise.
@@ -359,9 +416,6 @@ Fix
 
 Other
 ~~~~~
-- Removed spammy traces. [Jordan Dalton]
-
-  When updating stuff, I would trace to console. This could create spam (espesially with frequently updated values).
 - Merge pull request #9 from TGRHavoc/develop. [Jordan Dalton]
 
   Fixed listener only listening on loopback address
@@ -391,6 +445,9 @@ Changes
 - Update readme. [Jordan Dalton]
 
   Readme is now as complete as I want to make it.. It's probably going to get updated again...
+- Removed temporary code. [Jordan Dalton]
+
+  Removed some code that I added to make testing easier, this includes the "kill" command and giving the player weapons when they spawn.
 - Update server comments. [Jordan Dalton]
 
   The server Lua files now have comments and stuff. It's probably not the best but, it'll do.
@@ -416,9 +473,6 @@ Fix
 Other
 ~~~~~
 - Merge branch 'hotfix/comments' into develop. [Jordan Dalton]
-- Removed temporary code. [Jordan Dalton]
-
-  Removed some code that I added to make testing easier, this includes the "kill" command and giving the player weapons when they spawn.
 
 
 v2.1.1 (20-09-2017)
@@ -488,6 +542,9 @@ Changes
 - Updated live_map binary. [Jordan Dalton]
 
   Latest compiled library from the source files.. Apparently didn't commit eariler :O
+- Removed old files. [Jordan Dalton]
+
+  Old files aren't needed anymore and have been removed.
 - Update readme. [Jordan Dalton]
 
   Changed the readme to better reflect the addon.
@@ -505,9 +562,6 @@ Other
 ~~~~~
 - Merge branch 'develop' [Jordan Dalton]
 - Merge branch 'feature/vehicle_icons' into develop. [Jordan Dalton]
-- Removed old files. [Jordan Dalton]
-
-  Old files aren't needed anymore and have been removed.
 - A wild license appears! [Jordan Dalton]
 
   Added a license to the project
@@ -585,6 +639,11 @@ Changes
 - Update websocket handler. [Jordan Dalton]
 
   Data sent to the websocket is now split by the space character, allows for additional arguments to be passed in case it's needed in future.
+- Removed file writer and console.writelines. [Jordan Dalton]
+
+  Pretty much all the Console.WriteLine's have been changed to Debug,WriteLine and I've removed the file writer.
+
+  The websocket server now defaults back to the insecure websocket protocol when the certificate couldn't be loaded.
 - Update readme. [Jordan Dalton]
 - Update comments. [Jordan Dalton]
 
@@ -592,19 +651,11 @@ Changes
 - Update O'Neil Ranch icon. [Jordan Dalton]
 
   Changed the O'Neil ranch icon to an animal instead of the jail icon
+- Remove license. [Jordan Dalton]
+- Remove self-signed certs. [Jordan Dalton]
 - Update to use SSL. [Jordan Dalton]
 - Update lua files for SSL. [Jordan Dalton]
 - Update binaries. [Jordan Dalton]
-
-Other
-~~~~~
-- Removed file writer and console.writelines. [Jordan Dalton]
-
-  Pretty much all the Console.WriteLine's have been changed to Debug,WriteLine and I've removed the file writer.
-
-  The websocket server now defaults back to the insecure websocket protocol when the certificate couldn't be loaded.
-- Remove license. [Jordan Dalton]
-- Remove self-signed certs. [Jordan Dalton]
 
 
 v0.0.0 (21-05-2017)
