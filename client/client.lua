@@ -30,7 +30,6 @@ local defaultDataSet = {
     ["Weapon"] = "Unarmed", -- Weapon player has equiped (if any)
     ["icon"] = 6, -- Player blip id (will change with vehicles)
     ["Licence Plate"] = nil, -- To showcase the removal off data :D
-    ["Location"] = "State of San Andreas" -- Set the default Location value to San Andreas.
 }
 
 local temp = {}
@@ -49,7 +48,7 @@ function doVehicleUpdate()
     if temp["vehicle"] ~= vehicle and vehicle ~= 0 then
         -- Update it
         local vehicleClass = GetVehicleClass(vehicle)
-        
+
         -- Added GetLabelText() to the vehicle display name to convert the vehicle name to a nicer version.
         updateData("Vehicle", GetLabelText(GetDisplayNameFromVehicleModel(GetEntityModel(vehicle))))
         temp["vehicle"] = vehicle
@@ -151,36 +150,6 @@ Citizen.CreateThread(function()
                 -- Update every 5 meters.. Let's reduce the amount of spam
                 -- TODO: Maybe make this into a convar (e.g. accuracy_distance)
                 updateData("pos", {x = x, y=y, z=z})
-                
-                
-                -- Added nearest streetname, general area and Los Santos/Blaine County location display.
-                -- Example screenshot: https://vespura.com/hi/i/f00941500bb.png
-                
-                -- Get the street name hash from the player's position, convert it to a real street name and
-                -- convert that into a string to make sure a "nil" value won't crash the script.
-                local streetname = tostring(GetStreetNameFromHashKey(GetStreetNameAtCoord(x,y,z)))
-                
-                -- Get the general area/zone name from the player's position, get the label text of that zone name.
-                -- (example: GetLabelText("ALAMO") --> "Alamo Sea") and convert that into a string to preven't "nil" crashes.
-                local zone = tostring(GetLabelText(GetNameOfZone(x, y, z)))
-                
-                -- Get the state area hash (Blaine County / City of Los Santos).
-                -- Also convert this into a string to make sure a "nil" value won't crash the script.
-                local area = tostring(GetHashOfMapAreaAtCoords(x, y, z))
-                
-                -- Check the hash to determine in which part of the map the player is.
-                if area == "2072609373" then -- Player is in Blaine County.
-                    area = " (Blaine County)"
-                elseif area == "-289320599" then -- Player is in the City of Los Santos.
-                    area = " (Los Santos)"
-                else -- If by some magical event the player isn't on the map or whatever the area will be set to "".
-                    area = ""
-                end
-                
-                -- Create the location string.
-                local location = streetname .. ", " .. zone .. area
-                -- Update the data with the new location info.
-                updateData("Location", location)
             end
 
             -- Update weapons
