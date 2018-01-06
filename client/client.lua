@@ -49,8 +49,11 @@ function doVehicleUpdate()
         -- Update it
         local vehicleClass = GetVehicleClass(vehicle)
 
-        -- Added GetLabelText() to the vehicle display name to convert the vehicle name to a nicer version.
-        updateData("Vehicle", GetLabelText(GetDisplayNameFromVehicleModel(GetEntityModel(vehicle))))
+        -- Added reverseWeaponHash to the vehicle display name to convert the vehicle name to a nicer version.
+        -- To change, modify the "reverse_car_hashes.lua" file
+        local vehNameHash = GetHashKey(GetDisplayNameFromVehicleModel(GetEntityModel(vehicle)))
+        local reversedVehicleName = exports[GetCurrentResourceName()]:reverseVehicleHash(vehNameHash)
+        updateData("Vehicle", reversedVehicleName)
         temp["vehicle"] = vehicle
     end
 
@@ -155,7 +158,7 @@ Citizen.CreateThread(function()
             -- Update weapons
             local found,weapon = GetCurrentPedWeapon(PlayerPedId(), true)
             if found and temp["weapon"] ~= weapon then
-                local weaponName = exports[GetCurrentResourceName()]:reverseWeaponHash(tostring(weapon))
+                local weaponName = exports[GetCurrentResourceName()]:reverseWeaponHash(weapon)
                 updateData("Weapon", weaponName)
                 -- To make sure we don't call this more than we need to
                 temp["weapon"] = weapon
