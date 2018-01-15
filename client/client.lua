@@ -30,6 +30,7 @@ local defaultDataSet = {
     ["Weapon"] = "Unarmed", -- Weapon player has equiped (if any)
     ["icon"] = 6, -- Player blip id (will change with vehicles)
     ["Licence Plate"] = nil, -- To showcase the removal off data :D
+    ["Location"] = "State of San Andreas", -- Player location
 }
 
 local temp = {}
@@ -159,6 +160,21 @@ Citizen.CreateThread(function()
                 -- Update every 5 meters.. Let's reduce the amount of spam
                 -- TODO: Maybe make this into a convar (e.g. accuracy_distance)
                 updateData("pos", {x = x, y=y, z=z})
+
+                -- Reverse the street, area and zone of the current location
+                local streetname = exports[GetCurrentResourceName()]:reverseStreetHash(GetStreetNameAtCoord(x,y,z))
+                local zone = exports[GetCurrentResourceName()]:reverseZoneHash(GetHashKey(GetNameOfZone(x, y, z)))
+                local area = exports[GetCurrentResourceName()]:reverseAreaHash(GetHashOfMapAreaAtCoords(x, y, z))
+
+                if (temp["streetname"] ~= streetname) or (temp["zone"] ~= zone) or (temp["area"] ~= area) then
+                    local locationString = string.format("%s, %s (%s)", streetname, zone, area)
+
+                    updateData("Location", locationString)
+                    temp["streetname"] = streetname
+                    temp["zone"] = zone;
+                    temp["area"] = area
+                end
+
             end
 
             -- Update weapons
