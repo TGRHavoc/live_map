@@ -171,7 +171,7 @@ Citizen.CreateThread(function()
 
                     updateData("Location", locationString)
                     temp["streetname"] = streetname
-                    temp["zone"] = zone;
+                    temp["zone"] = zone
                     temp["area"] = area
                 end
 
