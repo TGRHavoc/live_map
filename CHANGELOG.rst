@@ -2,6 +2,24 @@ Changelog
 =========
 
 
+v2.2.11 (16-01-2018)
+--------------------
+
+New
+~~~
+- Add license to update_check. [Jordan Dalton]
+- Add license to reverse_location_hashes.lua. [Jordan Dalton]
+- Add location to the player data. [Jordan Dalton]
+
+  "Location" is a new data point sent to the interface. Should only be updated if the street, area or zone have changed when updating the new position.
+
+Changes
+~~~~~~~
+- Update the timer in update_check.lua. [Jordan Dalton]
+
+  The checker now runs every 30 minutes regardless of whether it's the latest version or not.
+
+
 v2.2.10 (06-01-2018)
 --------------------
 
@@ -23,6 +41,7 @@ New
 
 Changes
 ~~~~~~~
+- Update to version 2.2.10. [Jordan Dalton]
 - Update client.lua with plate check. [Jordan Dalton]
 
   Vehicles that are spawned in are given the plate " FIVE M " so, now the map detects this and marks the plate with "(Spawned In)".
