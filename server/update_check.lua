@@ -19,8 +19,6 @@ else
     version = rawData["resource"]
 end
 
-
-
 function checkForUpdate()
     PerformHttpRequest(url, function(err, data, headers)
         local parsed = json.decode(data)
@@ -35,12 +33,10 @@ function checkForUpdate()
             latest = false -- Stop running the timeout
         end
 
-        if (latest) then -- If it's the latest then check for updates every 30 mins
-            SetTimeout( 30 * (60*1000), checkForUpdate)
-        end
+        -- Every 30 minutes, do the check (print the message if it's not up to date)
+        SetTimeout( 30 * (60*1000), checkForUpdate)
 
     end, "GET", "",  { ["Content-Type"] = 'application/json' })
-
 end
 
 checkForUpdate();
