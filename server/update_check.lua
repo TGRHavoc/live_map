@@ -1,3 +1,10 @@
+--[[
+            LiveMap - A LiveMap for FiveM servers
+              Copyright (C) 2017  Jordan Dalton
+
+You should have received a copy of the GNU General Public License
+along with this program in the file "LICENSE".  If not, see <http://www.gnu.org/licenses/>.
+]]
 
 local url = "https://raw.githubusercontent.com/TGRHavoc/live_map/master/version.json"
 local version = "2.1.7"
