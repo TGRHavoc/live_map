@@ -61,7 +61,6 @@ function doVehicleUpdate()
     local plate = GetVehicleNumberPlateText(vehicle)
     plate = plate:gsub("^%s*(.-)%s*$", "%1") -- Remove whitespace at the start and end of the plate (for plate check)
 
-    print("Plate = \"" .. plate .. "\"")
     if plate == "FIVE M" then
         plate = plate .. " (Spawned In)"
     end
