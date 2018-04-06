@@ -2,6 +2,14 @@ Changelog
 =========
 
 
+v2.2.12 (04-04-2018)
+--------------------
+
+Changes
+~~~~~~~
+- Removed Console Spam. [Avery Johnson]
+
+
 v2.2.11 (16-01-2018)
 --------------------
 
@@ -15,6 +23,7 @@ New
 
 Changes
 ~~~~~~~
+- Update to version 2.2.11. [Jordan Dalton]
 - Update the timer in update_check.lua. [Jordan Dalton]
 
   The checker now runs every 30 minutes regardless of whether it's the latest version or not.
