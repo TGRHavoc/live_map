@@ -9,3 +9,6 @@ generate-changes\.bat
 
 .changelog.rc
 changelog.py
+
+node_modules/
+
