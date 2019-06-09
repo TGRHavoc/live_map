@@ -2,7 +2,7 @@ const log = require("simple-console-logger").getLogger("LiveMap Blips");
 const fs = require("fs");
 const path = require("path");
 
-const BlipController = (router) => {
+const BlipController = (SocketController) => {
     let playerWhoGeneratedBlips = null;
     let blips = null;
     const blipFile = path.join("resources", GetCurrentResourceName(), GetConvar("blip_file", "server/blips.json"));
@@ -161,7 +161,8 @@ const BlipController = (router) => {
         }
 
         blips[sprite].push(blip);
-        //todo: trigger livemap:internal_AddBlip sprite, blip
+
+        SocketController.AddBlip(sprite, blip);
     });
 
     onNet("livemap:UpdateBlip", (blip) => {
@@ -183,14 +184,14 @@ const BlipController = (router) => {
 
         if (blipIndex !== -1){
             blips[sprite][blipIndex] = blip;
-            //todo: trigger livemap_internal_UpdateBlip, sprite, blip
+            SocketController.UpdateBlip(sprite, blip);
         }else{
             if (blips[sprite] === undefined){
                 blips[sprite] = [];
             }
             
             blips[sprite].push(blip);
-            //todo: trigger livemap:internal_AddBlip, sprite, blip
+            SocketController.AddBlip(sprite, blip);
         }
     });
 
@@ -213,7 +214,7 @@ const BlipController = (router) => {
         if (blipIndex !== -1) {
             delete blips[sprite][blipIndex];
             log.info("Removed blip: %o", blip);
-            // TODO: Call livemap:internal_RemoveBlip
+            SocketController.RemoveBlip(sprite, blip);
         }else{
             log.warn("Cannot delete a blip that doesn't exist");
         }
@@ -245,7 +246,7 @@ const BlipController = (router) => {
         }
 
         delete blips[sprite][blipToDelete];
-        //TODO: Trigger livemap:internal_RemoveBlip
+        SocketController.RemoveBlip(sprite, closest);
     });
 
     RegisterCommand("blips", (src, args) => {
@@ -262,12 +263,9 @@ const BlipController = (router) => {
             emitNet("livemap:getBlipsFromClient", src);
         }
     }, true);
-
-    router.get("/blips", getBlips);
-    router.get("/blips.json", getBlips);
-
-    //TODO: Return anything that might be important...
+    
     return {
+        getBlips
     };
 };
 
