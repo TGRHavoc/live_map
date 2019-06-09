@@ -17,7 +17,7 @@ Add the following to your server.cfg file.
 
 ```
 set socket_port 30121
-set livemap_debug 0
+set livemap_debug "warn" # "[all]" 'trace', 'debug', 'info', 'warn', 'error', 'fatal', 'off'
 set blip_file "server/blips.json"
 set livemap_access_control "*"
 
