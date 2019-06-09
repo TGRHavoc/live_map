@@ -21,7 +21,6 @@ exports {
 }
 
 server_scripts{
-    "dist/server.js",
-    "server/update_check.lua",
-    "server/wrapper.lua"
+    "dist/livemap.js",
+    "server/update_check.lua"
 }

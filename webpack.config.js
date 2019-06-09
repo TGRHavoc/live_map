@@ -10,7 +10,8 @@ const config = {
     resolve: {
         alias: {
             LivemapSocketController: path.resolve(__dirname, "src", "sockets.js"),
-            LivemapBlipController: path.resolve(__dirname, "src", "blips.js")
+            LivemapBlipController: path.resolve(__dirname, "src", "blips.js"),
+            LivemapEventsWrapper: path.resolve(__dirname, "src", "wrapper.js")
         }
     },
     plugins: [
