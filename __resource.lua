@@ -1,6 +1,8 @@
 resource_manifest_version "44febabe-d386-4d18-afbe-5e627f4af937"
 
 dependency "yarn"
+dependency "webpack"
+webpack_config "webpack.config.js"
 
 client_scripts{
     "client/client.lua",
@@ -19,7 +21,7 @@ exports {
 }
 
 server_scripts{
-    "src/server.js",
+    "dist/server.js",
     "server/update_check.lua",
     "server/wrapper.lua"
 }
