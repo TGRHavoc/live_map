@@ -4,6 +4,7 @@
 	"skip": {
 		"bump": true
 	},
+    "commit-all": true,
 	"types": [
 		{
 			"type": "feat",
