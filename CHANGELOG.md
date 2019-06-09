@@ -1,5 +1,39 @@
 # Changelog
 
+## [2.3.0](https://github.com/TGRHavoc/live_map/compare/v2.2.12...v2.3.0) (2019-06-09)
+
+
+### Bug Fixes
+
+* events wrapper not being used ([c3f31ae](https://github.com/TGRHavoc/live_map/commit/c3f31ae))
+* **blips:** addblip incorrectly reporting duplicate blips ([b70b345](https://github.com/TGRHavoc/live_map/commit/b70b345))
+
+
+### Changes
+
+* change how blip controller is created ([2f4997f](https://github.com/TGRHavoc/live_map/commit/2f4997f))
+* remove C# files ([ba6ef5a](https://github.com/TGRHavoc/live_map/commit/ba6ef5a))
+* update server to use new controllers ([793512d](https://github.com/TGRHavoc/live_map/commit/793512d))
+* update socket controller ([57a6094](https://github.com/TGRHavoc/live_map/commit/57a6094))
+
+
+### Features
+
+* add basic blip controller ([64ff008](https://github.com/TGRHavoc/live_map/commit/64ff008))
+* add basic server for node ([7892791](https://github.com/TGRHavoc/live_map/commit/7892791))
+* add basic websocket server ([5bbee05](https://github.com/TGRHavoc/live_map/commit/5bbee05))
+* add webpack ([6b0e711](https://github.com/TGRHavoc/live_map/commit/6b0e711))
+* fully implement socketcontroller ([9a206ef](https://github.com/TGRHavoc/live_map/commit/9a206ef))
+* move blip_server to node ([744ac41](https://github.com/TGRHavoc/live_map/commit/744ac41))
+* move wrapper to node ([e67776f](https://github.com/TGRHavoc/live_map/commit/e67776f))
+
+
+### BREAKING CHANGES
+
+* remove C# files
+
+
+
 ## [2.2.12](https://github.com/TGRHavoc/live_map/compare/v2.2.0...v2.2.12) 
 
 
