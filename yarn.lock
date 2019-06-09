@@ -707,11 +707,6 @@ configstore@^3.0.0:
     write-file-atomic "^2.0.0"
     xdg-basedir "^3.0.0"
 
-consola@^2.7.1:
-  version "2.7.1"
-  resolved "https://registry.yarnpkg.com/consola/-/consola-2.7.1.tgz#3f7f7c53eb44362240c3aee41b9bb2641d5ca32e"
-  integrity sha512-u7JYs+HnMbZPD2cEuS1XHsLeqtazA0kd5lAk8r8DnnGdgNhOdb7DSubJ+QLdQkbtpmmxgp7gs8Ug44sCyY4FCQ==
-
 console-browserify@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/console-browserify/-/console-browserify-1.1.0.tgz#f0241c45730a9fc6323b206dbf38edc741d0bb10"
@@ -2934,11 +2929,6 @@ speed-date@^0.2.1:
   version "0.2.1"
   resolved "https://registry.yarnpkg.com/speed-date/-/speed-date-0.2.1.tgz#49238fd479a675a642e6c745e0bf798ade5f77fc"
   integrity sha1-SSOP1HmmdaZC5sdF4L95it5fd/w=
-
-speed-date@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/speed-date/-/speed-date-1.0.0.tgz#9ec593914a6ad2c19fcfdd6aee88486bbd9a2d0b"
-  integrity sha1-nsWTkUpq0sGfz91q7ohIa72aLQs=
 
 split-string@^3.0.1, split-string@^3.0.2:
   version "3.1.0"
