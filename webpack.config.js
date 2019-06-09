@@ -5,7 +5,7 @@ const config = {
     entry: "./src/server.js",
     output: {
         path: path.resolve(__dirname, "dist"),
-        filename: "server.js"
+        filename: "livemap.js"
     },
     resolve: {
         alias: {
