@@ -1,5 +1,7 @@
 resource_manifest_version "44febabe-d386-4d18-afbe-5e627f4af937"
 
+dependency "yarn"
+
 client_scripts{
     "client/client.lua",
     "client/reverse_weapon_hashes.lua",
@@ -17,8 +19,7 @@ exports {
 }
 
 server_scripts{
+    "src/server.js",
     "server/update_check.lua",
-    "server/live_map.net.dll",
-    "server/wrapper.lua",
-    "server/blips_server.lua"
+    "server/wrapper.lua"
 }

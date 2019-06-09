@@ -21,9 +21,9 @@
         "koa": "^2.7.0",
         "koa-body": "^4.1.0",
         "koa-router": "^7.4.0",
+        "simple-console-logger": "^2.0.2",
         "socket.io": "^2.2.0",
         "webpack": "^4.33.0",
-        "winston": "^3.2.1",
         "ws": "^7.0.0"
     },
     "devDependencies": {
