@@ -1,6 +1,6 @@
 {
     "name": "fivem-live_map",
-    "version": "2.2.12",
+    "version": "2.3.0",
     "description": "The FiveM resource to get Havoc's LiveMap working#",
     "main": "index.js",
     "scripts": {
@@ -27,8 +27,6 @@
         "ws": "^7.0.0"
     },
     "devDependencies": {
-        "cross-env": "^5.2.0",
-        "eslint": "^5.16.0",
-        "nodemon": "^1.19.1"
+        "eslint": "^5.16.0"
     }
 }

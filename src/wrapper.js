@@ -3,7 +3,7 @@ const log = require("simple-console-logger").getLogger("LiveMap Wrapper");
 const EventsWrapper = (SocketController) => {
 
     const setStaticData = (source, id) => {
-        SocketController.AddPlayerData(id, "identifer", id); // I miss spelt this previously..
+        SocketController.AddPlayerData(id, "identifier", id);
         SocketController.AddPlayerData(id, "name", GetPlayerName(source));
     };
 
