@@ -18,16 +18,22 @@ logger.configure({
 });
 const log = logger.getLogger("LiveMap");
 
-
 router.use(async (ctx, next) => {
     ctx.response.append("Access-Control-Allow-Origin", access);
     next();
 });
 
-require("./src/blips")(router); 
-require("./src/sockets")(wss, access);
+const SocketController = require("LivemapSocketController")(access);
+SocketController.hook(wss);
 
-app.use(koaBody({
+// Passing the SocketController through as we need it to keep blips updated on the client. Plus, I can't seem to just "require" the server in the BlipController.
+const BlipController = require("LivemapBlipController")(SocketController);
+
+router.get("/blips", BlipController.getBlips);
+router.get("/blips.json", BlipController.getBlips);
+
+app.use(koaBody(
+    {
     patchKoa: true,
 }))
     .use(router.routes())
