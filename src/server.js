@@ -22,6 +22,7 @@ router.use(async (ctx, next) => {
     next();
 });
 
+require("./src/blips")(router); 
 app.use(koaBody({
     patchKoa: true,
 }))
