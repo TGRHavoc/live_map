@@ -1,12 +1,14 @@
 const Koa = require("koa");
 const koaBody = require("koa-body");
 const Router = require("koa-router");
+const WS = require("ws");
 const http = require("http");
 const logger = require("simple-console-logger");
 
 const app = new Koa();
 const server = http.createServer(app.callback());
 const router = new Router();
+const wss = new WS.Server({ server });
 
 const debugLevel = GetConvar("livemap_debug_level", "warn");
 const access = GetConvar("livemap_access_control", "*");
@@ -23,6 +25,8 @@ router.use(async (ctx, next) => {
 });
 
 require("./src/blips")(router); 
+require("./src/sockets")(wss, access);
+
 app.use(koaBody({
     patchKoa: true,
 }))
