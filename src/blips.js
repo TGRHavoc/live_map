@@ -150,7 +150,7 @@ const BlipController = (SocketController) => {
         // Get the index of the blip.. Making sure it exists
         let blipIndex = getBlipIndex(sprite, blip);
 
-        if (blipIndex === -1){
+        if (blipIndex !== -1){
             log.debug("Duplicate blip: %d = %o", blipIndex, blip);
             log.warn("Blip already exists... Cannot add it!");
             return;
