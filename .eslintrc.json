@@ -30,6 +30,6 @@
             "always"
         ],
         "no-console": "off",
-        "no-undef": "warn"
+        "no-undef": "off"
     }
 }

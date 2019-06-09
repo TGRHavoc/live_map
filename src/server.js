@@ -26,6 +26,8 @@ router.use(async (ctx, next) => {
 const SocketController = require("LivemapSocketController")(access);
 SocketController.hook(wss);
 
+require("LivemapEventsWrapper")(SocketController);
+
 // Passing the SocketController through as we need it to keep blips updated on the client. Plus, I can't seem to just "require" the server in the BlipController.
 const BlipController = require("LivemapBlipController")(SocketController);
 
@@ -34,8 +36,8 @@ router.get("/blips.json", BlipController.getBlips);
 
 app.use(koaBody(
     {
-    patchKoa: true,
-}))
+        patchKoa: true,
+    }))
     .use(router.routes())
     .use(router.allowedMethods());
 
@@ -45,3 +47,5 @@ const port = GetConvarInt("socket_port", 30121);
 server.listen(port, function listening() {
     log.info("Listening on %d", port);
 });
+
+setInterval(SocketController.SendPlayerData, GetConvarInt("livemap_milliseconds", 500)); // Default = half a second.
