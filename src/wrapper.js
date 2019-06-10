@@ -38,7 +38,10 @@ const EventsWrapper = (SocketController) => {
     onNet("livemap:RemovePlayer", () => {
         SocketController.RemovePlayer(GetPlayerIdentifier(source, 0));
     });
-    
+
+    onNet("playerDropped", () => {
+        SocketController.RemovePlayer(GetPlayerIdentifier(source, 0));
+    });    
 
     return {};
 };
