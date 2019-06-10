@@ -1,6 +1,6 @@
 {
     "name": "fivem-live_map",
-    "version": "2.3.0",
+    "version": "2.3.1",
     "description": "The FiveM resource to get Havoc's LiveMap working#",
     "main": "index.js",
     "scripts": {

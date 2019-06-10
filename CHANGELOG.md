@@ -1,5 +1,15 @@
 # Changelog
 
+### [2.3.1](https://github.com/TGRHavoc/live_map/compare/v2.3.0...v2.3.1) (2019-06-10)
+
+
+### Bug Fixes
+
+* players not being removed after leaving server ([81811fb](https://github.com/TGRHavoc/live_map/commit/81811fb))
+* webpack and other dependencies not loading ([e1de1d6](https://github.com/TGRHavoc/live_map/commit/e1de1d6))
+
+
+
 ## [2.3.0](https://github.com/TGRHavoc/live_map/compare/v2.2.12...v2.3.0) (2019-06-09)
 
 
