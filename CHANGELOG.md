@@ -1,5 +1,19 @@
 # Changelog
 
+### [2.3.2](https://github.com/TGRHavoc/live_map/compare/v2.3.1...v2.3.2) (2019-06-11)
+
+
+### Bug Fixes
+
+* **sockets:** removeplayer function `paylod` -> `payload` ([0a5de15](https://github.com/TGRHavoc/live_map/commit/0a5de15))
+
+
+### Changes
+
+* **sockets:** conform to own style ([ead5fc2](https://github.com/TGRHavoc/live_map/commit/ead5fc2))
+
+
+
 ### [2.3.1](https://github.com/TGRHavoc/live_map/compare/v2.3.0...v2.3.1) (2019-06-10)
 
 
