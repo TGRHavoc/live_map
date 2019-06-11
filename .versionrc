@@ -1,9 +1,6 @@
 
 {
 	"changelogHeader" : "# Changelog\n",
-	"skip": {
-		"bump": true
-	},
     "commit-all": true,
 	"types": [
 		{

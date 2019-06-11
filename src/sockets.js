@@ -128,7 +128,7 @@ const SocketController = (access) => {
         delete playerData[identifier];
         websocketServer.broadcast(JSON.stringify({
             type: "playerLeft",
-            paylod: identifier
+            payload: identifier
         }));
     };
     const AddBlip = (blip) => {
