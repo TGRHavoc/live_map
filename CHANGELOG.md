@@ -13,7 +13,6 @@
 * **sockets:** conform to own style ([ead5fc2](https://github.com/TGRHavoc/live_map/commit/ead5fc2))
 
 
-
 ### [2.3.1](https://github.com/TGRHavoc/live_map/compare/v2.3.0...v2.3.1) (2019-06-10)
 
 
