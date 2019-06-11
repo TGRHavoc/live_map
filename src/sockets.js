@@ -102,7 +102,7 @@ const SocketController = (access) => {
         UpdatePlayerData(identifier, key, data); // It'll get added in here anyways...
     };
     const UpdatePlayerData = (identifier, key, data) => {
-        if (!checkInputs(identifier, key, data)){
+        if (!checkInputs(identifier, key, data)) {
             return;
         }
         makeSurePlayerExists(identifier);
@@ -110,17 +110,17 @@ const SocketController = (access) => {
         playerData[identifier][key] = data;
     };
     const RemovePlayerData = (identifier, key) => {
-        if(!checkInputs(identifier, key, "s")){
+        if(!checkInputs(identifier, key, "s")) {
             return;
         }
         makeSurePlayerExists(identifier);
 
-        if (playerData[identifier][key] !== undefined){
+        if (playerData[identifier][key] !== undefined) {
             delete playerData[identifier][key];
         }
     };
     const RemovePlayer = (identifier) => {
-        if (!identifier){
+        if (!identifier) {
             log.warn("Cannot remove player with no identifier");
             return;
         }
@@ -132,7 +132,7 @@ const SocketController = (access) => {
         }));
     };
     const AddBlip = (blip) => {
-        if(!validBlip(blip)){
+        if(!validBlip(blip)) {
             return;
         }
 
@@ -142,7 +142,7 @@ const SocketController = (access) => {
         }));
     };
     const RemoveBlip = (blip) => {
-        if(!validBlip(blip)){
+        if(!validBlip(blip)) {
             return;
         }
 
@@ -152,7 +152,7 @@ const SocketController = (access) => {
         }));
     };
     const UpdateBlip = (blip) => {
-        if(!validBlip(blip)){
+        if(!validBlip(blip)) {
             return;
         }
 
