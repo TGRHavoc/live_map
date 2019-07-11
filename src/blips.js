@@ -29,6 +29,7 @@ const BlipController = (SocketController) => {
             }
         } else {
             try {
+                fs.mkdirSync(path.dirname(blipFile), {recursive: true});
                 fs.writeFileSync(blipFile, "{}");
             } catch (err) {
                 log.warn("Error writing empty blip file... %s", err.message);
@@ -49,6 +50,7 @@ const BlipController = (SocketController) => {
             // Make an empty blip file?
             blips = {};
             try {
+                fs.mkdirSync(bl);
                 fs.writeFileSync(blipFile, "{}");
             } catch (err) {
                 log.warn("Error writing empty blip file... %s", err.message);
