@@ -5,7 +5,7 @@ const path = require("path");
 const BlipController = (SocketController) => {
     let playerWhoGeneratedBlips = null;
     let blips = null;
-    const blipFile = path.join("resources", GetCurrentResourceName(), GetConvar("blip_file", "server/blips.json"));
+    const blipFile = GetConvar("blip_file", "server/blips.json");
     
     // Middleware to send the blips
     const getBlips = (ctx) => {
@@ -20,41 +20,27 @@ const BlipController = (SocketController) => {
 
     // function to save blips to blip file
     const saveBlips = () => {
-        let exists = fs.existsSync(blipFile);
-        if (exists) {
-            try {
-                fs.writeFileSync(blipFile, JSON.stringify(blips, null, 4));
-            } catch (err) {
-                log.warn("Error when writing to blips.json file. %s", err.message);
-            }
+        const saved = SaveResourceFile(GetCurrentResourceName(), blipFile, JSON.stringify(blips, null, 4), -1);
+
+        if (saved) {
+            log.info("Saved blip file");
         } else {
-            try {
-                fs.mkdirSync(path.dirname(blipFile), {recursive: true});
-                fs.writeFileSync(blipFile, "{}");
-            } catch (err) {
-                log.warn("Error writing empty blip file... %s", err.message);
-            }
+            log.warn("Error writing to blip file... Maybe permissions aren't correct?");
         }
     };
     // function to load blips from blip file
     const loadBlips = () => {
-        let exists = fs.existsSync(blipFile);
-        if (exists) {
-            const rawData = fs.readFileSync(blipFile);
+        const loaded = LoadResourceFile(GetCurrentResourceName(), blipFile);
+        if (loaded) {
             try {
-                blips = JSON.parse(rawData);
+                blips = JSON.parse(loaded);
             } catch (err) {
                 log.warn("Error when parsing blips.json file. Please make sure it's valid JSON. %s", err.message);
             }
         } else {
             // Make an empty blip file?
             blips = {};
-            try {
-                fs.mkdirSync(bl);
-                fs.writeFileSync(blipFile, "{}");
-            } catch (err) {
-                log.warn("Error writing empty blip file... %s", err.message);
-            }
+            saveBlips();
         }
     };
 
