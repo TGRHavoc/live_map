@@ -1,5 +1,19 @@
 # Changelog
 
+### [2.3.3](https://github.com/TGRHavoc/live_map/compare/v2.3.2...v2.3.3) (2019-07-11)
+
+
+### Bug Fixes
+
+* directory not being created for blips file ([907c4ea](https://github.com/TGRHavoc/live_map/commit/907c4ea))
+
+
+### Changes
+
+* add comma to entries in blip_helper ([db39357](https://github.com/TGRHavoc/live_map/commit/db39357)), closes [#32](https://github.com/TGRHavoc/live_map/issues/32)
+
+
+
 ### [2.3.2](https://github.com/TGRHavoc/live_map/compare/v2.3.1...v2.3.2) (2019-06-11)
 
 
