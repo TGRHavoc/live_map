@@ -1,6 +1,8 @@
 # fivem-live_map
 
-[![Master Build](https://travis-ci.org/TGRHavoc/live_map.svg?branch=master)](https://travis-ci.org/TGRHavoc/live_map)
+<!-- TODO: Add AppVeyor link and badge, when intergrated -->
+
+[![Keybase.IO Team](https://img.shields.io/badge/KeyBase.io-havocs__team-orange)](https://keybase.io/team/havocs_team)
 
 This is the "backend" code for the live_map addon for FiveM that is ran on the
 game server.
@@ -15,6 +17,7 @@ Download the ZIP file. And extract the contents into `resources/live_map/`.
 
 Add the following to your server.cfg file.
 
+<!-- TODO: Update, socket_port not needed with SSE. new fxserver has "expect" or something to start resources as well -->
 ```
 set socket_port 30121
 set livemap_debug "warn" # "[all]" 'trace', 'debug', 'info', 'warn', 'error', 'fatal', 'off'
@@ -31,6 +34,8 @@ This can be easily done with the in-game command `blips generate` (must be ran a
 
 ### Convars
 The following convars are available for you to change
+
+<!-- TODO: Update, socket_port not needed with SSE.-->
 
 | Name                    | Type           | Default Value       | Description |
 | ----------------------- | -------------  | ------------------: | ----------- |
@@ -101,6 +106,33 @@ TriggerEvent("livemap:internal_RemovePlayer", identifier)
 ```
 
 ## Built with
-* [Hellslicer/WebSocketServer](https://github.com/Hellslicer/WebSocketServer/blob/master/WebSocketEventListener.cs)
-* [deniszykov/WebSocketListener](https://github.com/deniszykov/WebSocketListener)
-* [JamesNK/Newtonsoft.Json](https://github.com/JamesNK/Newtonsoft.Json)
+<!-- TODO: Update with latest stuff !-->
+
+## Contributing
+
+Please read [CONTRIBUTING.md](.github/CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests to us.
+
+## Versioning
+
+We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/TGRHavoc/live_map/tags).
+
+## Authors
+
+* **Jordan Dalton** - *Initial work* - [TGRHavoc](https://github.com/TGRHavoc)
+* **Tom Grobbe** - *Location display and more* - [TomGrobbe](https://github.com/TomGrobbe)
+<!-- TODO: Add more, notable people here -->
+
+See also the list of [contributors](https://github.com/TGRHavoc/live_map/contributors) who participated in this project.
+
+## License
+
+This project is licensed under the CC BY-NC 4.0 License - see the [LICENSE.md](LICENSE.md) file for details
+
+## Donating
+
+Feel like donating?
+
+[![PayPal](https://www.paypalobjects.com/en_GB/i/btn/btn_donate_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=4PPJGZNAGWJHL&source=url)
+
+[![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/Y8Y0ZGX5)
+
