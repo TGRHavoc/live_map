@@ -1,3 +1,10 @@
+--[[
+            LiveMap - A LiveMap for FiveM servers
+              Copyright (C) 2017  Jordan Dalton
+
+You should have received a copy of the CC BY-NC 4.0 License
+along with this program in the file "LICENSE".  If not, see <https://creativecommons.org/licenses/by-nc/4.0/legalcode>.
+]]
 local blip_types = {
     Standard = 1,
     Jet = 16,

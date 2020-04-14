@@ -2,8 +2,8 @@
             LiveMap - A LiveMap for FiveM servers
               Copyright (C) 2017  Jordan Dalton
 
-You should have received a copy of the GNU General Public License
-along with this program in the file "LICENSE".  If not, see <http://www.gnu.org/licenses/>.
+You should have received a copy of the CC BY-NC 4.0 License
+along with this program in the file "LICENSE".  If not, see <https://creativecommons.org/licenses/by-nc/4.0/legalcode>.
 ]]
 
 local AREA_HASHES = {
