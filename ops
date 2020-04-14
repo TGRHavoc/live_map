@@ -1,1 +1,1 @@
-{"version":1,"ops":[{"type":1,"author":{"id":"be8e7c700adc45bcaca3ede23fdcebb01b1496f2"},"timestamp":1586895822,"title":"Create coding-style documentation","message":"At the moment, we don't have a coding style document for contributors to adhere to.","files":null}]}
+{"version":1,"ops":[{"type":5,"author":{"id":"be8e7c700adc45bcaca3ede23fdcebb01b1496f2"},"timestamp":1586895883,"added":["enhancement","documentation","non-critical"],"removed":null}]}
