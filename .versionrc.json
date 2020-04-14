@@ -2,6 +2,16 @@
 {
 	"changelogHeader" : "# Changelog\n",
     "commit-all": true,
+    "bumpFiles": [
+        {
+            "filename": "fxmanifest.lua",
+            "updater": ".standard-version/fx-updater.js"
+        },
+        {
+            "filename": "version.json",
+            "updater": ".standard-version/json.js"
+        }
+    ],
 	"types": [
 		{
 			"type": "feat",
@@ -18,7 +28,11 @@
 		{
 			"type": "perf",
 			"section": "Performance Changes"
-		},
+        },
+        {
+            "type": "docs",
+            "section": "Documentation"
+        },
 		{
 			"type": "test",
 			"section": "Tests",
