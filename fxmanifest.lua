@@ -1,8 +1,9 @@
-resource_manifest_version "44febabe-d386-4d18-afbe-5e627f4af937"
+fx_version "bodacious"
+game "gta5"
 
-dependency "yarn"
-dependency "webpack"
-webpack_config "webpack.config.js"
+author "TGR_Havoc"
+description ""
+version "1.0.0"
 
 client_scripts{
     "client/client.lua",
@@ -21,6 +22,7 @@ exports {
 }
 
 server_scripts{
-    "dist/livemap.js",
+    --"src/server.js",
+    "server/sse.lua",
     "server/update_check.lua"
 }

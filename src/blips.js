@@ -1,6 +1,4 @@
 const log = require("simple-console-logger").getLogger("LiveMap Blips");
-const fs = require("fs");
-const path = require("path");
 
 const BlipController = (SocketController) => {
     let playerWhoGeneratedBlips = null;
@@ -8,7 +6,7 @@ const BlipController = (SocketController) => {
     const blipFile = GetConvar("blip_file", "server/blips.json");
     
     // Middleware to send the blips
-    const getBlips = (ctx) => {
+    const getBlips = async (ctx) => {
         if (blips === null){
             ctx.body = JSON.stringify({
                 error: "blip cache is empty"
