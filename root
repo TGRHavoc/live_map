@@ -1,0 +1,1 @@
+{"version":1,"ops":[{"type":1,"author":{"id":"be8e7c700adc45bcaca3ede23fdcebb01b1496f2"},"timestamp":1508862989,"metadata":{"github-id":"MDU6SXNzdWUyNjgxMDI4MTU=","github-url":"https://github.com/TGRHavoc/live_map/issues/13","origin":"github"},"title":"Race condition when sending data to websockets","message":"","files":null}]}
