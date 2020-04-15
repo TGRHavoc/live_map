@@ -10,6 +10,10 @@
         {
             "filename": "version.json",
             "updater": ".standard-version/json.js"
+        },
+        {
+            "filename": "src/live_map/live_map.csproj",
+            "updater": ".standard-version/dotnet-updater.js"
         }
     ],
 	"types": [

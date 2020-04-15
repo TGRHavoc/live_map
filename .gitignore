@@ -1,16 +1,6 @@
 
 server/blips\.json
 
-OLD/
-
-GitVersion\.yml
-
-generate-changes\.bat
-
-.changelog.rc
-changelog.py
-
-node_modules/
-
-dist/livemap.js
-yarn.lock
+# Dotnet stuff
+[Oo]bj
+[Bb]in
