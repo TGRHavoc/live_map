@@ -6,7 +6,7 @@ echo Generating
 docfx
 
 echo Deploying
-ssh docs.tgrhavoc.co.uk "mkdir -p /sharedfolders/websites/docs.tgrhavoc.co.uk/livemap-resource/ && rm -rf /sharedfolders/websites/docs.tgrhavoc.co.uk/livemap-resource/"
+ssh docs.tgrhavoc.co.uk "mkdir -p /sharedfolders/websites/docs.tgrhavoc.co.uk/livemap-resource/ && rm -rf /sharedfolders/websites/docs.tgrhavoc.co.uk/livemap-resource/*"
 scp -r _site/* docs.tgrhavoc.co.uk:/sharedfolders/websites/docs.tgrhavoc.co.uk/livemap-resource/
 
 echo Done!
