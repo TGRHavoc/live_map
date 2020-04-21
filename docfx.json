@@ -1,0 +1,28 @@
+{
+    "build": {
+        "content": [
+            {
+                "files": [
+                    "*.md",
+                    "license",
+                    "*.yml"
+                ]
+            }
+        ],
+        "resource": [],
+        "dest": "_site",
+        "globalMetadata": {
+            "_appTitle": "LiveMap Documentation"
+        },
+        "fileMetadataFiles": [],
+        "template": [
+            "default"
+        ],
+        "postProcessors": [],
+        "markdownEngineName": "markdig",
+        "noLangKeyword": false,
+        "keepFileLink": false,
+        "cleanupCacheHistory": false,
+        "disableGitFeatures": false
+    }
+}
