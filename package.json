@@ -20,13 +20,13 @@
     "dependencies": {
         "koa": "^2.7.0",
         "koa-body": "^4.1.0",
-        "koa-router": "^7.4.0",
+        "koa-router": "^10.0.0",
         "simple-console-logger": "^2.0.2",
-        "socket.io": "^2.2.0",
-        "webpack": "^4.33.0",
+        "socket.io": "^3.0.4",
+        "webpack": "^5.11.0",
         "ws": "^7.0.0"
     },
     "devDependencies": {
-        "eslint": "^5.16.0"
+        "eslint": "^7.16.0"
     }
 }
