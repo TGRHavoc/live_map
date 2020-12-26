@@ -41,7 +41,25 @@ const EventsWrapper = (SocketController) => {
 
     onNet("playerDropped", () => {
         SocketController.RemovePlayer(GetPlayerIdentifier(source, 0));
-    });    
+    });
+
+
+    // Internal events for server-side scripts. See https://github.com/TGRHavoc/live_map/issues/45
+    on("livemap:internal_AddPlayerData", (id, k, d) => {
+        SocketController.AddPlayerData(id, k, d);
+    });
+
+    on("livemap:internal_UpdatePlayerData", (id, k, d) => {
+        SocketController.UpdatePlayerData(id, k, d);
+    });
+
+    on("livemap:internal_RemovePlayerData", (id, k) => {
+        SocketController.RemovePlayerData(id, k);
+    });
+
+    on("livemap:internal_RemovePlayer", (id) => {
+        SocketController.RemovePlayer(id);
+    });
 
     return {};
 };
