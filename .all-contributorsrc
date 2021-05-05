@@ -6,6 +6,13 @@
   "files": [
     "docs/README.md"
   ],
+  "types": {
+    "testing": {
+      "symbol": "⚠️",
+      "description": "Tested changes and confirmed bugs.",
+      "link": "[<%= symbol %>](\"<%= description %>\"),"
+    }
+  },
   "imageSize": 100,
   "commit": true,
   "commitConvention": "angular",
@@ -38,6 +45,15 @@
       "profile": "https://github.com/davwheat",
       "contributions": [
         "bug"
+      ]
+    },
+    {
+      "login": "KjayCopper",
+      "name": "KjayCopper",
+      "avatar_url": "https://avatars.githubusercontent.com/u/20233127?v=4",
+      "profile": "https://github.com/KjayCopper",
+      "contributions": [
+        "testing"
       ]
     }
   ],
