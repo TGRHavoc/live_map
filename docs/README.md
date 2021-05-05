@@ -1,4 +1,12 @@
-# fivem-live_map
+---
+layout: default
+title: LiveMap Resource
+nav_order: 1
+has_children: true
+permalink: /livemap-resource
+---
+
+# live_map
 
 This is the "backend" code for the live_map addon for FiveM that is ran on the
 game server.
