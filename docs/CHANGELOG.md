@@ -1,3 +1,9 @@
+---
+layout: default
+title: Changelog
+nav_order: 9999
+parent: LiveMap Resource
+---
 # Changelog
 
 ## [2.4.0](https://github.com/TGRHavoc/live_map/compare/v2.3.4...v2.4.0) (2020-12-26)
