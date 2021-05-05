@@ -8,7 +8,7 @@ permalink: /livemap-resource
 
 # live_map
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-8-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-9-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 This is the "backend" code for the live_map addon for FiveM that is ran on the
@@ -126,6 +126,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   </tr>
   <tr>
     <td align="center"><a href="https://github.com/avery1227"><img src="https://avatars.githubusercontent.com/u/12959747?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Avery Johnson</b></sub></a><br /><a href="https://github.com/TGRHavoc/live_map/commits?author=avery1227" title="Code">💻</a></td>
+    <td align="center"><a href="https://tomgrobbe.nl/"><img src="https://avatars.githubusercontent.com/u/31419184?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Tom</b></sub></a><br /><a href="https://github.com/TGRHavoc/live_map/commits?author=TomGrobbe" title="Code">💻</a></td>
   </tr>
 </table>
 
