@@ -1,0 +1,27 @@
+{
+  "projectName": "live_map",
+  "projectOwner": "TGRHavoc",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "files": [
+    "docs/README.md"
+  ],
+  "imageSize": 100,
+  "commit": true,
+  "commitConvention": "angular",
+  "contributors": [
+    {
+      "login": "TGRHavoc",
+      "name": "Jordan Dalton",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1770893?v=4",
+      "profile": "https://tgrhavoc.co.uk/",
+      "contributions": [
+        "code",
+        "bug",
+        "ideas",
+        "doc"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7
+}
