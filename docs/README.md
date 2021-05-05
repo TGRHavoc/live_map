@@ -8,7 +8,7 @@ permalink: /livemap-resource
 
 # live_map
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 This is the "backend" code for the live_map addon for FiveM that is ran on the
@@ -117,6 +117,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <table>
   <tr>
     <td align="center"><a href="https://tgrhavoc.co.uk/"><img src="https://avatars.githubusercontent.com/u/1770893?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Jordan Dalton</b></sub></a><br /><a href="https://github.com/TGRHavoc/live_map/commits?author=TGRHavoc" title="Code">💻</a> <a href="https://github.com/TGRHavoc/live_map/issues?q=author%3ATGRHavoc" title="Bug reports">🐛</a> <a href="#ideas-TGRHavoc" title="Ideas, Planning, & Feedback">🤔</a> <a href="https://github.com/TGRHavoc/live_map/commits?author=TGRHavoc" title="Documentation">📖</a></td>
+    <td align="center"><a href="https://xlxacidxlx.com/"><img src="https://avatars.githubusercontent.com/u/7502881?v=4?s=100" width="100px;" alt=""/><br /><sub><b>AciD</b></sub></a><br /><a href="https://github.com/TGRHavoc/live_map/issues?q=author%3AxlxAciDxlx" title="Bug reports">🐛</a></td>
   </tr>
 </table>
 
