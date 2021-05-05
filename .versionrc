@@ -8,6 +8,10 @@
             "updater": "tools/standard-version-bump.js"
         },
         {
+            "filename": "fxmanifest.lua",
+            "updater": "tools/bump-fxmanifest.js"
+        },
+        {
             "filename": "package.json",
             "type": "json"
         }
