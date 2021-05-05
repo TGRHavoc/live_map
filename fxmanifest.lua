@@ -3,7 +3,7 @@ game "gta5"
 
 author "TGR_Havoc"
 description ""
-version "2.3.2"
+version "3.0.0"
 
 --[[ If you want to use the example client, delete this line
 client_script "example_client/*.lua"

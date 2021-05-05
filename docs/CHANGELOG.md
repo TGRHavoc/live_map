@@ -6,6 +6,23 @@ parent: LiveMap Resource
 ---
 # Changelog
 
+## [3.0.0](https://github.com/TGRHavoc/live_map/compare/v2.3.4...v3.0.0) (2021-05-05)
+
+
+### ⚠ BREAKING CHANGES
+
+* update to fxversion
+
+### Features
+
+* remove old files from server before deploying ([3e9a9ad](https://github.com/TGRHavoc/live_map/commit/3e9a9adbbe65d308d82eac5ebdb1723ab490195b))
+* update to fxversion ([b049789](https://github.com/TGRHavoc/live_map/commit/b0497891e710ae2610f9bf7aa2fa431c48d03618))
+
+
+### Bug Fixes
+
+* typo in docs.bat ([172eb10](https://github.com/TGRHavoc/live_map/commit/172eb1016075e006a71b55362e32c941ac4cda88))
+
 ## [2.4.0](https://github.com/TGRHavoc/live_map/compare/v2.3.4...v2.4.0) (2020-12-26)
 
 
