@@ -27,6 +27,8 @@
         "ws": "^7.0.0"
     },
     "devDependencies": {
-        "eslint": "^7.16.0"
+        "all-contributors-cli": "^6.20.0",
+        "eslint": "^7.16.0",
+        "standard-version": "^9.3.0"
     }
 }

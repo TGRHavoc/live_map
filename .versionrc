@@ -1,38 +1,48 @@
-
 {
-	"changelogHeader" : "# Changelog\n",
+    "header": "---\nlayout: default\ntitle: Changelog\nnav_order: 9999\nparent: LiveMap Resource\n---\n# Changelog\n",
     "commit-all": true,
-	"types": [
-		{
-			"type": "feat",
-			"section": "Features"
-		},
-		{
-			"type": "fix",
-			"section": "Bug Fixes"
-		},
-		{
-			"type": "refactor",
-			"section": "Changes"
-		},
-		{
-			"type": "perf",
-			"section": "Performance Changes"
-		},
-		{
-			"type": "test",
-			"section": "Tests",
-			"hidden": true
-		},
-		{
-			"type": "build",
-			"section": "Build System",
-			"hidden": true
-		}, 
-		{
-			"type": "ci",
-			"section": "Continuous Intergration",
-			"hidden": true
-		}
-	]
+    "infile": "docs/CHANGELOG.md",
+    "bumpFiles": [
+        {
+            "filename": "version.json",
+            "updater": "tools/standard-version-bump.js"
+        },
+        {
+            "filename": "package.json",
+            "type": "json"
+        }
+    ],
+    "types": [
+        {
+            "type": "feat",
+            "section": "Features"
+        },
+        {
+            "type": "fix",
+            "section": "Bug Fixes"
+        },
+        {
+            "type": "refactor",
+            "section": "Changes"
+        },
+        {
+            "type": "perf",
+            "section": "Performance Changes"
+        },
+        {
+            "type": "test",
+            "section": "Tests",
+            "hidden": true
+        },
+        {
+            "type": "build",
+            "section": "Build System",
+            "hidden": true
+        },
+        {
+            "type": "ci",
+            "section": "Continuous Intergration",
+            "hidden": true
+        }
+    ]
 }
