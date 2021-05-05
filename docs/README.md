@@ -8,7 +8,7 @@ permalink: /livemap-resource
 
 # live_map
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-6-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-7-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 This is the "backend" code for the live_map addon for FiveM that is ran on the
@@ -122,6 +122,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/KjayCopper"><img src="https://avatars.githubusercontent.com/u/20233127?v=4?s=100" width="100px;" alt=""/><br /><sub><b>KjayCopper</b></sub></a><br /><a href="#testing-KjayCopper" title="Tested changes and confirmed bugs.">⚠️</a></td>
     <td align="center"><a href="https://github.com/jiynn"><img src="https://avatars.githubusercontent.com/u/33206565?v=4?s=100" width="100px;" alt=""/><br /><sub><b>jiynn</b></sub></a><br /><a href="https://github.com/TGRHavoc/live_map/issues?q=author%3Ajiynn" title="Bug reports">🐛</a></td>
     <td align="center"><a href="https://github.com/mbergwall2222"><img src="https://avatars.githubusercontent.com/u/20733527?v=4?s=100" width="100px;" alt=""/><br /><sub><b>mbergwall2222</b></sub></a><br /><a href="https://github.com/TGRHavoc/live_map/issues?q=author%3Ambergwall2222" title="Bug reports">🐛</a></td>
+    <td align="center"><a href="https://sites.google.com/site/jaymontana36jasen/"><img src="https://avatars.githubusercontent.com/u/6281870?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Jasen Samuels</b></sub></a><br /><a href="https://github.com/TGRHavoc/live_map/issues?q=author%3AJayMontana36" title="Bug reports">🐛</a></td>
   </tr>
 </table>
 

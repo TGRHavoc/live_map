@@ -72,6 +72,15 @@
       "contributions": [
         "bug"
       ]
+    },
+    {
+      "login": "JayMontana36",
+      "name": "Jasen Samuels",
+      "avatar_url": "https://avatars.githubusercontent.com/u/6281870?v=4",
+      "profile": "https://sites.google.com/site/jaymontana36jasen/",
+      "contributions": [
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7
