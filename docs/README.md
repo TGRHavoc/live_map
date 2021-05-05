@@ -1,13 +1,9 @@
 # fivem-live_map
 
-[![Master Build](https://travis-ci.org/TGRHavoc/live_map.svg?branch=master)](https://travis-ci.org/TGRHavoc/live_map)
-
 This is the "backend" code for the live_map addon for FiveM that is ran on the
 game server.
 It creates a websocket server so that it can communicate to the
 web interface.
-
-<!-- Testing webhook -->
 
 ## How to install
 
@@ -99,8 +95,3 @@ TriggerEvent("livemap:internal_RemovePlayerData", identifier, "Name")
 TriggerEvent("livemap:internal_RemovePlayer", identifier)
 
 ```
-
-## Built with
-* [Hellslicer/WebSocketServer](https://github.com/Hellslicer/WebSocketServer/blob/master/WebSocketEventListener.cs)
-* [deniszykov/WebSocketListener](https://github.com/deniszykov/WebSocketListener)
-* [JamesNK/Newtonsoft.Json](https://github.com/JamesNK/Newtonsoft.Json)
