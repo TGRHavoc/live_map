@@ -9,8 +9,7 @@
   "types": {
     "testing": {
       "symbol": "⚠️",
-      "description": "Tested changes and confirmed bugs.",
-      "link": "[<%= symbol %>](\"<%= description %>\"),"
+      "description": "Tested changes and confirmed bugs."
     }
   },
   "imageSize": 100,
@@ -54,6 +53,15 @@
       "profile": "https://github.com/KjayCopper",
       "contributions": [
         "testing"
+      ]
+    },
+    {
+      "login": "jiynn",
+      "name": "jiynn",
+      "avatar_url": "https://avatars.githubusercontent.com/u/33206565?v=4",
+      "profile": "https://github.com/jiynn",
+      "contributions": [
+        "bug"
       ]
     }
   ],

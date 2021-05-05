@@ -8,7 +8,7 @@ permalink: /livemap-resource
 
 # live_map
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-4-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-5-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 This is the "backend" code for the live_map addon for FiveM that is ran on the
@@ -119,7 +119,8 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://tgrhavoc.co.uk/"><img src="https://avatars.githubusercontent.com/u/1770893?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Jordan Dalton</b></sub></a><br /><a href="https://github.com/TGRHavoc/live_map/commits?author=TGRHavoc" title="Code">💻</a> <a href="https://github.com/TGRHavoc/live_map/issues?q=author%3ATGRHavoc" title="Bug reports">🐛</a> <a href="#ideas-TGRHavoc" title="Ideas, Planning, & Feedback">🤔</a> <a href="https://github.com/TGRHavoc/live_map/commits?author=TGRHavoc" title="Documentation">📖</a></td>
     <td align="center"><a href="https://xlxacidxlx.com/"><img src="https://avatars.githubusercontent.com/u/7502881?v=4?s=100" width="100px;" alt=""/><br /><sub><b>AciD</b></sub></a><br /><a href="https://github.com/TGRHavoc/live_map/issues?q=author%3AxlxAciDxlx" title="Bug reports">🐛</a></td>
     <td align="center"><a href="https://github.com/davwheat"><img src="https://avatars.githubusercontent.com/u/7406822?v=4?s=100" width="100px;" alt=""/><br /><sub><b>David Wheatley</b></sub></a><br /><a href="https://github.com/TGRHavoc/live_map/issues?q=author%3Adavwheat" title="Bug reports">🐛</a></td>
-    <td align="center"><a href="https://github.com/KjayCopper"><img src="https://avatars.githubusercontent.com/u/20233127?v=4?s=100" width="100px;" alt=""/><br /><sub><b>KjayCopper</b></sub></a><br /><a href="[⚠️]("Tested changes and confirmed bugs.")," title="Tested changes and confirmed bugs.">⚠️</a></td>
+    <td align="center"><a href="https://github.com/KjayCopper"><img src="https://avatars.githubusercontent.com/u/20233127?v=4?s=100" width="100px;" alt=""/><br /><sub><b>KjayCopper</b></sub></a><br /><a href="#testing-KjayCopper" title="Tested changes and confirmed bugs.">⚠️</a></td>
+    <td align="center"><a href="https://github.com/jiynn"><img src="https://avatars.githubusercontent.com/u/33206565?v=4?s=100" width="100px;" alt=""/><br /><sub><b>jiynn</b></sub></a><br /><a href="https://github.com/TGRHavoc/live_map/issues?q=author%3Ajiynn" title="Bug reports">🐛</a></td>
   </tr>
 </table>
 
