@@ -30,6 +30,15 @@
       "contributions": [
         "bug"
       ]
+    },
+    {
+      "login": "davwheat",
+      "name": "David Wheatley",
+      "avatar_url": "https://avatars.githubusercontent.com/u/7406822?v=4",
+      "profile": "https://github.com/davwheat",
+      "contributions": [
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7
