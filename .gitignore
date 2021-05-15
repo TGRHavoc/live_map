@@ -12,7 +12,6 @@ changelog.py
 
 node_modules/
 
-dist/livemap.js
 yarn.lock
 
 obj/
