@@ -1,26 +1,10 @@
 --[[
-            LiveMap - A LiveMap for FiveM servers
-              Copyright (C) 2017  Jordan Dalton
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program in the file "LICENSE".  If not, see <http://www.gnu.org/licenses/>.
-]]
-
---[[
+This file is deprecated.
+This is the original implementation of the "blip server", only kept for my amusement and educational purposes.
+]] --[[
     When the client has generated the blips, this is called to save them.
     @param blipTable A array that contains all the blips to save
-]]
-RegisterServerEvent("livemap:blipsGenerated")
+]] RegisterServerEvent("livemap:blipsGenerated")
 
 --[[
     Adds a blip to the blips that the UI can see (will be saved)
@@ -61,8 +45,6 @@ RegisterServerEvent("livemap:UpdateBlip")
 RegisterServerEvent("livemap:RemoveClosestBlip")
 RegisterServerEvent("livemap:RemoveBlip")
 
-
-
 -- An array of blips that we have. This is encoded into JSON and sent over HTTP (when requested)
 local blips = {}
 
@@ -82,9 +64,7 @@ local playerWhoGeneratedBlips = nil
     @returns boolean True if the array is empty, False otherwise
 ]]
 function blipsIsEmpty()
-    for _, _ in pairs(blips) do
-        return false
-    end
+    for _, _ in pairs(blips) do return false end
     return true
 end
 
@@ -99,14 +79,10 @@ end
     @return int The index that the blip is found at, -1 if not found.
 ]]
 function blipsContainsBlip(id, x, y, z)
-    if blips[id] == nil then
-        return -1
-    end
+    if blips[id] == nil then return -1 end
 
-    for k,v in ipairs(blips[id]) do
-        if v.pos.x == x and v.pos.y == y and v.pos.z == z then
-            return k
-        end
+    for k, v in ipairs(blips[id]) do
+        if v.pos.x == x and v.pos.y == y and v.pos.z == z then return k end
     end
 
     return -1
@@ -122,9 +98,7 @@ function sendBlips(res)
     if not blipsIsEmpty() then
         res.send(json.encode(blips))
     else
-        res.send(json.encode({
-            error = "blip cache is empty"
-        }))
+        res.send(json.encode({error = "blip cache is empty"}))
     end
 end
 
@@ -139,10 +113,12 @@ function saveBlips()
     end
 
     local blipFile = GetConvar("blip_file", "server/blips.json")
-    local saved = SaveResourceFile(GetCurrentResourceName(), blipFile, json.encode(blips, {indent = true}), -1)
+    local saved = SaveResourceFile(GetCurrentResourceName(), blipFile,
+                                   json.encode(blips, {indent = true}), -1)
 
     if not saved then
-        print("LiveMap couldn't save the blips to file.. Maybe the directory isn't writable?")
+        print(
+            "LiveMap couldn't save the blips to file.. Maybe the directory isn't writable?")
     end
 
 end
@@ -153,17 +129,18 @@ end
     ===================================
 ]]
 
-
 AddEventHandler("livemap:AddBlip", function(blip)
 
     if not blip["sprite"] or blip["sprite"] == nil then
         -- We don't have a sprite id... we can't save it :(
-        print("LiveMap Error: AddBlip cannot run because no sprite wasn't supplied.")
+        print(
+            "LiveMap Error: AddBlip cannot run because no sprite wasn't supplied.")
         return
     end
 
     if not blip["pos"] or blip["pos"] == nil then
-        print("LiveMap Error:: AddBlip cannot run because the pos wasn't supplied.")
+        print(
+            "LiveMap Error:: AddBlip cannot run because the pos wasn't supplied.")
         return
     end
 
@@ -177,16 +154,15 @@ AddEventHandler("livemap:AddBlip", function(blip)
     blip["pos"].z = tonumber(string.format("%.2f", blip["pos"].z))
 
     if blipsContainsBlip(id, blip.pos.x, blip.pos.y, blip.pos.z) == -1 then
-        if blips[id] == nil then
-            blips[id] = {}
-        end
+        if blips[id] == nil then blips[id] = {} end
 
         table.insert(blips[id], blip)
         TriggerEvent("livemap:internal_AddBlip", id, blip)
         print("Sending addBlip for " .. id)
 
     else
-        print("Blip already exists at " .. blip.pos.x .. "," .. blip.pos.y .. "," .. blip.pos.z)
+        print("Blip already exists at " .. blip.pos.x .. "," .. blip.pos.y ..
+                  "," .. blip.pos.z)
     end
 end)
 
@@ -194,12 +170,14 @@ AddEventHandler("livemap:UpdateBlip", function(blip)
 
     if not blip["sprite"] or blip["sprite"] == nil then
         -- We don't have a sprite id... we can't save it :(
-        print("LiveMap Error: UpdateBlip cannot run because no sprite wasn't supplied.")
+        print(
+            "LiveMap Error: UpdateBlip cannot run because no sprite wasn't supplied.")
         return
     end
 
     if not blip["pos"] or blip["pos"] == nil then
-        print("LiveMap Error:: UpdateBlip cannot run because the pos wasn't supplied.")
+        print(
+            "LiveMap Error:: UpdateBlip cannot run because the pos wasn't supplied.")
         return
     end
 
@@ -220,9 +198,7 @@ AddEventHandler("livemap:UpdateBlip", function(blip)
 
     else
         -- Blip doesn't exist, add it?
-        if blips[id] == nil then
-            blips[id] = {}
-        end
+        if blips[id] == nil then blips[id] = {} end
 
         table.insert(blips[id], blip)
 
@@ -235,12 +211,14 @@ AddEventHandler("livemap:RemoveBlip", function(blip)
 
     if not blip["sprite"] or blip["sprite"] == nil then
         -- We don't have a sprite id... we can't save it :(
-        print("LiveMap Error: RemoveBlip cannot run because no sprite wasn't supplied.")
+        print(
+            "LiveMap Error: RemoveBlip cannot run because no sprite wasn't supplied.")
         return
     end
 
     if not blip["pos"] or blip["pos"] == nil then
-        print("LiveMap Error:: RemoveBlip cannot run because the pos wasn't supplied.")
+        print(
+            "LiveMap Error:: RemoveBlip cannot run because the pos wasn't supplied.")
         return
     end
 
@@ -295,12 +273,16 @@ AddEventHandler("livemap:RemoveClosestBlip", function(playerPos)
         return
     end
 
-    print("Removing closest blip ("..sprite..") located at: " .. currentClosest.pos.x .. ", " .. currentClosest.pos.y .. ", " .. currentClosest.pos.z)
+    print("Removing closest blip (" .. sprite .. ") located at: " ..
+              currentClosest.pos.x .. ", " .. currentClosest.pos.y .. ", " ..
+              currentClosest.pos.z)
 
-    local index = blipsContainsBlip(sprite, currentClosest.pos.x, currentClosest.pos.y, currentClosest.pos.z)
+    local index = blipsContainsBlip(sprite, currentClosest.pos.x,
+                                    currentClosest.pos.y, currentClosest.pos.z)
 
     if index == -1 then
-        print("LiveMap Error: Umm... The closest blip doesn't have an index.. Something seriously wrong here!!!")
+        print(
+            "LiveMap Error: Umm... The closest blip doesn't have an index.. Something seriously wrong here!!!")
     else
         blips[sprite][index] = nil
         TriggerEvent("livemap:internal_RemoveBlip", sprite, currentClosest)
@@ -308,12 +290,12 @@ AddEventHandler("livemap:RemoveClosestBlip", function(playerPos)
 
 end)
 
-
 AddEventHandler("livemap:blipsGenerated", function(blipTable)
     local id = GetPlayerIdentifier(source, 0)
 
     if playerWhoGeneratedBlips == nil or playerWhoGeneratedBlips ~= id then
-        print("playerWhoGeneratedBlips was incorrect.. Maybe \"" .. id .. "\" triggered the event themselves?\nEither way, I'm not doing it..")
+        print("playerWhoGeneratedBlips was incorrect.. Maybe \"" .. id ..
+                  "\" triggered the event themselves?\nEither way, I'm not doing it..")
         return
     end
 
@@ -340,8 +322,8 @@ AddEventHandler("onResourceStart", function(name)
             for spriteId, blipArray in pairs(blips) do
                 for _, blip in pairs(blipArray) do
                     if not blip["pos"] then
-                        blip.pos = {x=blip.x, y=blip.y, z=blip.z}
-                        blip.x, blip.y, blip.z = nil,nil,nil
+                        blip.pos = {x = blip.x, y = blip.y, z = blip.z}
+                        blip.x, blip.y, blip.z = nil, nil, nil
                     end
                 end
             end
@@ -370,7 +352,9 @@ end)
 RegisterCommand("blips", function(source, args, rawCommand)
     local playerId = GetPlayerIdentifier(source, 0)
     if args[1] == "generate" then
-        print("Generating blips using the in-game native: Player " .. playerId .. " is generating (I hope you know them)")
+        print(
+            "Generating blips using the in-game native: Player " .. playerId ..
+                " is generating (I hope you know them)")
         playerWhoGeneratedBlips = playerId
 
         TriggerClientEvent("livemap:getBlipsFromClient", source)
@@ -384,16 +368,15 @@ end, true)
     Handle HTTP requests. Mainly used for getting the blips via ajax from the UI
 ]]
 SetHttpHandler(function(req, res)
-	local path = req.path
+    local path = req.path
 
     -- Restrict the origin if set, otherwise allow everyone
-    res.writeHead(200, { ["Access-Control-Allow-Origin"] = GetConvar("livemap_access_control", "*")} )
+    res.writeHead(200, {
+        ["Access-Control-Allow-Origin"] = GetConvar("livemap_access_control",
+                                                    "*")
+    })
 
-    if path == "/blips" or path == "/blips.json" then
-        return sendBlips(res)
-    end
+    if path == "/blips" or path == "/blips.json" then return sendBlips(res) end
 
-    return res.send(json.encode({
-        error = "path \"" .. path .."\" not found"
-    }))
+    return res.send(json.encode({error = "path \"" .. path .. "\" not found"}))
 end)
