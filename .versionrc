@@ -1,6 +1,7 @@
 {
     "header": "---\nlayout: default\ntitle: Changelog\nnav_order: 9999\nparent: LiveMap Resource\n---\n# Changelog\n",
     "commit-all": true,
+    "releaseCommitMessageFormat": "chore(release): v{{currentTag}}",
     "infile": "docs/CHANGELOG.md",
     "bumpFiles": [
         {
