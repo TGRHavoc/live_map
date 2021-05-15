@@ -6,6 +6,14 @@ parent: LiveMap Resource
 ---
 # Changelog
 
+### [3.0.1](https://github.com/TGRHavoc/live_map/compare/v3.0.0...v3.0.1) (2021-05-15)
+
+
+### Bug Fixes
+
+* livemap not starting ([75491f0](https://github.com/TGRHavoc/live_map/commit/75491f0ae6744e6622c76843b6d1ebe0f75de918))
+* livemap not starting with latest fivem ([05e4217](https://github.com/TGRHavoc/live_map/commit/05e4217fe1b1b3337797574b5019642594c8d1bd))
+
 ## [3.0.0](https://github.com/TGRHavoc/live_map/compare/v2.3.4...v3.0.0) (2021-05-05)
 
 
