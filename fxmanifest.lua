@@ -5,9 +5,6 @@ author "TGR_Havoc"
 description ""
 version "3.0.0"
 
-dependency 'webpack'
-dependency 'yarn'
-
 client_script "example_client/*.lua"
 exports {
     "reverseWeaponHash",

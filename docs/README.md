@@ -1,7 +1,6 @@
 ---
 layout: default
 title: LiveMap Resource
-nav_order: 1
 has_children: true
 permalink: /livemap-resource
 ---
@@ -39,12 +38,12 @@ This can be easily done with the in-game command `blips generate` (must be ran a
 ### Convars
 The following convars are available for you to change
 
-| Name                    | Type           | Default Value       | Description |
-| ----------------------- | -------------  | ------------------: | ----------- |
-| socket_port             | int            | 30121               | Sets the port the socket server should listen on |
-| livemap_debug           | int            | 0                   | Sets how much information gets printed to the console (0 = none, 1 = basic information, 2 = all) |
-| blip_file               | string         | "server/blips.json" | Sets the file that will contain the generated blips that is exposed via HTTP |
-| livemap_access_control  | string         | "*"                 | Sets the domain that is allowed to access the blips.json file (E.g. "https://example.com" will only allow the UI on http://example.com to get the blips), "*" will allow everyone |
+| Name                   | Type   |       Default Value | Description                                                                                                                                                                       |
+| ---------------------- | ------ | ------------------: | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| socket_port            | int    |               30121 | Sets the port the socket server should listen on                                                                                                                                  |
+| livemap_debug          | int    |                   0 | Sets how much information gets printed to the console (0 = none, 1 = basic information, 2 = all)                                                                                  |
+| blip_file              | string | "server/blips.json" | Sets the file that will contain the generated blips that is exposed via HTTP                                                                                                      |
+| livemap_access_control | string |                 "*" | Sets the domain that is allowed to access the blips.json file (E.g. "https://example.com" will only allow the UI on http://example.com to get the blips), "*" will allow everyone |
 
 ## Events
 In an effort to make the addon useful to other developers, I've created a few events that can be used to make changes to the data being sent to the UI.
@@ -55,12 +54,12 @@ Below you can find some info on the server events that __must__ be triggered by 
 
 Note, when using `livemap:AddPlayerData` or `livemap:UpdatePlayerData` if the player has been removed using `livemap:RemovePlayer` they will be tracked again.
 
-| Name                     | Parameters               | Description |
-| ------------------------ | :----------------------: | ----------- |
-| livemap:AddPlayerData    | key (string), data (any) | Adds data to a player that gets sent over Websockets |
+| Name                     |        Parameters        | Description                                                                                  |
+| ------------------------ | :----------------------: | -------------------------------------------------------------------------------------------- |
+| livemap:AddPlayerData    | key (string), data (any) | Adds data to a player that gets sent over Websockets                                         |
 | livemap:UpdatePlayerData | key (string), data (any) | Updates the data that is associated with the player. Uses the same "key" as the above event. |
-| livemap:RemovePlayerData | key (string)             | Removed data associated with the player. Uses the same "key" as the above events. |
-| livemap:RemovePlayer     |                          | Stops sending a player data over Websockets |
+| livemap:RemovePlayerData |       key (string)       | Removed data associated with the player. Uses the same "key" as the above events.            |
+| livemap:RemovePlayer     |                          | Stops sending a player data over Websockets                                                  |
 
 Example usage:
 ```lua
@@ -81,12 +80,12 @@ TriggerServerEvent("livemap:RemovePlayer")
 
 Below you can find information on some server-only events. This can only be called on the server.
 
-| Name                              | Parameters                                     | Description |
-| --------------------------------- | :--------------------------------------------: | ----------- |
+| Name                              |                   Parameters                   | Description                                                                                        |
+| --------------------------------- | :--------------------------------------------: | -------------------------------------------------------------------------------------------------- |
 | livemap:internal_AddPlayerData    | identifier (string), key (string), value (any) | Adds data with the key that gets sent over Websockets for the player with the specified identifier |
-| livemap:internal_UpdatePlayerData | identifier (string), key (string), value (any) | Updated the data that is associated with the player with the identifier |
-| livemap:internal_RemovePlayerData | identifier (string), key (string)              | Removed the data that is associated with the player with the identifier |
-| livemap:internal_RemovePlayer     | identifier (string)                            | Removes a player from the websocket data array (stops tracking the player) |
+| livemap:internal_UpdatePlayerData | identifier (string), key (string), value (any) | Updated the data that is associated with the player with the identifier                            |
+| livemap:internal_RemovePlayerData |       identifier (string), key (string)        | Removed the data that is associated with the player with the identifier                            |
+| livemap:internal_RemovePlayer     |              identifier (string)               | Removes a player from the websocket data array (stops tracking the player)                         |
 
 Example usage:
 ```lua
