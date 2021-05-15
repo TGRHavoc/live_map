@@ -5,7 +5,9 @@ author "TGR_Havoc"
 description ""
 version "3.0.0"
 
---[[ If you want to use the example client, delete this line
+dependency 'webpack'
+dependency 'yarn'
+
 client_script "example_client/*.lua"
 exports {
     "reverseWeaponHash",
@@ -14,9 +16,5 @@ exports {
     "reverseZoneHash",
     "reverseAreaHash"
 }
-]] -- Remove this line as well
 
-server_scripts{
-    "server/update_check.lua",
-    "src/*.js"
-}
+server_scripts {"server/update_check.lua", "dist/livemap.js"}

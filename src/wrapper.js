@@ -1,4 +1,4 @@
-const log = require("simple-console-logger").getLogger("LiveMap Wrapper");
+const wrapperLog = require("simple-console-logger").getLogger("LiveMap Wrapper");
 
 const EventsWrapper = (SocketController) => {
 
@@ -10,7 +10,7 @@ const EventsWrapper = (SocketController) => {
     onNet("onResourceStart", (name) => {
         if (name == GetCurrentResourceName()){
             if (GetNumPlayerIndices() !== 0){
-                log.info("Players on the server... Initialising them");
+                wrapperLog.info("Players on the server... Initializing them");
                 for(let i = 0; i < GetNumPlayerIndices(); i++){
                     const id = GetPlayerIdentifier(GetPlayerFromIndex(i), 0);
                     setStaticData(GetPlayerFromIndex(i), id);
@@ -42,7 +42,6 @@ const EventsWrapper = (SocketController) => {
     onNet("playerDropped", () => {
         SocketController.RemovePlayer(GetPlayerIdentifier(source, 0));
     });
-
 
     // Internal events for server-side scripts. See https://github.com/TGRHavoc/live_map/issues/45
     on("livemap:internal_AddPlayerData", (id, k, d) => {

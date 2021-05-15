@@ -1,4 +1,4 @@
-const log = require("simple-console-logger").getLogger("LiveMap Blips");
+const blipLog = require("simple-console-logger").getLogger("LiveMap Blips");
 const fs = require("fs");
 const path = require("path");
 
@@ -23,9 +23,9 @@ const BlipController = (SocketController) => {
         const saved = SaveResourceFile(GetCurrentResourceName(), blipFile, JSON.stringify(blips, null, 4), -1);
 
         if (saved) {
-            log.info("Saved blip file");
+            blipLog.info("Saved blip file");
         } else {
-            log.warn("Error writing to blip file... Maybe permissions aren't correct?");
+            blipLog.warn("Error writing to blip file... Maybe permissions aren't correct?");
         }
     };
     // function to load blips from blip file
@@ -35,7 +35,7 @@ const BlipController = (SocketController) => {
             try {
                 blips = JSON.parse(loaded);
             } catch (err) {
-                log.warn("Error when parsing blips.json file. Please make sure it's valid JSON. %s", err.message);
+                blipLog.warn("Error when parsing blips.json file. Please make sure it's valid JSON. %s", err.message);
             }
         } else {
             // Make an empty blip file?
@@ -68,31 +68,31 @@ const BlipController = (SocketController) => {
 
     const validBlip = (blip) => {
         if (blip["sprite"] === undefined || blip["sprite"] === null) {
-            log.debug("Blip didn't have sprite: %o", blip);
-            log.warn("Blip has no sprite...");
+            blipLog.debug("Blip didn't have sprite: %o", blip);
+            blipLog.warn("Blip has no sprite...");
             return false;
         }
         
         if (blip["pos"] === undefined || blip["pos"] === null) {
-            log.debug("Blip didn't have pos: %o", blip);
-            log.warn("Blip has no position...");
+            blipLog.debug("Blip didn't have pos: %o", blip);
+            blipLog.warn("Blip has no position...");
             return false;
         }
 
         if (typeof(blip.pos) !== "object"){
-            log.warn("Blip position must be an object");
+            blipLog.warn("Blip position must be an object");
             return false;
         }
 
         if (blip.pos["x"] === undefined || blip.pos["y"] === undefined || blip.pos["z"] === undefined){
-            log.debug("Invalid position: %o", blip.pos);
-            log.warn("Blip position invalid");
+            blipLog.debug("Invalid position: %o", blip.pos);
+            blipLog.warn("Blip position invalid");
             return false;
         }
 
         if (typeof(blip.pos.x) !== "number" || typeof(blip.pos.y) !== "number" || typeof(blip.pos.z) !== "number"){
-            log.warn("Blip pos must be numbers");
-            log.debug("Invalid position: %o", blip.pos);
+            blipLog.warn("Blip pos must be numbers");
+            blipLog.debug("Invalid position: %o", blip.pos);
             return false;
         }
 
@@ -113,7 +113,7 @@ const BlipController = (SocketController) => {
     onNet("livemap:blipsGenerated", (blipTable) => {
         let playerIdentifier = GetPlayerIdentifier(source, 0);
         if (playerWhoGeneratedBlips === null || playerWhoGeneratedBlips !== playerIdentifier){
-            log.warn("playerWhoGeneratedBlips doesn't match... Not using the blips recieved");
+            blipLog.warn("playerWhoGeneratedBlips doesn't match... Not using the blips recieved");
             return;
         }
 
@@ -139,8 +139,8 @@ const BlipController = (SocketController) => {
         let blipIndex = getBlipIndex(sprite, blip);
 
         if (blipIndex !== -1){
-            log.debug("Duplicate blip: %d = %o", blipIndex, blip);
-            log.warn("Blip already exists... Cannot add it!");
+            blipLog.debug("Duplicate blip: %d = %o", blipIndex, blip);
+            blipLog.warn("Blip already exists... Cannot add it!");
             return;
         }
 
@@ -201,10 +201,10 @@ const BlipController = (SocketController) => {
         let blipIndex = getBlipIndex(sprite, blip);
         if (blipIndex !== -1) {
             delete blips[sprite][blipIndex];
-            log.info("Removed blip: %o", blip);
+            blipLog.info("Removed blip: %o", blip);
             SocketController.RemoveBlip(sprite, blip);
         }else{
-            log.warn("Cannot delete a blip that doesn't exist");
+            blipLog.warn("Cannot delete a blip that doesn't exist");
         }
     });
 
@@ -225,11 +225,11 @@ const BlipController = (SocketController) => {
             return;
         }
 
-        log.info("Removing closest blip. It's sprite is %d and position (dis=%d) is %o", sprite, closest.pos);
+        blipLog.info("Removing closest blip. It's sprite is %d and position (dis=%d) is %o", sprite, closest.pos);
 
         const blipToDelete = getBlipIndex(sprite, closest.pos);
         if (blipToDelete == -1){
-            log.debug("Closest blip doesn't exist? %o\n%O", closest, blips);
+            blipLog.debug("Closest blip doesn't exist? %o\n%O", closest, blips);
             return;
         }
 
@@ -239,15 +239,15 @@ const BlipController = (SocketController) => {
 
     RegisterCommand("blips", (src, args) => {
         if (src === 0) {
-            log.warn("Please run this command in game. Make sure you have ACE permissions set up");
-            log.warn("https://docs.tgrhavoc.me/livemap-resource/faq/#how-do-i-get-blips");
+            blipLog.warn("Please run this command in game. Make sure you have ACE permissions set up");
+            blipLog.warn("https://docs.tgrhavoc.me/livemap-resource/faq/#how-do-i-get-blips");
             return;
         }
 
         let playerIdentifier = GetPlayerIdentifier(src, 0);
         if (args[0] === "generate") {
             playerWhoGeneratedBlips = playerIdentifier;
-            log.warn("Generating blips using the in-game natives: Player %s is generating them.", playerIdentifier);
+            blipLog.warn("Generating blips using the in-game natives: Player %s is generating them.", playerIdentifier);
             emitNet("livemap:getBlipsFromClient", src);
         }
     }, true);
