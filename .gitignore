@@ -1,3 +1,4 @@
 server/blips\.json
 node_modules/
 obj/
+yarn-error.log

@@ -3,7 +3,7 @@ game "gta5"
 
 author "TGR_Havoc"
 description ""
-version "3.1.0"
+version "3.1.1"
 
 client_script "example_client/*.lua"
 exports {
