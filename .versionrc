@@ -3,6 +3,10 @@
     "commit-all": true,
     "releaseCommitMessageFormat": "chore(release): v{{currentTag}}",
     "infile": "docs/CHANGELOG.md",
+    "scripts": {
+        "prerelease": "yarn webpack",
+        "precommit": "git add dist/"
+    },
     "bumpFiles": [
         {
             "filename": "version.json",
