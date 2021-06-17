@@ -5,7 +5,7 @@
     "main": "index.js",
     "scripts": {
         "lint": "eslint ./src/**/*",
-        "release": "standard-version && conventional-github-releaser",
+        "release": "standard-version && git push --follow-tags origin master && conventional-github-releaser",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "repository": {
