@@ -3,7 +3,7 @@ game "gta5"
 
 author "TGR_Havoc"
 description ""
-version "3.1.1"
+version "3.1.2"
 
 --[[
     Hey!

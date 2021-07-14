@@ -6,6 +6,13 @@ parent: LiveMap Resource
 ---
 # Changelog
 
+### [3.1.2](https://github.com/TGRHavoc/live_map/compare/v3.1.1...v3.1.2) (2021-07-14)
+
+
+### Changes
+
+* split client into own files ([0c0a6eb](https://github.com/TGRHavoc/live_map/commit/0c0a6eb879851646c51f7f852910ac6035b9d737))
+
 ### [3.1.1](https://github.com/TGRHavoc/live_map/compare/v3.1.0...v3.1.1) (2021-06-17)
 
 
