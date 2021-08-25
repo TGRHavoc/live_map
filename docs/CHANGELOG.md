@@ -6,6 +6,13 @@ parent: LiveMap Resource
 ---
 # Changelog
 
+### [3.1.4](https://github.com/TGRHavoc/live_map/compare/v3.1.3...v3.1.4) (2021-08-25)
+
+
+### Bug Fixes
+
+* syntax error ([780322b](https://github.com/TGRHavoc/live_map/commit/780322bf785ec2a9f2eb1e88dff4e2b38a407349))
+
 ### [3.1.3](https://github.com/TGRHavoc/live_map/compare/v3.1.2...v3.1.3) (2021-08-25)
 
 
