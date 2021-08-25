@@ -77,7 +77,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   <tr>
     <td align="center"><a href="https://github.com/avery1227"><img src="https://avatars.githubusercontent.com/u/12959747?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Avery Johnson</b></sub></a><br /><a href="https://github.com/TGRHavoc/live_map/commits?author=avery1227" title="Code">💻</a></td>
     <td align="center"><a href="https://tomgrobbe.nl/"><img src="https://avatars.githubusercontent.com/u/31419184?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Tom</b></sub></a><br /><a href="https://github.com/TGRHavoc/live_map/commits?author=TomGrobbe" title="Code">💻</a></td>
-    <td align="center"><a href="http://matsn0w.dev"><img src="https://avatars.githubusercontent.com/u/15019582?v=4?s=100" width="100px;" alt=""/><br /><sub><b>matsn0w</b></sub></a><br /><a href="https://github.com/TGRHavoc/live_map/issues?q=author%3Amatsn0w" title="Bug reports">🐛</a></td>
+    <td align="center"><a href="http://matsn0w.dev"><img src="https://avatars.githubusercontent.com/u/15019582?v=4?s=100" width="100px;" alt=""/><br /><sub><b>matsn0w</b></sub></a><br /><a href="https://github.com/TGRHavoc/live_map/issues?q=author%3Amatsn0w" title="Bug reports">🐛</a> <a href="https://github.com/TGRHavoc/live_map/commits?author=matsn0w" title="Code">💻</a></td>
   </tr>
 </table>
 
