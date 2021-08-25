@@ -36,7 +36,7 @@ function doVehicleUpdate()
     end
 
     if data["Licence Plate"] ~= plate then
-=        data["Licence Plate"] =  plate
+        data["Licence Plate"] =  plate
         TriggerServerEvent("livemap:UpdatePlayerData", "Licence Plate", plate)
     end
 end
