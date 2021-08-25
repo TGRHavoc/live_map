@@ -4,7 +4,7 @@
 ]]
 local data = {
     ["Vehicle"] = "",
-    ["Licence Plate"] = ""
+    ["License Plate"] = ""
 }
 
 local temp = {}
@@ -35,9 +35,9 @@ function doVehicleUpdate()
         plate = plate .. " (Spawned In)"
     end
 
-    if data["Licence Plate"] ~= plate then
-        data["Licence Plate"] =  plate
-        TriggerServerEvent("livemap:UpdatePlayerData", "Licence Plate", plate)
+    if data["License Plate"] ~= plate then
+        data["License Plate"] =  plate
+        TriggerServerEvent("livemap:UpdatePlayerData", "License Plate", plate)
     end
 end
 
@@ -51,14 +51,14 @@ Citizen.CreateThread(function()
             if IsPedInAnyVehicle(PlayerPedId()) then
                 doVehicleUpdate()
 
-            elseif data["Licence Plate"] ~= nil or data["Vehicle"] ~= nil then
-                -- No longer in a vehicle, remove "Licence Plate" if present
-                data["Licence Plate"] = nil
+            elseif data["License Plate"] ~= nil or data["Vehicle"] ~= nil then
+                -- No longer in a vehicle, remove "License Plate" if present
+                data["License Plate"] = nil
                 data["Vehicle"] = nil
                 temp["vehicle"] = nil
 
                 -- Remove it from socket communication
-                TriggerServerEvent("livemap:RemovePlayerData", "Licence Plate")
+                TriggerServerEvent("livemap:RemovePlayerData", "License Plate")
                 TriggerServerEvent("livemap:RemovePlayerData", "Vehicle")
             end
         end
