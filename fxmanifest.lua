@@ -3,7 +3,7 @@ game "gta5"
 
 author "TGR_Havoc"
 description ""
-version "3.1.2"
+version "3.1.3"
 
 --[[
     Hey!
@@ -14,11 +14,11 @@ version "3.1.2"
     Sorry if it's inconvenient for you. But, it's a massive ball ache if you loose your changes when updating so... I feel the benifits outweigh the ball ache.
 ]]
 
--- client_script "client/*.lua"
--- exports {
---     "reverseWeaponHash", "reverseVehicleHash", "reverseStreetHash",
---     "reverseZoneHash", "reverseAreaHash"
--- }
+client_script "client/*.lua"
+exports {
+    "reverseWeaponHash", "reverseVehicleHash", "reverseStreetHash",
+    "reverseZoneHash", "reverseAreaHash"
+}
 
 -- Don't remove. Blips_client is needed for the `blips generate` command to work.
 client_script "example_client/blips_client.lua"

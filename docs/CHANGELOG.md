@@ -6,6 +6,13 @@ parent: LiveMap Resource
 ---
 # Changelog
 
+### [3.1.3](https://github.com/TGRHavoc/live_map/compare/v3.1.2...v3.1.3) (2021-08-25)
+
+
+### Bug Fixes
+
+* License plate not being removed when not in a vehicle ([5b276d8](https://github.com/TGRHavoc/live_map/commit/5b276d8a57f331a08cb40547761eb70cdfa28944)), closes [#68](https://github.com/TGRHavoc/live_map/issues/68)
+
 ### [3.1.2](https://github.com/TGRHavoc/live_map/compare/v3.1.1...v3.1.2) (2021-07-14)
 
 
