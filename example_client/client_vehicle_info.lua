@@ -4,7 +4,7 @@
 ]]
 local data = {
     ["Vehicle"] = "",
-    ["License Plate"] = "FiveM"
+    ["Licence Plate"] = ""
 }
 
 local temp = {}
@@ -36,9 +36,8 @@ function doVehicleUpdate()
     end
 
     if data["Licence Plate"] ~= plate then
-        --Citizen.Trace("Updating plate: " .. plate)
-        data["Licence Plate"] =  plate
-        TriggerServerEvent("livemap:UpdatePlayerData", "License Plate", plate)
+=        data["Licence Plate"] =  plate
+        TriggerServerEvent("livemap:UpdatePlayerData", "Licence Plate", plate)
     end
 end
 
