@@ -2,3 +2,15 @@ server/blips\.json
 node_modules/
 obj/
 yarn-error.log
+client/blip_helper.lua
+client/blips_client.lua
+client/client_icon.lua
+client/client_position.lua
+client/client_spanwed.lua
+client/client_vehicle_info.lua
+client/client_weapons.lua
+client/client.lua.old
+client/readme.md
+client/reverse_car_hashes.lua
+client/reverse_location_hashes.lua
+client/reverse_weapon_hashes.lua
