@@ -6,6 +6,19 @@ parent: LiveMap Resource
 ---
 # Changelog
 
+## [3.2.0](https://github.com/TGRHavoc/live_map/compare/v3.1.4...v3.2.0) (2021-10-20)
+
+
+### Features
+
+* add setup_nucleus ([cabc04b](https://github.com/TGRHavoc/live_map/commit/cabc04be435899c6d11e4b13781c6d5ff1686876))
+* remove example_client comments in fxmanifest ([7599741](https://github.com/TGRHavoc/live_map/commit/7599741562f99224186c2c3e234a02a08bce7edc))
+
+
+### Bug Fixes
+
+* spelling of license plate ([4d5fbae](https://github.com/TGRHavoc/live_map/commit/4d5fbae07f4444b545b12665da4b363510e7f799))
+
 ### [3.1.4](https://github.com/TGRHavoc/live_map/compare/v3.1.3...v3.1.4) (2021-08-25)
 
 
