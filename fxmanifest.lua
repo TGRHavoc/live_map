@@ -11,11 +11,11 @@ exports {
     "reverseZoneHash", "reverseAreaHash"
 }
 
-
 -- Don't remove. Blips_client is needed for the `blips generate` command to work.
 client_script "example_client/blips_client.lua"
 
 server_scripts {
     "server/update_check.lua",
+    "server/setup_nucleus.lua",
     "dist/livemap.js"
 }
