@@ -63,9 +63,17 @@ PerformHttpRequest(url, function(returnCode, data, header)
         ["socket"] = string.format("wss://%s", parsedData["host"])
     }
 
+    print("-------------------------------------------------------------------")
+    print("-------------------------------------------------------------------")
+    print("-------------------------------------------------------------------")
+
     print("Hey! LiveMap was able to use the Nucleus project to automatically set up a secure proxy to the resource.")
     print("If you want to use this in your config use the revserProxy settings printed below (https://docs.tgrhavoc.co.uk/livemap-interface/reverse_proxy/)")
     print("If you don't want to use Nucleus then put \"set livemap_use_nucleus false\" in your server.cfg file.")
     print(string.format("\"reverseProxy\": %s", json.encode(reverseProxy)))
+
+    print("-------------------------------------------------------------------")
+    print("-------------------------------------------------------------------")
+    print("-------------------------------------------------------------------")
 
 end, "POST", json.encode(dataToPost), {["Content-Type"] = "application/json"})
