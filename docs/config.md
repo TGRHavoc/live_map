@@ -15,6 +15,7 @@ set socket_port 30121
 set livemap_debug "warn" # "[all]" 'trace', 'debug', 'info', 'warn', 'error', 'fatal', 'off'
 set blip_file "server/blips.json"
 set livemap_access_control "*"
+set livemap_use_nucleus true # Allow livemap to set up a secure reverseProxy using the Nucleus project
 ```
 
 ### socket_port

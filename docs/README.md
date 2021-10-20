@@ -29,19 +29,9 @@ set socket_port 30121
 set livemap_debug "warn" # "[all]" 'trace', 'debug', 'info', 'warn', 'error', 'fatal', 'off'
 set blip_file "server/blips.json"
 set livemap_access_control "*"
+set livemap_use_nucleus true # Allow livemap to set up a secure reverseProxy using the Nucleus project
 
 ensure live_map
-```
-
-Now, you can enable the built-in client.
-Copy the `example_client` folder to `client` (this will allow you to update the resource without losing any changes to the client you make).
-Now, head on into the manifest file (`fxmanifest.lua` or whatever the latest version is called) and uncomment the client files.
-```lua
-client_script "client/*.lua"
- exports {
-     "reverseWeaponHash", "reverseVehicleHash", "reverseStreetHash",
-     "reverseZoneHash", "reverseAreaHash"
-}
 ```
 
 To get the in-game blips to show on the interface, you will need to generate a "blips" file.
