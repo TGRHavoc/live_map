@@ -14,25 +14,15 @@ set livemap_use_nucleus true # Allow livemap to set up a secure reverseProxy usi
 
 ### socket_port
 
-<dl>
-  <dt>Type</dt>
-  <dd>Number</dd>
-
-  <dt>Default Value</dt>
-  <dd>0</dd>
-</dl>
+- **Type**: `number`
+- **Default Value**: `0`
 
 Sets the port the socket server should listen on
 
 ### livemap_debug
 
-<dl>
-  <dt>Type</dt>
-  <dd>String</dd>
-  
-  <dt>Default Value</dt>
-  <dd>warn</dd>
-</dl>
+- **Type**: `string`
+- **Default Value**: `warn`
 
 Sets how much information gets printed to the console.
 - `[all]` - Print _all_ messages.
@@ -46,13 +36,8 @@ Sets how much information gets printed to the console.
 
 ### blip_file
 
-<dl>
-  <dt>Type</dt>
-  <dd>String</dd>
-  
-  <dt>Default Value</dt>
-  <dd>server/blips.json</dd>
-</dl>
+- **Type**: `string`
+- **Default Value**: `server/blips.json`
 
 Sets the file that will contain the generated blips that is exposed via HTTP.
 
@@ -60,13 +45,8 @@ This directory should be **writeable** by the FXServer process (on Linux, the us
 
 ### livemap_access_control 
 
-<dl>
-  <dt>Type</dt>
-  <dd>String</dd>
-  
-  <dt>Default Value</dt>
-  <dd>*</dd>
-</dl>
+- **Type**: `string`
+- **Default Value**: `*`
 
 Sets the domain that is allowed to access the blips.json file.
 
@@ -77,3 +57,26 @@ E.g. "https://example.com" will only allow the UI on http://example.com to get t
     Only use "*" if you don't mind _anyone_ being able to access your
     player's data and your blip data.
     It is recommended that you set this to your own website.
+
+### livemap_use_nucleus
+
+- **Type**: `boolean`
+- **Default Value**: `true`
+  
+Sets wether LiveMap should use the nucleus project to set up a secure proxy to the websocket.
+It will print out the reverseProxy values you should use in the interface's config file.
+
+??? example "Example output"
+    ```
+      -------------------------------------------------------------------
+      -------------------------------------------------------------------
+      -------------------------------------------------------------------
+      Hey! LiveMap was able to use the Nucleus project to automatically set up a secure proxy to the resource.
+      If you want to use this in your config use the revserProxy settings printed below (https://docs.tgrhavoc.co.uk/livemap-interface/reverse_proxy/)
+      If you don't want to use Nucleus then put "set livemap_use_nucleus false" in your server.cfg file.
+      "reverseProxy": {"blips": "https://monitor-somthing.users.cfx.re/blips", "socket": "wss://monitor-somthing.users.cfx.re/"}
+      -------------------------------------------------------------------
+      -------------------------------------------------------------------
+      -------------------------------------------------------------------
+    ```
+

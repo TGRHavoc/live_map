@@ -1,15 +1,16 @@
 # Events / API <!-- omit in toc -->
 
 - [Client to server](#client-to-server)
-  - [livemap:AddPlayerData](#livemapaddplayerdata)
-  - [livemap:UpdatePlayerData](#livemapupdateplayerdata)
-  - [livemap:RemovePlayerData](#livemapremoveplayerdata)
-  - [livemap:RemovePlayer](#livemapremoveplayer)
+    - [livemap:AddPlayerData(key, data)](#livemapaddplayerdatakey-data)
+    - [livemap:UpdatePlayerData(key, data)](#livemapupdateplayerdatakey-data)
+    - [livemap:RemovePlayerData(key)](#livemapremoveplayerdatakey)
+    - [livemap:RemovePlayer(void)](#livemapremoveplayervoid)
 - [Server Events](#server-events)
-  - [livemap:internal_AddPlayerData](#livemapinternal_addplayerdata)
-  - [livemap:internal_UpdatePlayerData](#livemapinternal_updateplayerdata)
-  - [livemap:internal_RemovePlayerData](#livemapinternal_removeplayerdata)
-  - [livemap:internal_RemovePlayer](#livemapinternal_removeplayer)
+    - [livemap:internal_AddPlayerData(identifier, key, data)](#livemapinternal_addplayerdataidentifier-key-data)
+    - [livemap:internal_UpdatePlayerData(identifier, key, data)](#livemapinternal_updateplayerdataidentifier-key-data)
+    - [livemap:internal_RemovePlayerData(identifier, key)](#livemapinternal_removeplayerdataidentifier-key)
+    - [livemap:internal_RemovePlayer(identifier)](#livemapinternal_removeplayeridentifier)
+
 
 ## Client to server
 
@@ -17,29 +18,21 @@ Below you can find some info on the server events that __must__ be triggered by 
 
 > Note: When using `livemap:AddPlayerData` or `livemap:UpdatePlayerData` if the player has been removed using `livemap:RemovePlayer` they will be tracked again.
 
-### livemap:AddPlayerData
+### livemap:AddPlayerData(key, data)
 
 Adds data to a player that gets sent over the Websocket.
 
 #### Parameters <!-- omit in toc -->
 
-<dl>
-    <dt>Name</dt>
-    <dd>key</dd>
-    <dt>Type</dt>
-    <dd>string</dd>
-    <dt>Description</dt>
-    <dd>The name of the data to add to the player (e.g. "name").</dd>
-</dl>
+**key**
 
-<dl>
-    <dt>Name</dt>
-    <dd>data</dd>
-    <dt>Type</dt>
-    <dd>any</dd>
-    <dt>Description</dt>
-    <dd>The value of the data being added (e.g. "TGRHavoc")</dd>
-</dl>
+- **Type**: `string`
+- **Description**: The name of the data to add to the player (e.g. "name").
+
+**data**
+
+- **Type**: `any`
+- **Description**: The value of the data being added (e.g. "TGRHavoc")
 
 #### Examples <!-- omit in toc -->
 
@@ -53,7 +46,7 @@ RegisterEventHandler("playerSetAgeTo", function(newAge)
 end)
 ```
 
-### livemap:UpdatePlayerData
+### livemap:UpdatePlayerData(key, data)
 
 Updates the data that is associated with the player. Uses the same "key" as the above event.
 
@@ -61,23 +54,15 @@ Updates the data that is associated with the player. Uses the same "key" as the 
 
 #### Parameters <!-- omit in toc -->
 
-<dl>
-    <dt>Name</dt>
-    <dd>key</dd>
-    <dt>Type</dt>
-    <dd>string</dd>
-    <dt>Description</dt>
-    <dd>The name of the data to update on the player (e.g. "name").</dd>
-</dl>
+**key**
 
-<dl>
-    <dt>Name</dt>
-    <dd>data</dd>
-    <dt>Type</dt>
-    <dd>any</dd>
-    <dt>Description</dt>
-    <dd>The value of the data being updated (e.g. "Some Other Name")</dd>
-</dl>
+- **Type**: `string`
+- **Description**: The name of the data to update on the player (e.g. "name").
+
+**data**
+
+- **Type**: `any`
+- **Description**: The value of the data being updated (e.g. "Some Other Name")
 
 #### Examples <!-- omit in toc -->
 
@@ -91,23 +76,20 @@ if PlayerChangesName(PlayerId()) then
 end
 ```
 
-### livemap:RemovePlayerData
+### livemap:RemovePlayerData(key)
 
 Removed data associated with the player. Uses the same "key" as the above events.
 
-> Note: If at _any_ point after this, you call the AddPlayerData or UpdatePlayerData events
-> the data will be added back to the player.
+!!! warning
+    If at _any_ point after this, you call the AddPlayerData or UpdatePlayerData events
+    the data will be added back to the player.
 
 #### Parameters <!-- omit in toc -->
 
-<dl>
-    <dt>Name</dt>
-    <dd>key</dd>
-    <dt>Type</dt>
-    <dd>string</dd>
-    <dt>Description</dt>
-    <dd>The name of the data to remove from the player (e.g. "name").</dd>
-</dl>
+**key**
+
+- **Type**: `string`
+- **Description**: The name of the data to remove from the player (e.g. "name").
 
 #### Examples <!-- omit in toc -->
 
@@ -121,13 +103,16 @@ if GetPlayerAge(PlayerId()) < 18 then
 end
 ```
 
-### livemap:RemovePlayer
+### livemap:RemovePlayer(void)
 
 Stops sending the player's data over websockets.
 
-> Note: If at _any_ point after this, you call the AddPlayerData or UpdatePlayerData events
-> the data added will be sent.
-> This event should only be used if you know for 100% sure that no more data should be sent to the interface (e.g. if the player leaves the server). 
+!!! warning
+    If at _any_ point after this, you call the AddPlayerData or UpdatePlayerData events
+    the data added will be sent.
+
+    This event should only be used if you know for 100% sure that no more data should be sent to the interface 
+    (e.g. if the player leaves the server). 
 
 #### Parameters <!-- omit in toc -->
 
@@ -149,35 +134,26 @@ end
 Below you can find information on some server-only events. 
 These can only be called on the server.
 
-### livemap:internal_AddPlayerData
+### livemap:internal_AddPlayerData(identifier, key, data)
 
 Adds data with the key that gets sent over Websockets for the player with the specified identifier.
 
 #### Parameters <!-- omit in toc -->
-<dl>
-    <dt>Name</dt>
-    <dd>identifier</dd>
-    <dt>Type</dt>
-    <dd>string</dd>
-    <dt>Description</dt>
-    <dd>The identifier of the player (e.g. "steam:00000000000"). Usually gotten by the <a href="https://docs.fivem.net/natives/?_0x7302DBCF">GetPlayerIdentifier</a> native.</dd>
-</dl>
-<dl>
-    <dt>Name</dt>
-    <dd>key</dd>
-    <dt>Type</dt>
-    <dd>string</dd>
-    <dt>Description</dt>
-    <dd>The name of the data to add to the player (e.g. "name").</dd>
-</dl>
-<dl>
-    <dt>Name</dt>
-    <dd>data</dd>
-    <dt>Type</dt>
-    <dd>any</dd>
-    <dt>Description</dt>
-    <dd>The value of the data being added (e.g. "TGRHavoc")</dd>
-</dl>
+
+**identifier**
+
+- **Type**: `string`
+- **Description**: The identifier of the player (e.g. "steam:00000000000"). Usually gotten by the [GetPlayerIdentifier](https://docs.fivem.net/natives/?_0x7302DBCF) native.
+
+**key**
+
+- **Type**: `string`
+- **Description**: The name of the data to add to the player (e.g. "name").
+
+**data**
+
+- **Type**: `any`
+- **Description**: The value of the data being added (e.g. "TGRHavoc")
 
 #### Examples <!-- omit in toc -->
 
@@ -191,35 +167,25 @@ AddEventHandler("playerSpawned", function()
 end)
 ```
 
-### livemap:internal_UpdatePlayerData
+### livemap:internal_UpdatePlayerData(identifier, key, data)
 
 Updated the data that is associated with the player with the identifier.
 
 #### Parameters <!-- omit in toc -->
-<dl>
-    <dt>Name</dt>
-    <dd>identifier</dd>
-    <dt>Type</dt>
-    <dd>string</dd>
-    <dt>Description</dt>
-    <dd>The identifier of the player (e.g. "steam:00000000000"). Usually gotten by the <a href="https://docs.fivem.net/natives/?_0x7302DBCF">GetPlayerIdentifier</a> native.</dd>
-</dl>
-<dl>
-    <dt>Name</dt>
-    <dd>key</dd>
-    <dt>Type</dt>
-    <dd>string</dd>
-    <dt>Description</dt>
-    <dd>The name of the data to update on the player (e.g. "name").</dd>
-</dl>
-<dl>
-    <dt>Name</dt>
-    <dd>data</dd>
-    <dt>Type</dt>
-    <dd>any</dd>
-    <dt>Description</dt>
-    <dd>The value of the data being updated (e.g. "Some other name")</dd>
-</dl>
+**identifier**
+
+- **Type**: `string`
+- **Description**: The identifier of the player (e.g. "steam:00000000000"). Usually gotten by the [GetPlayerIdentifier](https://docs.fivem.net/natives/?_0x7302DBCF) native.
+
+**key**
+
+- **Type**: `string`
+- **Description**: The name of the data to update on the player (e.g. "name").
+
+**data**
+
+- **Type**: `any`
+- **Description**: The value that the data should be updated to (e.g. "Havoc's Real Name")
 
 #### Examples <!-- omit in toc -->
 
@@ -233,27 +199,20 @@ AddEventHandler("playerHasChangedNameByDead", function()
 end)
 ```
 
-### livemap:internal_RemovePlayerData
+### livemap:internal_RemovePlayerData(identifier, key)
 
 Removed the data that is associated with the player with the identifier.
 
 #### Parameters <!-- omit in toc -->
-<dl>
-    <dt>Name</dt>
-    <dd>identifier</dd>
-    <dt>Type</dt>
-    <dd>string</dd>
-    <dt>Description</dt>
-    <dd>The identifier of the player (e.g. "steam:00000000000"). Usually gotten by the <a href="https://docs.fivem.net/natives/?_0x7302DBCF">GetPlayerIdentifier</a> native.</dd>
-</dl>
-<dl>
-    <dt>Name</dt>
-    <dd>key</dd>
-    <dt>Type</dt>
-    <dd>string</dd>
-    <dt>Description</dt>
-    <dd>The name of the data to remove from the player (e.g. "name").</dd>
-</dl>
+**identifier**
+
+- **Type**: `string`
+- **Description**: The identifier of the player (e.g. "steam:00000000000"). Usually gotten by the [GetPlayerIdentifier](https://docs.fivem.net/natives/?_0x7302DBCF) native.
+
+**key**
+
+- **Type**: `string`
+- **Description**: The name of the data to update on the player (e.g. "name").
 
 #### Examples <!-- omit in toc -->
 
@@ -268,19 +227,16 @@ AddEventHandler("playerHasAged", function(newAge)
     end
 end)
 ```
-### livemap:internal_RemovePlayer
+### livemap:internal_RemovePlayer(identifier)
 
 Removes a player from the websocket data array (stops tracking the player)
 
 #### Parameters <!-- omit in toc -->
-<dl>
-    <dt>Name</dt>
-    <dd>identifier</dd>
-    <dt>Type</dt>
-    <dd>string</dd>
-    <dt>Description</dt>
-    <dd>The identifier of the player (e.g. "steam:00000000000"). Usually gotten by the <a href="https://docs.fivem.net/natives/?_0x7302DBCF">GetPlayerIdentifier</a> native.</dd>
-</dl>
+
+**identifier**
+
+- **Type**: `string`
+- **Description**: The identifier of the player (e.g. "steam:00000000000"). Usually gotten by the [GetPlayerIdentifier](https://docs.fivem.net/natives/?_0x7302DBCF) native.
 
 #### Examples <!-- omit in toc -->
 
