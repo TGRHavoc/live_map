@@ -1,10 +1,3 @@
----
-layout: default
-title: LiveMap Resource
-has_children: true
-permalink: /livemap-resource
----
-
 # LiveMap Resource (for FiveM) <!-- omit in toc -->
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
 [![All Contributors](https://img.shields.io/badge/all_contributors-10-orange.svg?style=flat-square)](#contributors-)

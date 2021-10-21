@@ -1,10 +1,4 @@
----
-layout: default
-title: Configuration
-nav_order: 1
-parent: LiveMap Resource
----
-
+# Configuring the resource
 ## Convars
 The following convars are available for you to change.
 
@@ -78,7 +72,8 @@ Sets the domain that is allowed to access the blips.json file.
 
 E.g. "https://example.com" will only allow the UI on http://example.com to get the blips), "*" will allow everyone no matter the domain.
 
-> **Note**: Only use "*" if you don't mind _anyone_ being able to access your
-> player's data and your blip data.
-> It is recommended that you set this to your own website.
-{: .fs-3}
+!!! info "Note"
+
+    Only use "*" if you don't mind _anyone_ being able to access your
+    player's data and your blip data.
+    It is recommended that you set this to your own website.

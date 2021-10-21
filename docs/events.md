@@ -1,10 +1,3 @@
----
-layout: default
-title: Events
-nav_order: 2
-parent: LiveMap Resource
----
-
 # Events / API <!-- omit in toc -->
 
 - [Client to server](#client-to-server)

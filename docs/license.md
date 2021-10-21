@@ -1,10 +1,3 @@
----
-layout: default
-title: License
-nav_exclude: true
-parent: LiveMap Resource
----
-
 GNU General Public License
 ==========================
 
