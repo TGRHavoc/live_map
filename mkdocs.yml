@@ -2,7 +2,7 @@ site_name: livemap_resource
 
 nav:
   - 'README.md'
-  - Configurtion: "config.md"
+  - Configuration: "config.md"
   - Events: "events.md"
   - Changelog: 'CHANGELOG.md'
   - License: "license.md"
