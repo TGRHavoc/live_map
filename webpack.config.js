@@ -3,6 +3,8 @@ const path = require("path");
 
 const config = {
     entry: "./src/server.js",
+    devtool: false,
+    mode: "production",
     output: {
         path: path.resolve(__dirname, "dist"),
         filename: "livemap.js"
