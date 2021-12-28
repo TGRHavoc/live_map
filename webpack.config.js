@@ -1,5 +1,6 @@
 const webpack = require("webpack");
 const path = require("path");
+const nodeExternals = require("webpack-node-externals");
 
 const config = {
     entry: "./src/server.js",
@@ -16,6 +17,7 @@ const config = {
             LivemapEventsWrapper: path.resolve(__dirname, "src", "wrapper.js")
         }
     },
+    externals: [nodeExternals()],
     plugins: [
         new webpack.DefinePlugin({ "global.GENTLY": false })
     ],
