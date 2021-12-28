@@ -1,5 +1,7 @@
 # Changelog
 
+### [3.2.1](https://github.com/TGRHavoc/live_map/compare/v3.2.0...v3.2.1) (2021-12-28)
+
 ## [3.2.0](https://github.com/TGRHavoc/live_map/compare/v3.1.4...v3.2.0) (2021-10-20)
 
 
@@ -257,6 +259,3 @@
 ### Features
 
 * clear jarrays when stopped ([f199f94](https://github.com/TGRHavoc/live_map/commit/f199f9471e078aa0866f260655bfe24d5d3243cb))
-
-
-

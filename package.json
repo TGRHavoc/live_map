@@ -1,11 +1,11 @@
 {
     "name": "fivem-live_map",
-    "version": "3.2.0",
+    "version": "3.2.1",
     "description": "The FiveM resource to get Havoc's LiveMap working#",
     "main": "index.js",
     "scripts": {
         "lint": "eslint ./src/**/*",
-        "release": "standard-version --preset connventionalcommits && git push --follow-tags origin master && conventional-github-releaser",
+        "release": "standard-version && git push --follow-tags origin master && conventional-github-releaser",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "repository": {
@@ -29,6 +29,7 @@
     },
     "devDependencies": {
         "all-contributors-cli": "^6.20.0",
+        "conventional-changelog-conventionalcommits": "^4.6.2",
         "conventional-github-releaser": "^3.1.5",
         "eslint": "^7.16.0",
         "standard-version": "^9.3.0",
