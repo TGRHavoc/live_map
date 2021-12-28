@@ -159,5 +159,10 @@ local blip_types = {
     Stopwatch = 430,
     DollarSignCircled = 431,
     Crosshair2 = 432,
-    DollarSignSquared = 434
+    DollarSignSquared = 434,
+    FlameIcon = 436,
+
+    DiamondCasino = 679,
+    LSCarMeet = 777,
+    LSCarMeetGarage = 779
 }
