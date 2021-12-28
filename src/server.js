@@ -44,7 +44,7 @@ app.use(koaBody(
 // Start a server on the socket_port...
 const port = GetConvarInt("socket_port", 30121);
 
-server.listen(port, function listening() {
+server.listen(port, "127.0.0.1", function listening() {
     log.info("Listening on %d", port);
 });
 
