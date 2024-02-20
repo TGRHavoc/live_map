@@ -1,6 +1,7 @@
 server/blips\.json
 node_modules/
 obj/
+bin/
 yarn-error.log
 client/blip_helper.lua
 client/blips_client.lua
@@ -14,4 +15,4 @@ client/readme.md
 client/reverse_car_hashes.lua
 client/reverse_location_hashes.lua
 client/reverse_weapon_hashes.lua
-livemap_uuid
+.idea/
