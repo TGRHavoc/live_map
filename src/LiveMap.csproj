@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <TargetName>$(AssemblyName).net</TargetName>
+        <AssemblyVersion>4.0.0</AssemblyVersion>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="CitizenFX.Core.Server" Version="1.0.7479" />
+        <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0" />
+        <PackageReference Include="System.Text.Json" Version="8.0.2" />
+    </ItemGroup>
+
+</Project>
