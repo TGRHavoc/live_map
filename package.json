@@ -2,7 +2,7 @@
     "name": "fivem-live_map",
     "version": "3.2.1",
     "description": "The FiveM resource to get Havoc's LiveMap working#",
-    "main": "index.js",
+    "main": "none.js",
     "scripts": {
         "lint": "eslint ./src/**/*",
         "release": "standard-version && git push --follow-tags origin master && conventional-github-releaser",
@@ -12,28 +12,16 @@
         "type": "git",
         "url": "git+https://github.com/TGRHavoc/live_map.git"
     },
-    "author": "Havoc",
+    "author": "TGRHavoc",
     "license": "GPL-3.0",
     "bugs": {
         "url": "https://github.com/TGRHavoc/live_map/issues"
     },
     "homepage": "https://github.com/TGRHavoc/live_map#readme",
-    "dependencies": {
-        "koa": "^2.7.0",
-        "koa-body": "^4.1.0",
-        "koa-router": "^10.0.0",
-        "simple-console-logger": "^2.0.2",
-        "socket.io": "^3.0.4",
-        "webpack": "^5.37.0",
-        "ws": "^7.4.6"
-    },
     "devDependencies": {
         "all-contributors-cli": "^6.20.0",
         "conventional-changelog-conventionalcommits": "^4.6.2",
         "conventional-github-releaser": "^3.1.5",
-        "eslint": "^7.16.0",
-        "standard-version": "^9.3.0",
-        "webpack-cli": "^4.7.0",
-        "webpack-node-externals": "^3.0.0"
+        "standard-version": "^9.3.0"
     }
 }
