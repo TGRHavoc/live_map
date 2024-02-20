@@ -18,6 +18,7 @@
     "releaseCommitMessageFormat": "chore(release): v{{currentTag}}",
     "infile": "docs/CHANGELOG.md",
     "scripts": {
+        "prerelease": "./build.cmd",
         "precommit": "git add dist/"
     },
     "types": [

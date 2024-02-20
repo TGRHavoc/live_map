@@ -16,3 +16,4 @@ client/reverse_car_hashes.lua
 client/reverse_location_hashes.lua
 client/reverse_weapon_hashes.lua
 .idea/
+release.cmd
