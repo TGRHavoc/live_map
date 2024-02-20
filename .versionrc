@@ -1,26 +1,25 @@
 {
     "header": "# Changelog\n",
     "commit-all": true,
+    "bumpFiles": [
+        {
+            "filename": "fxmanifest.lua",
+            "updater": ".standard-version/fx-updater.js"
+        },
+        {
+            "filename": "version.json",
+            "updater": ".standard-version/json.js"
+        },
+        {
+            "filename": "src/live_map/live_map.csproj",
+            "updater": ".standard-version/dotnet-updater.js"
+        }
+    ],
     "releaseCommitMessageFormat": "chore(release): v{{currentTag}}",
     "infile": "docs/CHANGELOG.md",
     "scripts": {
-        "prerelease": "yarn webpack",
         "precommit": "git add dist/"
     },
-    "bumpFiles": [
-        {
-            "filename": "version.json",
-            "updater": "tools/standard-version-bump.js"
-        },
-        {
-            "filename": "fxmanifest.lua",
-            "updater": "tools/bump-fxmanifest.js"
-        },
-        {
-            "filename": "package.json",
-            "type": "json"
-        }
-    ],
     "types": [
         {
             "type": "feat",
@@ -39,6 +38,10 @@
             "section": "Performance Changes"
         },
         {
+            "type": "docs",
+            "section": "Documentation"
+        },
+        {
             "type": "test",
             "section": "Tests",
             "hidden": true
@@ -50,7 +53,7 @@
         },
         {
             "type": "ci",
-            "section": "Continuous Intergration",
+            "section": "Continuous Integration",
             "hidden": true
         }
     ]
