@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using System;
+using System.Text.Json.Serialization;
 
 namespace LiveMap.Models
 {
@@ -27,5 +28,13 @@ namespace LiveMap.Models
         
         [JsonPropertyName("z")]
         public float Z { get; set; }
+
+        public double DistanceToSquared(Position otherPosition)
+        {
+            var newX = Math.Pow(X - otherPosition.X, 2);
+            var newY = Math.Pow(Y - otherPosition.Y, 2);
+            var newZ = Math.Pow(Z - otherPosition.Z, 2);
+            return Math.Sqrt(newX + newY + newZ);
+        }
     }
 }

@@ -8,13 +8,13 @@ namespace LiveMap.Models
     public class HttpResponse
     {
         [JsonPropertyName("writeHead")]
-        public CallbackDelegate WriteHeadInternal { get; set; }
+        public Callback WriteHeadInternal { get; set; }
         
         [JsonPropertyName("write")]
-        public CallbackDelegate WriteInternal { get; set; }
+        public Callback WriteInternal { get; set; }
         
         [JsonPropertyName("send")]
-        public CallbackDelegate SendInternal { get; set; }
+        public Callback SendInternal { get; set; }
         
         public void WriteHead(int code, IDictionary<string, object> headers)
         {

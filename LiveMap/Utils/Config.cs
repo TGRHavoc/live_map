@@ -1,6 +1,5 @@
-﻿using System;
-using System.ComponentModel;
-using CitizenFX.Core.Native;
+﻿using System.ComponentModel;
+using CitizenFX.Server.Native;
 using Microsoft.Extensions.Logging;
 
 namespace LiveMap.Utils
@@ -13,7 +12,7 @@ namespace LiveMap.Utils
             
             try
             {
-                var input = API.GetResourceMetadata(LiveMap.ResourceName, metadataKey, index);
+                var input = Natives.GetResourceMetadata(LiveMap.ResourceName, metadataKey, index);
                 result = (T) TypeDescriptor.GetConverter(typeof(T)).ConvertFromString(input);
             }
             catch (Exception)

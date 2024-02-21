@@ -1,5 +1,4 @@
 ﻿using System.Dynamic;
-using System.Linq;
 using System.Reflection;
 using System.Text.Json.Serialization;
 using CitizenFX.Core;
@@ -8,7 +7,7 @@ namespace LiveMap.Extensions
 {
     public static class ExpandoObjectExtensions
     {
-        public static T FromExpando<T>(this ExpandoObject expando) where T : class, new()
+        public static T? FromExpando<T>(this ExpandoObject? expando) where T : class, new()
         {
             if (expando == null) return null;
 

@@ -9,6 +9,15 @@ namespace LiveMap.Utils
         {
             public static readonly string Debug = "livemap_debug";
             public static readonly string BlipFile = "livemap_blipFile";
+            public static readonly string AccessControlOrigin = "livemap_accessControl";
+        }
+
+        public static class Events
+        {
+            public static readonly string GeneratedBlips = "livemap:blipsGenerated";
+            public static readonly string AddBlip = "livemap:AddBlip";
+            public static readonly string UpdateBlip = "livemap:UpdateBlip";
+            
         }
         
         public static readonly string DefaultBlipFile = "blips.json";

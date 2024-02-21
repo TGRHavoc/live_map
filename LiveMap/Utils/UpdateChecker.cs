@@ -46,7 +46,7 @@ namespace LiveMap.Utils
                 }
                 else
                 {
-                    _logger.LogInformation("LiveMap is up to date");
+                    _logger.LogInformation("LiveMap_OLD is up to date");
                 }
             }
             catch (Exception e)

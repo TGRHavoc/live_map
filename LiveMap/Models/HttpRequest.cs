@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text.Json.Serialization;
 using CitizenFX.Core;
 
-namespace LiveMap.Models
+namespace LiveMap.Models 
 {
     public class HttpRequest
     {
@@ -20,10 +20,10 @@ namespace LiveMap.Models
         public IDictionary<string, string> Headers { get; set; }
         
         [JsonPropertyName("setDataHandler")]
-        public CallbackDelegate SetDataHandlerInternal { get; set; }
+        public Callback SetDataHandlerInternal { get; set; }
         
         [JsonPropertyName("setCancelHandler")]
-        public CallbackDelegate SetCancelHandlerInternal { get; set; }
+        public Callback SetCancelHandlerInternal { get; set; }
         
         public void SetDataHandler(Action<string> handler)
         {
