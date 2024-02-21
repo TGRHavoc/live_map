@@ -13,6 +13,13 @@ namespace LiveMap.Utils
         
         public ILogger CreateLogger(string categoryName)
         {
+            // Category name is a fully qualified class name but we don't need that, only the class name
+            var lastDot = categoryName.LastIndexOf('.');
+            if (lastDot > 0)
+            {
+                categoryName = categoryName.Substring(lastDot + 1);
+            }
+            
             return new DebugLogger(categoryName);
         }
     }
