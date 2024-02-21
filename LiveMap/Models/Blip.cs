@@ -9,7 +9,7 @@ namespace LiveMap.Models
         public int? Sprite { get; set; }
         
         [JsonPropertyName("pos")]
-        public Position Pos { get; set; }
+        public Position? Pos { get; set; }
         
         [JsonPropertyName("name"), JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public string Name { get; set; }
