@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Net;
 using System.Net.Http;
-using System.Reflection;
 using System.Text.Json;
 using System.Threading.Tasks;
-using CitizenFX.Core.Native;
 using LiveMap.Models;
 using Microsoft.Extensions.Logging;
 
@@ -12,22 +10,14 @@ namespace LiveMap.Utils
 {
     public class UpdateChecker
     {
-        private static string Url = "https://api.github.com/repos/TGRHavoc/live_map/releases/latest";
-        private static Version CurrentVersion = Assembly.GetExecutingAssembly().GetName().Version;
+        private static ILogger<UpdateChecker> _logger;
+        
+        public UpdateChecker(ILogger<UpdateChecker> logger)
+        {
+            _logger = logger;
+        }
 
-        private static ILogger<UpdateChecker> _logger = LiveMap.CreateLogger<UpdateChecker>();
-
-        private static string GetUpdateMessage
-            => @"
-            |===================================================|
-            |             Live Map Update Available             |
-            |===================================================|
-            | Current Version: {CurrentVersion}                 |
-            | New Version: {NewVersion}                         |
-            | Download at: https://github.com/TGRHavoc/live_map |
-            |===================================================|";
-
-        public static async Task CheckForUpdates()
+        public async Task CheckForUpdates()
         {
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
             var client = new HttpClient();
@@ -37,13 +27,13 @@ namespace LiveMap.Utils
                 "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36");
             try
             {
-                var response = await client.GetAsync(Url);
+                var response = await client.GetAsync(Constants.LiveMapUpdateUrl);
                 response.EnsureSuccessStatusCode();
                 var releaseString = await response.Content.ReadAsStringAsync();
                 var release = JsonSerializer.Deserialize<GithubRelease>(releaseString);
                 var latestVersion = new Version(release.TagName.Replace("v", ""));
 
-                if (latestVersion.CompareTo(CurrentVersion) > 0)
+                if (latestVersion.CompareTo(Constants.LiveMapVersion) > 0)
                 {
                     _logger.LogWarning(@"
             |===================================================|
@@ -51,9 +41,8 @@ namespace LiveMap.Utils
             |===================================================|
             Current Version: {CurrentVersion}
             New Version: {NewVersion}
-            Download at: https://github.com/TGRHavoc/live_map/releases/latest", CurrentVersion, latestVersion);
-
-                    //API.SendNuiMessage("{\"type\": \"updateAvailable\", \"version\": \"" + latestVersion + "\"}");
+            Download at: https://github.com/TGRHavoc/live_map/releases/latest", Constants.LiveMapVersion,
+                        latestVersion);
                 }
                 else
                 {
@@ -62,7 +51,6 @@ namespace LiveMap.Utils
             }
             catch (Exception e)
             {
-                //API.SendNuiMessage("{\"type\": \"updateError\", \"message\": \"" + e.Message + "\"}");
                 _logger.LogError(e, "Error checking for updates");
             }
         }
