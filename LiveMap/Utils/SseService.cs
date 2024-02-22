@@ -20,12 +20,12 @@ public class SseService
         _openResponses.Remove(response);
     }
 
-    public void BroadcastEvent(string eventName, object data)
+    public void BroadcastEvent(string eventName, object? data = null)
     {
-        foreach (var response in _openResponses) response.SendEvent(eventName, data);
+        foreach (var response in _openResponses) response.SendEvent(eventName, data ?? new { });
     }
 
-    public void KeepAlivePing()
+    public void BroadcastKeepAlive()
     {
         foreach (var response in _openResponses) response.Write(":keep-alive\n\n");
     }

@@ -19,7 +19,7 @@ public class KeepSseAlive : ITask
     public async Coroutine Execute()
     {
         await Coroutine.Delay(10_000);
-        _sseService.KeepAlivePing();
+        _sseService.BroadcastKeepAlive();
     }
 }
 
