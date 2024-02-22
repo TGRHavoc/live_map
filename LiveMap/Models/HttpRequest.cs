@@ -1,3 +1,4 @@
+using System.Dynamic;
 using System.Text.Json.Serialization;
 using CitizenFX.Core;
 
@@ -11,7 +12,10 @@ public class HttpRequest
 
     [JsonPropertyName("path")] public string Path { get; set; } = null!;
 
-    [JsonPropertyName("headers")] public IDictionary<string, string> Headers { get; set; } = null!;
+    // ReSharper disable once MemberCanBePrivate.Global
+    [JsonPropertyName("headers")] public ExpandoObject HeadersInternal { get; set; } = null!;
+
+    public IDictionary<string, object> Headers => new Dictionary<string, object>(HeadersInternal);
 
     [JsonPropertyName("setDataHandler")] public Callback? SetDataHandlerInternal { get; set; }
 

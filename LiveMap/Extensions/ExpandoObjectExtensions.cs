@@ -16,7 +16,7 @@ public static class ExpandoObjectExtensions
             .ToDictionary(
                 pi => pi.GetCustomAttribute<JsonPropertyNameAttribute>()?.Name?.ToLower() ?? pi.Name.ToLower());
 
-        Debug.WriteLine("Properties: " + properties.Count);
+        //Debug.WriteLine("Properties: " + properties.Count);
 
         var obj = new T();
         foreach (var kvp in expando)
@@ -29,7 +29,7 @@ public static class ExpandoObjectExtensions
                 if (prop.PropertyType.IsAssignableFrom(val.GetType()))
                 {
                     prop.SetValue(obj, val);
-                    Debug.WriteLine($"Set property: {name} to {val}");
+                    //Debug.WriteLine($"Set property: {name} to {val}");
                 }
         }
 
