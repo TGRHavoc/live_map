@@ -1,12 +1,15 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <Version>3.2.1</Version>
+    <FileVersion>3.2.1</FileVersion>
     <TargetFramework>net461</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <LangVersion>default</LangVersion>
     <TargetName>$(AssemblyName).net</TargetName>
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -28,8 +31,9 @@
     <PackageReference Include="System.Text.Json" Version="8.0.2" />
   </ItemGroup>
 
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="rmdir ..\dist&#xA;mkdir ..\dist&#xA;xcopy /y /e $(OutDir) ..\dist" />
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">    
+    <Exec Command="rmdir ..\dist&#xA;mkdir ..\dist&#xA;xcopy /y /e $(OutDir) ..\dist" Condition=" '$(OS)' == 'Windows_NT' "/>
+    <Exec Command="rm -rf ../dist; mkdir ../dist; cp -r $(OutDir) ../dist" Condition=" '$(OS)' != 'Windows_NT' "/>
   </Target>
 
 </Project>
