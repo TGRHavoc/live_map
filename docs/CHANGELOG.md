@@ -1,5 +1,41 @@
 # Changelog
 
+## [4.0.0-0](https://github.com/TGRHavoc/live_map/compare/v3.2.1...v4.0.0-0) (2024-02-22)
+
+
+### ⚠ BREAKING CHANGES
+
+* remove old source files
+
+### Features
+
+* Add basic BlipHandler ([1e78b80](https://github.com/TGRHavoc/live_map/commit/1e78b80eccb9991b6f4be813c4eeb237401187ce))
+* Add BasicHttpHandler ([f1f4b82](https://github.com/TGRHavoc/live_map/commit/f1f4b82fda4b02ef331d619d4e9980f882f36743))
+* Add KeepSseAlive task ([1144ac2](https://github.com/TGRHavoc/live_map/commit/1144ac2d91c2f8ef20e29f04e99249982ee967fb))
+* Add ServiceBuilderExtensions ([3a7cc74](https://github.com/TGRHavoc/live_map/commit/3a7cc747531e7387962a244d867939aadfa52c88))
+* Add SseService ([00929a5](https://github.com/TGRHavoc/live_map/commit/00929a559f7f8527df61515c3c9536dc99a9cf67))
+* **Extensions:** Add FromExpando ([1ba6604](https://github.com/TGRHavoc/live_map/commit/1ba660447c0f3d115c937e4c18baf55358d977d7))
+* **Models:** Add blip model ([068a65b](https://github.com/TGRHavoc/live_map/commit/068a65b111529a26a520b270212158e1e2d26463))
+* **Models:** Add github release model ([4981be3](https://github.com/TGRHavoc/live_map/commit/4981be37c36931e6ed57c978bb68bee14af0f8a5))
+* **Models:** Add Http models for using SetHttpHandler ([179ecd2](https://github.com/TGRHavoc/live_map/commit/179ecd2178bc63f2bac2754246fd077bf20fbf08))
+* **Utils:** Add config class ([74426ea](https://github.com/TGRHavoc/live_map/commit/74426eae9f090374b1c662839e3b4bd55f70a74c))
+* Add constants class ([dd18e7d](https://github.com/TGRHavoc/live_map/commit/dd18e7d88fef89eba0e49ecceb5c08af4a99c788))
+* **UpdateChecker:** Implement UpdateChecker in c# ([f0d3c94](https://github.com/TGRHavoc/live_map/commit/f0d3c946d199b631a72eabc27b5fd60cfd341bc8))
+* Add DebugLoggerProvider and DebugLogger ([aeb64f3](https://github.com/TGRHavoc/live_map/commit/aeb64f34b0bd3e984f0d93df33d4738fe36d507d))
+
+
+### Bug Fixes
+
+* listen on 127.0.0.1 interface ([6f81af2](https://github.com/TGRHavoc/live_map/commit/6f81af285050cb68541737d96ee6f98ec9638d4c))
+
+
+### Changes
+
+* Update to runtime v2 for C# ([9ff390d](https://github.com/TGRHavoc/live_map/commit/9ff390db87e73f82e92c0e8e3486b1f11caa6ae6))
+* **DebugLogger:** Use classname as category ([deca009](https://github.com/TGRHavoc/live_map/commit/deca00930897bd51ddb65e5b1913418e0c90c161))
+* **Utils:** Use constant variables & DI in UpdateChecker ([36343ce](https://github.com/TGRHavoc/live_map/commit/36343cefd159db70e89c4cecf01efa343e5bbd53))
+* remove old source files ([f68d4eb](https://github.com/TGRHavoc/live_map/commit/f68d4eb43f1ae90588f69db56160ed5dd9d8008a))
+
 ### [3.2.1](https://github.com/TGRHavoc/live_map/compare/v3.2.0...v3.2.1) (2021-12-28)
 
 ## [3.2.0](https://github.com/TGRHavoc/live_map/compare/v3.1.4...v3.2.0) (2021-10-20)

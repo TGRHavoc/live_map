@@ -12,7 +12,7 @@ game "gta5"
 
 author "TGR_Havoc"
 description ""
-version "3.2.1"
+version "4.0.0-0"
 repository "https://github.com/TGRHavoc/live_map"
 
 mono_rt2 'Prerelease expiring 2023-06-30. See https://aka.cfx.re/mono-rt2-preview for info.'
