@@ -17,3 +17,6 @@ client/reverse_location_hashes.lua
 client/reverse_weapon_hashes.lua
 .idea/
 release.cmd
+LiveMap.sln.DotSettings.user
+blips.json
+.act/

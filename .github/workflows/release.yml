@@ -1,0 +1,47 @@
+name: "tagged-release"
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  tagged-release:
+    name: "Tagged Release"
+    runs-on: "ubuntu-latest"
+    steps:
+      # - name: Set isTag variable
+      #   id: vars
+      #   run: |
+      #     IS_TAG=$(if [[ ${{ github.ref }} == refs/tags/* ]]; then echo 'true'; else echo 'false'; fi)
+      #     PRERELEASE=$(if [[ $IS_TAG == 'true' ]]; then echo 'false'; else echo 'true'; fi)
+      #     echo "::set-output name=isTag::$IS_TAG"
+      #     echo "::set-output name=prerelease::$PRERELEASE"
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Setup Dotnet
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: "7.0.x"
+          cache: true
+          cache-dependency-path: "**/packages.lock.json"
+      - name: Restore dependencies
+        run: dotnet restore
+      - name : Build
+        run: dotnet build --configuration Release
+      - name: Create release_head.md file
+        run: echo "# Changelog" > docs/RELEASE_HEAD.md
+      - name: Generate release.md
+        uses: CSchoel/release-notes-from-changelog@v1
+        with:
+          working-directory: "docs/"
+      - name: Clean release files
+        run: rm docs/RELEASE_HEAD.md; mv docs/RELEASE.md RELEASE.md
+      - name: ZIP files
+        run: zip -r build.zip dist/ example_client/ docs/ fxmanifest.lua
+      - uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          draft: true
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          body_path: "RELEASE.md"
+          files: "build.zip"

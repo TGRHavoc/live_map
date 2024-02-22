@@ -10,15 +10,12 @@
             "updater": ".standard-version/json.js"
         },
         {
-            "filename": "src/live_map/live_map.csproj",
+            "filename": "LiveMap/LiveMap.csproj",
             "updater": ".standard-version/dotnet-updater.js"
         }
     ],
     "releaseCommitMessageFormat": "chore(release): v{{currentTag}}",
     "infile": "docs/CHANGELOG.md",
-    "scripts": {
-        "prerelease": "call build.cmd",
-    },
     "types": [
         {
             "type": "feat",
