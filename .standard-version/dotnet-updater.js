@@ -1,5 +1,5 @@
-const regex = new RegExp("<Version>(.+)</Version>");
-const fileReg = new RegExp("<FileVersion>.+</FileVersion>");
+const regex = new RegExp("<Version>(.+)</Version>", "gm");
+const fileReg = new RegExp("<FileVersion>.+</FileVersion>", "gm");
 
 module.exports.readVersion = function(contents) {
     return regex.exec(contents)[1];
