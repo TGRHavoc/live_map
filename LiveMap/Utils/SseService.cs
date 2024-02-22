@@ -1,44 +1,32 @@
 ﻿using LiveMap.Extensions;
 using LiveMap.Models;
 
-namespace LiveMap.Utils
+namespace LiveMap.Utils;
+
+public class SseService
 {
-    public class SseService
+    // This is a simple class that will be used to send Server-Sent Events to the client
+
+    private readonly List<HttpResponse> _openResponses = new();
+
+    public void AddResponse(HttpResponse response)
     {
-        // This is a simple class that will be used to send Server-Sent Events to the client
+        _openResponses.Add(response);
+        response.SendEvent("connected", new { Connected = true });
+    }
 
-        private readonly List<HttpResponse> _openResponses = new List<HttpResponse>();
+    public void RemoveResponse(HttpResponse response)
+    {
+        _openResponses.Remove(response);
+    }
 
-        public SseService()
-        {
-        }
-        
-        public void AddResponse(HttpResponse response)
-        {
-            _openResponses.Add(response);
-            response.SendEvent("connected", new {Connected = true});
-        }
-        
-        public void RemoveResponse(HttpResponse response)
-        {
-            _openResponses.Remove(response);
-        }
-        
-        public void BroadcastEvent(string eventName, object data)
-        {
-            foreach (var response in _openResponses)
-            {
-                response.SendEvent(eventName, data);
-            }
-        }
+    public void BroadcastEvent(string eventName, object data)
+    {
+        foreach (var response in _openResponses) response.SendEvent(eventName, data);
+    }
 
-        public async Task KeepAlivePing()
-        {
-            foreach (var response in _openResponses)
-            {
-                response.Write(":keep-alive\n\n");
-            }
-        }
-        
+    public void KeepAlivePing()
+    {
+        foreach (var response in _openResponses) response.Write(":keep-alive\n\n");
     }
 }

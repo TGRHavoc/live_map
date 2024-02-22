@@ -1,39 +1,40 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <Version>3.2.1</Version>
-    <FileVersion>3.2.1</FileVersion>
-    <TargetFramework>net461</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-    <LangVersion>default</LangVersion>
-    <TargetName>$(AssemblyName).net</TargetName>
-    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
-    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
-  </PropertyGroup>
+    <PropertyGroup>
+        <Version>3.2.1</Version>
+        <FileVersion>3.2.1</FileVersion>
+        <TargetFramework>net462</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <LangVersion>default</LangVersion>
+        <TargetName>$(AssemblyName).net</TargetName>
+        <RunPostBuildEvent>Always</RunPostBuildEvent>
+        <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+        <UserSecretsId>3ba9f81b-7771-4d50-a74a-2d2b38a96f02</UserSecretsId>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <Reference Include="CitizenFX.Core">
-      <HintPath>vendor\CitizenFX.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="CitizenFX.FiveM.Native">
-      <HintPath>vendor\CitizenFX.FiveM.Native.dll</HintPath>
-    </Reference>
-    <Reference Include="CitizenFX.Server">
-      <HintPath>vendor\CitizenFX.Server.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Net.Http" />
-  </ItemGroup>
+    <ItemGroup>
+        <Reference Include="CitizenFX.Core">
+            <HintPath>vendor\CitizenFX.Core.dll</HintPath>
+        </Reference>
+        <Reference Include="CitizenFX.FiveM.Native">
+            <HintPath>vendor\CitizenFX.FiveM.Native.dll</HintPath>
+        </Reference>
+        <Reference Include="CitizenFX.Server">
+            <HintPath>vendor\CitizenFX.Server.dll</HintPath>
+        </Reference>
+        <Reference Include="System.Net.Http"/>
+    </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0" />
-    <PackageReference Include="System.Text.Json" Version="8.0.2" />
-  </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.0"/>
+        <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0"/>
+        <PackageReference Include="System.Text.Json" Version="8.0.2"/>
+    </ItemGroup>
 
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">    
-    <Exec Command="rmdir ..\dist&#xA;mkdir ..\dist&#xA;xcopy /y /e $(OutDir) ..\dist" Condition=" '$(OS)' == 'Windows_NT' "/>
-    <Exec Command="rm -rf ../dist; mkdir ../dist; cp -r $(OutDir) ../dist" Condition=" '$(OS)' != 'Windows_NT' "/>
-  </Target>
+    <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+        <Exec Command="rmdir ..\dist\&#xA;xcopy /y /e $(OutDir) ..\dist\" Condition=" '$(OS)' == 'Windows_NT' "/>
+        <Exec Command="rm -rf ../dist/; mkdir ../dist/; cp -r $(OutDir) ../dist/" Condition=" '$(OS)' != 'Windows_NT' "/>
+    </Target>
 
 </Project>

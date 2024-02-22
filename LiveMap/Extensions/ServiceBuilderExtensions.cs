@@ -14,18 +14,14 @@ public static class ServiceBuilderExtensions
             .AddSingleton<BlipHandler>()
             .AddSingleton<BasicHttpHandler>();
     }
-    
+
     public static IServiceCollection AddTasks(this IServiceCollection services)
     {
         var taskTypes = AppDomain.CurrentDomain.GetAssemblies()
             .SelectMany(s => s.GetTypes())
             .Where(p => typeof(ITask).IsAssignableFrom(p) && !p.IsInterface && !p.IsAbstract);
-        
-        foreach (var taskType in taskTypes)
-        {
-            services.AddSingleton(taskType);
-        }
+
+        foreach (var taskType in taskTypes) services.AddSingleton(taskType);
         return services;
     }
-    
 }
