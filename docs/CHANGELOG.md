@@ -1,5 +1,7 @@
 # Changelog
 
+## [4.0.0](https://github.com/TGRHavoc/live_map/compare/v4.0.0-1...v4.0.0) (2024-02-22)
+
 ## [4.0.0-1](https://github.com/TGRHavoc/live_map/compare/v4.0.0-0...v4.0.0-1) (2024-02-22)
 
 
