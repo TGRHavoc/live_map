@@ -1,6 +1,5 @@
 {
     "header": "# Changelog\n",
-    "commit-all": true,
     "bumpFiles": [
         {
             "filename": "fxmanifest.lua",
@@ -18,8 +17,7 @@
     "releaseCommitMessageFormat": "chore(release): v{{currentTag}}",
     "infile": "docs/CHANGELOG.md",
     "scripts": {
-        "prerelease": "./build.cmd",
-        "precommit": "git add dist/"
+        "prerelease": "call build.cmd",
     },
     "types": [
         {
