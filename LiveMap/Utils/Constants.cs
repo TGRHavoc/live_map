@@ -22,4 +22,13 @@ public static class Constants
         public static readonly string AddBlip = "livemap:AddBlip";
         public static readonly string UpdateBlip = "livemap:UpdateBlip";
     }
+    
+    public static class Sse
+    {
+        public static readonly string RefreshBlips = "refreshBlips";
+        public static readonly string AddBlip = "addBlip";
+        public static readonly string UpdateBlip = "updateBlip";
+        public static readonly string RemoveBlip = "removeBlip";
+    }
+    
 }

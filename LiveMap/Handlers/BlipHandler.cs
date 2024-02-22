@@ -13,12 +13,14 @@ public class BlipHandler
     private readonly string _blipFile;
 
     private readonly ILogger<BlipHandler> _logger;
+    private readonly SseService _sseService;
 
     private Player? _playerWhoGeneratingBlips;
 
     public BlipHandler(ILogger<BlipHandler> logger, SseService sseService)
     {
         _logger = logger;
+        _sseService = sseService;
         _blipFile = Config.GetConfigKeyValue(Constants.Config.BlipFile, 0, Constants.DefaultBlipFile, logger);
 
         LoadBlips();
@@ -73,6 +75,8 @@ public class BlipHandler
             {
                 _logger.LogInformation("Reloading blips from file... Any unsaved changes will be lost");
                 LoadBlips();
+                
+                _sseService.BroadcastEvent(Constants.Sse.RefreshBlips);
 
                 break;
             }
@@ -102,7 +106,7 @@ public class BlipHandler
 
     public void SaveBlips()
     {
-        if (Blips.Count == 0)
+        if (BlipCount == 0)
         {
             _logger.LogInformation("No blips to save");
             return;
@@ -122,18 +126,6 @@ public class BlipHandler
     public bool ContainsBlip(int spriteId, Position pos)
     {
         return Blips.ContainsKey(spriteId) && Blips[spriteId].Exists(b => b.Pos.Equals(pos));
-    }
-
-    public void SendBlips(HttpResponse response)
-    {
-        if (Blips.Count == 0)
-        {
-            // Error
-            response.Send(new { Error = "Blip cache is empty" });
-            return;
-        }
-
-        response.Send(Blips);
     }
 
     public bool ValidateClientSentBlip(Blip blip)
@@ -159,6 +151,7 @@ public class BlipHandler
 
         _logger.LogInformation("Player {Player} added a new blip {Blip}", player.Name,
             JsonSerializer.Serialize(blip));
+        _sseService.BroadcastEvent(Constants.Sse.AddBlip, blip);
     }
 
     [EventHandler("livemap:blipsGenerated", Binding.Remote)]
@@ -175,6 +168,8 @@ public class BlipHandler
         Blips = obj;
         _logger.LogInformation("Received {BlipCount} blips from player {Player}", BlipCount, player.Name);
         SaveBlips();
+        
+        _sseService.BroadcastEvent(Constants.Sse.RefreshBlips);
     }
 
     [EventHandler("livemap:UpdateBlip")]
@@ -190,5 +185,8 @@ public class BlipHandler
         var closestBlip = Blips[blip.Sprite!.Value].OrderBy(b => b.Pos.DistanceToSquared(blip.Pos)).First();
         closestBlip.Name = blip.Name;
         closestBlip.Description = blip.Description;
+        
+        _logger.LogInformation("Player {Player} updated blip {Blip}", player.Name, JsonSerializer.Serialize(blip));
+        _sseService.BroadcastEvent(Constants.Sse.UpdateBlip, closestBlip);
     }
 }
