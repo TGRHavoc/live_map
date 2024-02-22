@@ -47,7 +47,7 @@ public class LiveMap : BaseScript
         {
             // If LogLevel is already set, return it
             if (_loglevelEnum != null) return _loglevelEnum.Value;
-            var logLevel = Config.GetConfigKeyValue(Constants.Config.Debug, 0, "off");
+            var logLevel = Config.GetConvarValue(Constants.Config.Debug,"off");
 
             switch (logLevel)
             {

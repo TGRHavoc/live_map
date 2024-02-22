@@ -21,7 +21,7 @@ public class BlipHandler
     {
         _logger = logger;
         _sseService = sseService;
-        _blipFile = Config.GetConfigKeyValue(Constants.Config.BlipFile, 0, Constants.DefaultBlipFile, logger);
+        _blipFile = Config.GetConvarValue(Constants.Config.BlipFile, Constants.DefaultBlipFile);
 
         LoadBlips();
     }

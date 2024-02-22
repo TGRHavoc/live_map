@@ -23,4 +23,7 @@ public static class Config
 
         return result;
     }
+
+    public static string GetConvarValue(string convar, string defaultValue)
+        => Natives.GetConvar(convar, defaultValue);
 }
