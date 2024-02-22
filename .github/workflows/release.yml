@@ -9,13 +9,12 @@ jobs:
     name: "Tagged Release"
     runs-on: "ubuntu-latest"
     steps:
-      # - name: Set isTag variable
-      #   id: vars
-      #   run: |
-      #     IS_TAG=$(if [[ ${{ github.ref }} == refs/tags/* ]]; then echo 'true'; else echo 'false'; fi)
-      #     PRERELEASE=$(if [[ $IS_TAG == 'true' ]]; then echo 'false'; else echo 'true'; fi)
-      #     echo "::set-output name=isTag::$IS_TAG"
-      #     echo "::set-output name=prerelease::$PRERELEASE"
+      - name: Set variables
+        id: vars
+        run: |
+          TAG_NAME=${GITHUB_REF#refs/tags/}
+          IS_PRERELEASE=$(if [[ $TAG_NAME == *"-"* ]]; then echo 'true'; else echo 'false'; fi)
+          echo "::set-output name=isPrerelease::$IS_PRERELEASE"
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Setup Dotnet
@@ -41,7 +40,6 @@ jobs:
       - uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
         with:
-          draft: true
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          prerelease: ${{ steps.vars.outputs.isPrerelease }}
           body_path: "RELEASE.md"
           files: "build.zip"
