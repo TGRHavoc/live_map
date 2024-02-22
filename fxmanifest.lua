@@ -1,12 +1,3 @@
-
---[[
-    LiveMap configuration file.
-]]
-
-livemap_debug "trace" -- Log level for LiveMap. Possible values: trace/[all], debug, info, warn, error, critical, off/anything else
-livemap_blipFile "blips.json" -- File to load blips from
-livemap_accessControl "*" -- Access control for LiveMap.
-
 fx_version "bodacious"
 game "gta5"
 

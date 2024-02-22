@@ -1,17 +1,22 @@
 # Configuring the resource
 
-Since v4 of the resource, convars are no longer used. 
-Instead, it uses metadata inside the `fxmanifest.lua` file which you will need to configure.
+The following are convars are available for you to change.
 
-The following are available for you to change.
+You should place these inside your `server.cfg` file (or similar).
 
-You should already have them in your `fxmanifest.lua` file and looking like the config below.
+!!! info "Note"
+
+    Default values will be used if you omit the convars from your server config.
+
 
 ```lua
-livemap_debug "trace" -- Log level for LiveMap. Possible values: trace/[all], debug, info, warn, error, critical, off/anything else
-livemap_blipFile "blips.json" -- File to load blips from
-livemap_accessControl "*" -- Access control for LiveMap.
+set livemap_debug "trace" -- Log level for LiveMap. Possible values: trace/[all], debug, info, warn, error, critical, off/anything else
+set livemap_blipFile "blips.json" -- File to load blips from
+set livemap_accessControl "*" -- Access control for LiveMap.
 ```
+
+Convars are used so you can update them without access to the `fxmanifest.lua` file.
+For example, if you have rcon access you can use the commands `livemap_debug "off"` and `restart live_map` to disable logging without needing physical access to the server.
 
 ### livemap_debug
 
