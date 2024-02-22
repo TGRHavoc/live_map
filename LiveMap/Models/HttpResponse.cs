@@ -4,7 +4,7 @@ using CitizenFX.Core;
 
 namespace LiveMap.Models;
 
-public struct HttpResponse
+public class HttpResponse
 {
     [JsonPropertyName("writeHead")] public Callback? WriteHeadInternal { get; set; }
 

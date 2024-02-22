@@ -22,16 +22,16 @@ public class BasicHttpHandler
 
     public void OnHttpEndpointRequest(ExpandoObject request, ExpandoObject response)
     {
+        
         var req = request.FromExpando<HttpRequest>();
         var res = response.FromExpando<HttpResponse>();
+        // if (res == null || req == null)
+        // {
+        //     _logger.LogCritical("Failed to convert request or response to typed objects, cannot handle HTTP request");
+        //     return;
+        // }
 
-        if (res == null || req == null)
-        {
-            _logger.LogCritical("Failed to convert request or response to typed objects, cannot handle HTTP request");
-            return;
-        }
-
-        _logger.LogDebug("Received HTTP request for {Path}", req.Value.Path);
+        _logger.LogDebug("Received HTTP request for {Path}", req.Path);
 
         var accessControlValue = Config.GetConfigKeyValue(Constants.Config.AccessControlOrigin, 0, "*", _logger);
 
@@ -45,67 +45,66 @@ public class BasicHttpHandler
             { "Content-Type", "application/json" }
         };
 
-        if (req.Value.Path == "/sse")
+        switch (req.Path)
         {
-            req.Value.SetCancelHandler(() =>
-            {
-                _logger.LogDebug("Request was cancelled?");
-                // Debug.WriteLine("Request was cancelled?");
-                // _openResponses.Remove(res);
-                _sseService.RemoveResponse(res.Value);
-            });
+            case "/sse":
+                req.SetCancelHandler(() =>
+                {
+                    _logger.LogDebug("Request was cancelled?");
+                    // Debug.WriteLine("Request was cancelled?");
+                    // _openResponses.Remove(res);
+                    _sseService.RemoveResponse(res);
+                });
 
-            req.Value.SetDataHandler(
-                new Action<string>(str => { _logger.LogInformation("Received data: {Data}", str); }));
+                req.SetDataHandler(
+                    new Action<string>(str => { _logger.LogInformation("Received data: {Data}", str); }));
 
 
-            // Change content type to text/event-stream
-            headers["Content-Type"] = "text/event-stream";
-            // Keep the connection open
-            headers["Connection"] = "keep-alive";
+                // Change content type to text/event-stream
+                headers["Content-Type"] = "text/event-stream";
+                // Keep the connection open
+                headers["Connection"] = "keep-alive";
 
-            // Server-Sent Events
-            res.Value.WriteHead(200, new Dictionary<string, object>
-            {
-                { "Content-Type", "text/event-stream" },
-                { "Connection", "keep-alive" },
-                { "Cache-Control", "no-cache" },
-                { "Access-Control-Allow-Origin", accessControlValue }
-            });
+                // Server-Sent Events
+                res.WriteHead(200, new Dictionary<string, object>
+                {
+                    { "Content-Type", "text/event-stream" },
+                    { "Connection", "keep-alive" },
+                    { "Cache-Control", "no-cache" },
+                    { "Access-Control-Allow-Origin", accessControlValue }
+                });
 
-            _sseService.AddResponse(res.Value);
-            _sseService.BroadcastEvent("newClient", new
-            {
-                Client = req.Value.Address
-            });
+                _sseService.AddResponse(res);
+                _sseService.BroadcastEvent("newClient", new
+                {
+                    Client = req.Address
+                });
 
-            return;
-            //res.Write("data: Hello, world!\n\n");
-            // _openResponses.Add(res);
+                return;
+                //res.Write("data: Hello, world!\n\n");
+                // _openResponses.Add(res);
+            case "/blips" or "/blips.json":
+                res.WriteHead(200, headers);
+                _blipHandler.SendBlips(res);
+                return;
+                //res.WriteHead(200);
+                //res.Send(_blipHandler.Blips);
+            default:
+                res.WriteHead(404, headers);
+                res.Send(new
+                {
+                    Error = $"path {req.Path} not found"
+                });
+
+                //res.WriteHead(200);
+
+                // Debug.WriteLine("Received HTTP request!");
+                //res.WriteHead(200, new Dictionary<string, object>());
+                // res.Send(JsonSerializer.Serialize(new
+                // {
+                //     pong=true
+                // }));
+                break;
         }
-
-        if (req.Value.Path == "/blips" || req.Value.Path == "/blips.json")
-        {
-            res.Value.WriteHead(200, headers);
-            _blipHandler.SendBlips(res.Value);
-            return;
-            //res.WriteHead(200);
-            //res.Send(_blipHandler.Blips);
-        }
-
-        res.Value.WriteHead(404, headers);
-        res.Value.Send(new
-        {
-            Error = $"path {req.Value.Path} not found"
-        });
-
-        //res.WriteHead(200);
-
-        // Debug.WriteLine("Received HTTP request!");
-        //res.WriteHead(200, new Dictionary<string, object>());
-        // res.Send(JsonSerializer.Serialize(new
-        // {
-        //     pong=true
-        // }));
     }
 }

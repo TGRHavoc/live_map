@@ -7,10 +7,8 @@ namespace LiveMap.Extensions;
 
 public static class ExpandoObjectExtensions
 {
-    public static T? FromExpando<T>(this ExpandoObject? expando) where T : struct
+    public static T FromExpando<T>(this ExpandoObject expando) where T : class, new()
     {
-        if (expando == null) return null;
-
         var properties = typeof(T)
             .GetProperties()
             .Where(pi => pi.CanWrite && !pi.GetIndexParameters().Any())

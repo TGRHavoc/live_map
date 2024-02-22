@@ -3,19 +3,19 @@ using CitizenFX.Core;
 
 namespace LiveMap.Models;
 
-public struct HttpRequest
+public class HttpRequest
 {
-    [JsonPropertyName("address")] public string Address { get; set; }
+    [JsonPropertyName("address")] public string Address { get; set; } = null!;
 
-    [JsonPropertyName("method")] public string Method { get; set; }
+    [JsonPropertyName("method")] public string Method { get; set; } = null!;
 
-    [JsonPropertyName("path")] public string Path { get; set; }
+    [JsonPropertyName("path")] public string Path { get; set; } = null!;
 
-    [JsonPropertyName("headers")] public IDictionary<string, string> Headers { get; set; }
+    [JsonPropertyName("headers")] public IDictionary<string, string> Headers { get; set; } = null!;
 
-    [JsonPropertyName("setDataHandler")] public Callback SetDataHandlerInternal { get; set; }
+    [JsonPropertyName("setDataHandler")] public Callback? SetDataHandlerInternal { get; set; }
 
-    [JsonPropertyName("setCancelHandler")] public Callback SetCancelHandlerInternal { get; set; }
+    [JsonPropertyName("setCancelHandler")] public Callback? SetCancelHandlerInternal { get; set; }
 
     public void SetDataHandler(Action<string> handler)
     {
