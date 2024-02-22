@@ -13,30 +13,27 @@ It creates a websocket server so that it can communicate to the web interface.
 
 ## How to install
 
-Download the ZIP file. And extract the contents into `resources/live_map/`.
+1. Download the [latest ZIP file](https://github.com/tgrhavoc/live_map/releases/latest). 
+    - This should be under the "Assets" heading so click that if you don't see anything
+2. Extract the contents into a folder inside your `resources`
+    - Example: `resources/live_map/`
 
-Add the following to your server.cfg file.
+3. Add the following to your server.cfg file.
 
-```
-set socket_port 30121
-set livemap_debug "warn" # "[all]" 'trace', 'debug', 'info', 'warn', 'error', 'fatal', 'off'
-set blip_file "server/blips.json"
-set livemap_access_control "*"
-set livemap_use_nucleus true # Allow livemap to set up a secure reverseProxy using the Nucleus project
-
+```lua
 ensure live_map
 ```
 
 To get the in-game blips to show on the interface, you will need to generate a "blips" file.
-This can be easily done with the in-game command `blips generate` (must have permission, see [the offical documentation](https://docs.fivem.net/docs/server-manual/server-commands/#access-control-commands)).
+This can be easily done with the in-game command `blips generate` (must have permission, see [the official documentation](https://docs.fivem.net/docs/server-manual/server-commands/#access-control-commands)).
 
 ## Configuration
 
-Please see the [config](config.md) file for the convars used by this resource.
+Please see [config](config.md) for how you can configure this resource.
 
 ## Events
 
-In an effort to make the addon useful to other developers, I've created a few events that can be used to make changes to the data being sent to the UI.
+In an effort to make the addon useful to other developers, I've created a few events that can be used to make changes to the data being sent to the web interface.
 
 Please see the [events page](events.md) for more information.
 

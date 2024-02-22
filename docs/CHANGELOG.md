@@ -1,6 +1,6 @@
 # Changelog
 
-### [3.2.1](https://github.com/TGRHavoc/live_map/compare/v3.2.0...v3.2.1) (2021-12-28)
+## [3.2.1](https://github.com/TGRHavoc/live_map/compare/v3.2.0...v3.2.1) (2021-12-28)
 
 ## [3.2.0](https://github.com/TGRHavoc/live_map/compare/v3.1.4...v3.2.0) (2021-10-20)
 
