@@ -6,14 +6,18 @@
     <Nullable>enable</Nullable>
     <LangVersion>default</LangVersion>
     <TargetName>$(AssemblyName).net</TargetName>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
   </PropertyGroup>
 
   <ItemGroup>
     <Reference Include="CitizenFX.Core">
-      <HintPath>..\..\..\..\..\server\citizen\clr2\lib\mono\4.5\v2\CitizenFX.Core.dll</HintPath>
+      <HintPath>vendor\CitizenFX.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="CitizenFX.FiveM.Native">
+      <HintPath>vendor\CitizenFX.FiveM.Native.dll</HintPath>
     </Reference>
     <Reference Include="CitizenFX.Server">
-      <HintPath>..\..\..\..\..\server\citizen\clr2\lib\mono\4.5\v2\CitizenFX.Server.dll</HintPath>
+      <HintPath>vendor\CitizenFX.Server.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.Http" />
   </ItemGroup>
@@ -23,5 +27,9 @@
     <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0" />
     <PackageReference Include="System.Text.Json" Version="8.0.2" />
   </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="rmdir ..\dist&#xA;mkdir ..\dist&#xA;xcopy /y /e $(OutDir) ..\dist" />
+  </Target>
 
 </Project>
