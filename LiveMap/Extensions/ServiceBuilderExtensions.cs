@@ -12,6 +12,7 @@ public static class ServiceBuilderExtensions
         return services.AddSingleton<UpdateChecker>()
             .AddSingleton<SseService>()
             .AddSingleton<BlipHandler>()
+            .AddSingleton<PlayerHandler>()
             .AddSingleton<BasicHttpHandler>();
     }
 
