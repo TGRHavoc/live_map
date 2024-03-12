@@ -23,7 +23,7 @@ public static class ExpandoObjectExtensions
         {
             var name = kvp.Key.ToLower().Replace("_", "");
             var val = kvp.Value;
-            Debug.WriteLine($"Property: {name} Value: {val}");
+            //Debug.WriteLine($"Property: {name} Value: {val}");
 
             if (val != null && properties.TryGetValue(name, out var prop))
                 if (prop.PropertyType.IsAssignableFrom(val.GetType()))
