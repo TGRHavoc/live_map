@@ -1,6 +1,6 @@
-using System.Text.Json;
 using System.Text.Json.Serialization;
 using CitizenFX.Core;
+using LiveMap.Extensions;
 
 namespace LiveMap.Models;
 
@@ -32,8 +32,8 @@ public class HttpResponse
         SendInternal?.Invoke(data);
     }
 
-    public void Send<T>(T data)
+    public void SendJson<T>(T data)
     {
-        SendInternal?.Invoke(JsonSerializer.Serialize(data));
+        SendInternal?.Invoke(data?.ToJson());
     }
 }
