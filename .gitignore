@@ -21,3 +21,4 @@ LiveMap.sln.DotSettings.user
 blips.json
 .act/
 dist/
+gen-proto.bat
