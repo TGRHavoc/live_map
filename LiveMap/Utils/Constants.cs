@@ -29,6 +29,11 @@ public static class Constants
         public static readonly string AddBlip = "addBlip";
         public static readonly string UpdateBlip = "updateBlip";
         public static readonly string RemoveBlip = "removeBlip";
+        
+        public static readonly string PlayerJoin = "playerJoin";
+        public static readonly string PlayerLeave = "playerLeave";
+        public static readonly string PlayerChange = "playerUpdate";
+        public static string PlayerMove = "playerMove";
     }
     
 }
