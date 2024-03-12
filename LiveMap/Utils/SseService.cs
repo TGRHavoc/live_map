@@ -1,4 +1,5 @@
-﻿using LiveMap.Extensions;
+﻿using Google.Protobuf;
+using LiveMap.Extensions;
 using LiveMap.Models;
 
 namespace LiveMap.Utils;
@@ -9,10 +10,18 @@ public class SseService
 
     private readonly List<HttpResponse> _openResponses = new();
 
+    public SseService()
+    {
+        // Disable GC for this class as we need to keep the open responses in memory
+        GC.SuppressFinalize(this);
+    }
+
     public void AddResponse(HttpResponse response)
     {
         _openResponses.Add(response);
-        response.SendEvent("connected", new { Connected = true });
+
+        response.Write("retry: 10000\n\n");
+        response.SendEvent("connected", new ConnectedMessage { Connected = true });
     }
 
     public void RemoveResponse(HttpResponse response)
@@ -20,9 +29,10 @@ public class SseService
         _openResponses.Remove(response);
     }
 
-    public void BroadcastEvent(string eventName, object? data = null)
+    public void BroadcastEvent<T>(string eventName, T? data = null)
+        where T : class, IMessage<T>, new()
     {
-        foreach (var response in _openResponses) response.SendEvent(eventName, data ?? new { });
+        foreach (var response in _openResponses) response.SendEvent(eventName, data);
     }
 
     public void BroadcastKeepAlive()
