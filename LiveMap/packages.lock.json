@@ -2,6 +2,15 @@
   "version": 1,
   "dependencies": {
     ".NETFramework,Version=v4.6.2": {
+      "Google.Protobuf": {
+        "type": "Direct",
+        "requested": "[3.25.3, )",
+        "resolved": "3.25.3",
+        "contentHash": "fDY/kt0gy2nVcoeMmiyDMtwgvDJG5qaU7+Ic77szKTvVkIvoo7tyf+d+QDlKSosB+FjoKocX/ObObxqKCq60uA==",
+        "dependencies": {
+          "System.Memory": "4.5.3"
+        }
+      },
       "Microsoft.Extensions.DependencyInjection.Abstractions": {
         "type": "Direct",
         "requested": "[8.0.0, )",

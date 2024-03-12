@@ -25,11 +25,16 @@
         </Reference>
         <Reference Include="System.Net.Http"/>
     </ItemGroup>
-
+    
     <ItemGroup>
+        <PackageReference Include="Google.Protobuf" Version="3.25.3" />
         <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.0"/>
         <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0"/>
-        <PackageReference Include="System.Text.Json" Version="8.0.2"/>
+        <PackageReference Include="System.Text.Json" Version="8.0.2" />
+    </ItemGroup>
+    
+    <ItemGroup>
+      <Folder Include="Models\Gen\" />
     </ItemGroup>
 
     <Target Name="PostBuild" AfterTargets="PostBuildEvent">
