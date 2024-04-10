@@ -1,22 +1,19 @@
 ﻿using System.Net;
+using System.Net.Http;
 using System.Text.Json;
+using CitizenFX.Core;
 using LiveMap.Models;
+using LiveMap.Utils;
 using Microsoft.Extensions.Logging;
 
-namespace LiveMap.Utils;
+namespace LiveMap.Tasks;
 
-public class UpdateChecker
+// ReSharper disable once SuggestBaseTypeForParameterInConstructor
+public class UpdateChecker(ILogger<UpdateChecker> logger, LiveMap liveMap) : ITask
 {
-    private readonly ILogger<UpdateChecker> _logger;
-
-    public UpdateChecker(ILogger<UpdateChecker> logger)
+    public async Coroutine Execute()
     {
-        _logger = logger;
-    }
-
-    public async Task CheckForUpdates()
-    {
-        ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+        ServicePointManager.ServerCertificateValidationCallback += (_,_,_,_) => true;
         var client = new HttpClient();
         client.DefaultRequestHeaders.Add("Accept", "application/vnd.github+json");
         // Spoof the user agent to avoid 403
@@ -31,7 +28,7 @@ public class UpdateChecker
             var latestVersion = new Version(release.TagName.Replace("v", ""));
 
             if (latestVersion.CompareTo(Constants.LiveMapVersion) > 0)
-                _logger.LogWarning(@"
+                logger.LogWarning(@"
             |===================================================|
             |             Live Map Update Available             |
             |===================================================|
@@ -40,11 +37,15 @@ public class UpdateChecker
             Download at: https://github.com/TGRHavoc/live_map/releases/latest", Constants.LiveMapVersion,
                     latestVersion);
             else
-                _logger.LogInformation("LiveMap_OLD is up to date");
+                logger.LogInformation("LiveMap is up to date");
+
+            // We only need to check for updates once
+            await Coroutine.Delay(0);
+            liveMap.UnregisterTick(Execute);
         }
         catch (Exception e)
         {
-            _logger.LogError(e, "Error checking for updates");
+            logger.LogError(e, "Error checking for updates");
         }
     }
 }
