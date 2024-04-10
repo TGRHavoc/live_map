@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net462</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <LangVersion>latestmajor</LangVersion>
+        <TargetName>$(AssemblyName)</TargetName>
+        <AssemblyName>LiveMap.Shared</AssemblyName>
+        <RootNamespace>LiveMap.Shared</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Reference Include="CitizenFX.Core">
+            <HintPath>vendor\CitizenFX.Core.dll</HintPath>
+        </Reference>
+        <Reference Include="CitizenFX.FiveM.Native">
+            <HintPath>vendor\CitizenFX.FiveM.Native.dll</HintPath>
+        </Reference>
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Google.Protobuf" Version="3.25.3" />
+        <PackageReference Include="System.Text.Json" Version="8.0.2" />
+    </ItemGroup>
+</Project>

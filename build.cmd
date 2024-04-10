@@ -1,5 +1,5 @@
 @echo off
 
-pushd LiveMap
+pushd LiveMap.Server
 dotnet build -c Release
 popd

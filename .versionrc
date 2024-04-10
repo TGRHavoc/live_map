@@ -10,9 +10,9 @@
             "updater": ".standard-version/json.js"
         },
         {
-            "filename": "LiveMap/LiveMap.csproj",
+            "filename": "src/LiveMap.Server/LiveMap.Server.csproj",
             "updater": ".standard-version/dotnet-updater.js"
-        }
+        },
     ],
     "releaseCommitMessageFormat": "chore(release): v{{currentTag}}",
     "infile": "docs/CHANGELOG.md",
