@@ -13,8 +13,6 @@ namespace LiveMap;
 
 public class LiveMap : BaseScript
 {
-    private static LogLevel? _loglevelEnum;
-
     private static string? _resourceName;
 
     private readonly ILogger<LiveMap> _logger;
@@ -26,11 +24,12 @@ public class LiveMap : BaseScript
         var services = new ServiceCollection();
         services.AddSingleton(this);
         services.AddLogging(builder => builder
-            .SetMinimumLevel(LiveMapLogLevel)
+            .SetMinimumLevel(Config.LiveMapLogLevel)
             .AddProvider(new DebugLoggerProvider())
         );
 
-        services.AddSingletonClasses()
+        services
+            .AddSingletonClasses()
             .AddTasks();
 
         _serviceProvider = services.BuildServiceProvider();
@@ -39,44 +38,6 @@ public class LiveMap : BaseScript
         Natives.SetConvarServerInfo("sv_livemap:version", Constants.LiveMapVersion.ToString());
 
         SetUp();
-    }
-
-    private static LogLevel LiveMapLogLevel
-    {
-        get
-        {
-            // If LogLevel is already set, return it
-            if (_loglevelEnum != null) return _loglevelEnum.Value;
-            var logLevel = Config.GetConvarValue(Constants.Config.Debug,"off");
-
-            switch (logLevel)
-            {
-                case "[all]":
-                case "trace":
-                    _loglevelEnum = LogLevel.Trace;
-                    break;
-                case "debug":
-                    _loglevelEnum = LogLevel.Debug;
-                    break;
-                case "info":
-                    _loglevelEnum = LogLevel.Information;
-                    break;
-                case "warn":
-                    _loglevelEnum = LogLevel.Warning;
-                    break;
-                case "error":
-                    _loglevelEnum = LogLevel.Error;
-                    break;
-                case "critical":
-                    _loglevelEnum = LogLevel.Critical;
-                    break;
-                default:
-                    _loglevelEnum = LogLevel.None;
-                    break;
-            }
-
-            return _loglevelEnum.Value;
-        }
     }
 
     public static string ResourceName => _resourceName ??= Natives.GetCurrentResourceName();
