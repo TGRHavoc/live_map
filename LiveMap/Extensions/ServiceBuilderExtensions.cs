@@ -1,6 +1,8 @@
-﻿using LiveMap.Handlers;
+﻿using System.Reflection;
+using CitizenFX.Core;
+using LiveMap.Handlers;
+using LiveMap.Handlers.Events;
 using LiveMap.Tasks;
-using LiveMap.Utils;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace LiveMap.Extensions;
@@ -9,8 +11,10 @@ public static class ServiceBuilderExtensions
 {
     public static IServiceCollection AddSingletonClasses(this IServiceCollection services)
     {
-        return services.AddSingleton<UpdateChecker>()
-            .AddSingleton<SseService>()
+        return services
+            .AddSingleton<UpdateChecker>()
+            .AddSingleton<BlipEventHandler>()
+            .AddSingleton<SseHandler>()
             .AddSingleton<BlipHandler>()
             .AddSingleton<PlayerHandler>()
             .AddSingleton<BasicHttpHandler>();
