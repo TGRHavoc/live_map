@@ -7,11 +7,10 @@ using Microsoft.Extensions.Logging;
 
 namespace LiveMap.Handlers;
 
-public class PlayerHandler
+public class PlayerHandler(ILogger<PlayerHandler> logger)
 {
     private readonly ConcurrentDictionary<int, PlayerData> _players = new();
 
-    private readonly ILogger<PlayerHandler> _logger;
     //private readonly SseService _sseService;
 
     public int PlayerCount => _players.Count;
@@ -25,11 +24,6 @@ public class PlayerHandler
         }
 
         return handle;
-    }
-
-    public PlayerHandler(ILogger<PlayerHandler> logger)
-    {
-        _logger = logger;
     }
 
     private void UpdatePlayerIdentifiers(int playerHandle, IDictionary<string, string> identifiers)
@@ -134,7 +128,7 @@ public class PlayerHandler
     public PlayerLeft RemovePlayer(int playerHandle)
     {
         if (!_players.TryRemove(playerHandle, out _))
-            _logger.LogError("Failed to remove player {PlayerHandle} from ConcurrentDic", playerHandle);
+            logger.LogError("Failed to remove player {PlayerHandle} from ConcurrentDic", playerHandle);
 
         return new PlayerLeft
         {
