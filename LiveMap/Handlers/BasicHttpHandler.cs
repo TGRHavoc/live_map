@@ -10,19 +10,72 @@ public class BasicHttpHandler
 {
     private readonly BlipHandler _blipHandler;
     private readonly ILogger<BasicHttpHandler> _logger;
-    private readonly SseService _sseService;
+    private readonly SseHandler _sseHandler;
     private readonly PlayerHandler _playerHandler;
+    
+    private delegate void EndpointHandler(HttpRequest request, HttpResponse response, Dictionary<string, object> headers);
+    private readonly Dictionary<string, EndpointHandler> _endpoints = new();
 
-    public BasicHttpHandler(BlipHandler blipHandler, ILogger<BasicHttpHandler> logger, SseService sseService,
+    public BasicHttpHandler(BlipHandler blipHandler, ILogger<BasicHttpHandler> logger, SseHandler sseHandler,
         PlayerHandler playerHandler)
     {
         _logger = logger;
-        _sseService = sseService;
+        _sseHandler = sseHandler;
         _blipHandler = blipHandler;
         _playerHandler = playerHandler;
         _logger.LogDebug("BasicHttpHandler created");
+        
+        _endpoints.Add("/sse", OnSseRequest);
+        _endpoints.Add("/blips", OnBlipsRequest);
+        _endpoints.Add("/blips.json", OnBlipsRequest);
     }
 
+    private void OnBlipsRequest(HttpRequest req, HttpResponse res, Dictionary<string, object> headers)
+    {
+        res.WriteHead(200, headers);
+        res.SendJson(_blipHandler.Blips);
+    }
+
+    private void OnSseRequest(HttpRequest req, HttpResponse res, Dictionary<string, object> headers)
+    {
+        req.SetCancelHandler(() =>
+        {
+            _logger.LogDebug("Request was cancelled?");
+            // Debug.WriteLine("Request was cancelled?");
+            // _openResponses.Remove(res);
+            _sseHandler.RemoveResponse(res);
+        });
+        
+        // Keep the connection open
+        //headers["Connection"] = "keep-alive";
+        // Change content type to text/event-stream
+        headers["Content-Type"] = "text/event-stream";
+        headers["Cache-Control"] = "no-cache";
+        headers["X-Accel-Buffering"] = "no";
+        headers["Transfer-Encoding"] = "chunked";
+        
+        _logger.LogInformation("New SSE connection from {Address}", req.Address);
+        
+        // Server-Sent Events
+        res.WriteHead(200, headers);
+        
+        _sseHandler.AddResponse(res);
+        
+        // // Send the current players to the new connection so they
+        // // can be displayed on the map
+        var players = _playerHandler.GetAllPlayers();
+        foreach (var player in players)
+        {
+            var data = _playerHandler.GetPlayerData(player);
+            res.SendEvent(Constants.Sse.PlayerJoin, new PlayerUpdate
+            {
+                Id = player,
+                Data = data
+            });
+        }
+        
+    }
+    
     public void OnHttpEndpointRequest(ExpandoObject request, ExpandoObject response)
     {
         var req = request.FromExpando<HttpRequest>();
@@ -82,78 +135,27 @@ public class BasicHttpHandler
             // We only respond with JSON. Except for the SSE endpoint, which is text/event-stream but we handle that later
             { "Content-Type", "application/json" }
         };
-
-        switch (req.Path)
+        
+        // If we get an OPTIONS request, we just return the headers
+        if (req.Method == "OPTIONS")
         {
-            case "/sse":
-                req.SetCancelHandler(() =>
-                {
-                    _logger.LogDebug("Request was cancelled?");
-                    // Debug.WriteLine("Request was cancelled?");
-                    // _openResponses.Remove(res);
-                    _sseService.RemoveResponse(res);
-                });
-
-                // Change content type to text/event-stream
-                headers["Content-Type"] = "text/event-stream";
-                // Keep the connection open
-                headers["Connection"] = "keep-alive";
-                headers["Cache-Control"] = "no-cache";
-
-                _logger.LogInformation("New SSE connection from {Address}", req.Address);
-
-                // Server-Sent Events
-                res.WriteHead(200, headers);
-
-                _sseService.AddResponse(res);
-
-                // // Send the current players to the new connection so they
-                // // can be displayed on the map
-                var players = _playerHandler.GetAllPlayers();
-                foreach (var player in players)
-                {
-                    var data = _playerHandler.GetPlayerData(player);
-                    res.SendEvent(Constants.Sse.PlayerJoin, new PlayerUpdate
-                    {
-                        Id = player,
-                        Data = data
-                    });
-                }
-                
-                return;
-            //res.Write("data: Hello, world!\n\n");
-            // _openResponses.Add(res);
-            case "/blips" or "/blips.json":
-                res.WriteHead(200, headers);
-
-                if (_blipHandler.BlipCount == 0)
-                {
-                    // Error
-                    res.SendJson(new { Error = "Blip cache is empty" });
-                    return;
-                }
-
-                res.SendJson(_blipHandler.Blips);
-
-                return;
-            //res.WriteHead(200);
-            //res.Send(_blipHandler.Blips);
-            default:
-                res.WriteHead(404, headers);
-                res.SendJson(new
-                {
-                    Error = $"path {req.Path} not found"
-                });
-
-                //res.WriteHead(200);
-
-                // Debug.WriteLine("Received HTTP request!");
-                //res.WriteHead(200, new Dictionary<string, object>());
-                // res.Send(JsonSerializer.Serialize(new
-                // {
-                //     pong=true
-                // }));
-                break;
+            res.WriteHead(200, headers);
+            return;
         }
+        
+        // Check if we have an endpoint for the path
+        if (_endpoints.TryGetValue(req.Path, out var endpoint))
+        {
+            endpoint.Invoke(req, res, headers);
+            return;
+        }
+        
+        // If we don't have an endpoint, we return a 404
+        
+        res.WriteHead(404, headers);
+        res.SendJson(new
+        {
+            Error = $"path {req.Path} not found"
+        });
     }
 }
