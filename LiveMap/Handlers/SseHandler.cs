@@ -2,15 +2,14 @@
 using LiveMap.Extensions;
 using LiveMap.Models;
 
-namespace LiveMap.Utils;
+namespace LiveMap.Handlers;
 
-public class SseService
+public class SseHandler
 {
     // This is a simple class that will be used to send Server-Sent Events to the client
-
     private readonly List<HttpResponse> _openResponses = new();
 
-    public SseService()
+    public SseHandler()
     {
         // Disable GC for this class as we need to keep the open responses in memory
         GC.SuppressFinalize(this);
