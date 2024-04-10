@@ -1,6 +1,5 @@
 ﻿using System.Reflection;
 using CitizenFX.Core;
-using CitizenFX.Server;
 using CitizenFX.Server.Native;
 using LiveMap.Extensions;
 using LiveMap.Handlers;
@@ -17,7 +16,7 @@ public class LiveMap : BaseScript
 
     private readonly ILogger<LiveMap> _logger;
     private readonly ServiceProvider _serviceProvider;
-    private readonly List<ITask> _tasks = new();
+    private readonly List<ITask> _tasks = [];
 
     public LiveMap()
     {
@@ -30,7 +29,8 @@ public class LiveMap : BaseScript
 
         services
             .AddSingletonClasses()
-            .AddTasks();
+            .AddTasks()
+            .AddCommands();
 
         _serviceProvider = services.BuildServiceProvider();
         _logger = _serviceProvider.GetRequiredService<ILogger<LiveMap>>();
@@ -45,27 +45,15 @@ public class LiveMap : BaseScript
     private void SetUp()
     {
         AddTasks();
+        AddCommands();
+        AddEventHandlers();
 
         // Set up the HTTP handler... Apparently this must be done before the fist tick of the resource...
         var httpHandler = _serviceProvider.GetRequiredService<BasicHttpHandler>();
-
-        // EventHandlers["onResourceStop"] += new Action<string>(OnResourceStop);
-
-        // Client to server events
-        // EventHandlers["livemap:blipsGenerated"] +=
-        //     new Action<Player, Dictionary<int, List<Blip>>>(blipHandler.OnBlipsGenerated);
-        // EventHandlers["livemap:AddBlip"] += new Action<Player, Blip>(blipHandler.AddBlip);
-        // EventHandlers["livemap:UpdateBlip"] += new Action<Player, Blip>(blipHandler.UpdateBlip);
-
+        
         Natives.SetHttpHandler(httpHandler.OnHttpEndpointRequest);
-
-        // Natives.RegisterCommand("blips", new Action<int, List<object>>(blipHandler.BlipsCommand), true);
-        // Natives.RegisterCommand("blips", new Action<Player, List<object>>(blipHandler.BlipsCommand), true);
-
+        
         foreach (var task in _tasks) RegisterTick(task.Execute);
-
-        AddCommands();
-        AddEventHandlers();
     }
 
     private void AddTasks()
@@ -87,6 +75,41 @@ public class LiveMap : BaseScript
 
     private void AddCommands()
     {
+        // Get all methods where their class extends BaseScript and has the CommandAttribute.
+        // Have to do it this was because FiveM doesn't allow us to use the DynFunc.CreateCommand method.
+        // So, we have to force their Initialization method to be ran which, calls the CreateCommand method: https://github.com/citizenfx/fivem/blob/37639cddcb2e5b0ef05f96d5a482b236b7349a1e/code/client/clrcore-v2/BaseScript.cs#L97
+        var methods = Reflection.GetMethodsWithAttribute<CommandAttribute>()
+            .Where(m => m.DeclaringType != typeof(LiveMap) && m.DeclaringType != null &&
+                        m.DeclaringType.IsSubclassOf(typeof(BaseScript)))
+            .ToArray();
+
+        _logger.LogDebug("Found {CommandCount} commands to register", methods.Length);
+
+        foreach (var method in methods)
+        {
+            if (method.DeclaringType == null) continue;
+
+            var instance = (BaseScript?)_serviceProvider.GetService(method.DeclaringType);
+            RegisterScript(instance);
+        }
+
+        // foreach (var method in methods)
+        // {
+        //     var commandAttribute = method.GetCustomAttribute<CommandAttribute>();
+        //     if (commandAttribute == null || method.DeclaringType == null) continue;
+        //
+        //     var instance = _serviceProvider.GetService(method.DeclaringType);
+        //
+        //     _logger.LogDebug(
+        //         "Adding command handler for {Command}, with Restricted: {Restricted} & Remap: {RemapParams}",
+        //         commandAttribute.Command, commandAttribute.Restricted, commandAttribute.RemapParameters);
+        //
+        //     var del = Reflection.CreateDelegateFrom(method, instance);
+        //     
+        //     Natives.RegisterCommand(commandAttribute.Command,
+        //         Func.Create(del), commandAttribute.Restricted);
+        // }
+
         //var blipHandler = _serviceProvider.GetRequiredService<BlipHandler>();
         //Natives.RegisterCommand("blips",blipHandler.BlipsCommand, true);
         //Natives.RegisterCommand("blips", blipHandler.BlipsCommandFromPlayer, true);
@@ -95,38 +118,24 @@ public class LiveMap : BaseScript
     private void AddEventHandlers()
     {
         // Get all methods that have the [EventHandler] attribute and add them to the event handlers except the ones that in this class
-        var methods = AppDomain.CurrentDomain.GetAssemblies()
-            .SelectMany(s => s.GetTypes())
-            .SelectMany(p => p.GetMethods())
-            .Where(m => m.GetCustomAttributes<EventHandlerAttribute>().Any() && m.DeclaringType != typeof(LiveMap));
+        var methods = Reflection.GetMethodsWithAttribute<EventHandlerAttribute>();
 
         foreach (var method in methods)
         {
             var eventAttribute = method.GetCustomAttribute<EventHandlerAttribute>();
-            if (eventAttribute == null) continue;
+            if (eventAttribute == null || method.DeclaringType == null) continue;
 
-            _logger.LogDebug("Adding event handler for {Event} with binding {Binding}", eventAttribute.Event,
-                eventAttribute.Binding);
+            var instance = _serviceProvider.GetService(method.DeclaringType);
 
-            EventHandlers[eventAttribute.Event]
-                .Add(Func.Create(method.DeclaringType, method), eventAttribute.Binding);
+            var del = Reflection.CreateDelegateFrom(method, instance);
+
+            _logger.LogDebug(
+                "Registering EventHandler {EventName} ({Binding}) for: {MethodName}({Params})",
+                eventAttribute.Event, eventAttribute.Binding, method.Name,
+                string.Join(", ", method.GetParameters().Select(p => p.ParameterType.Name)));
+
+            EventHandlers[eventAttribute.Event].Add(Func.Create(del), eventAttribute.Binding);
         }
-    }
-
-    // ReSharper disable once UnusedMember.Local
-    [Command("blip")]
-    private void BlipCommand(int source, object[] args)
-    {
-        var blipHandler = _serviceProvider.GetRequiredService<BlipHandler>();
-        blipHandler.BlipsCommand(source, args);
-    }
-
-    // ReSharper disable once UnusedMember.Local
-    [Command("blip", RemapParameters = true)]
-    private void BlipCommand([Source] Player source, object[] args)
-    {
-        var blipHandler = _serviceProvider.GetRequiredService<BlipHandler>();
-        blipHandler.BlipsCommandFromPlayer(source, args);
     }
 
     // ReSharper disable once UnusedMember.Local

@@ -29,4 +29,16 @@ public static class ServiceBuilderExtensions
         foreach (var taskType in taskTypes) services.AddSingleton(taskType);
         return services;
     }
+
+    public static IServiceCollection AddCommands(this IServiceCollection services)
+    {
+        // Get types who have at least one method with the CommandAttribute
+        var commandTypes = AppDomain.CurrentDomain.GetAssemblies()
+            .SelectMany(s => s.GetTypes())
+            .Where(p => p.GetMethods().Any(m => m.GetCustomAttribute<CommandAttribute>() != null));
+        
+        foreach (var commandType in commandTypes) services.AddSingleton(commandType);
+        
+        return services;
+    }
 }
