@@ -7,8 +7,6 @@ assignees: ''
 
 ---
 
---------------^ Click "Preview" for a nicer view!
-
 For usage and support questions, please check out the discussions page. Thanks! 😁.
 
 https://github.com/TGRHavoc/live_map/discussions
