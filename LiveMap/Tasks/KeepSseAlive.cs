@@ -1,29 +1,13 @@
 ﻿using CitizenFX.Core;
-using LiveMap.Utils;
-using Microsoft.Extensions.Logging;
+using LiveMap.Handlers;
 
 namespace LiveMap.Tasks;
 
-public class KeepSseAlive : ITask
+public class KeepSseAlive(SseHandler sseHandler) : ITask
 {
-    private readonly ILogger<KeepSseAlive> _logger;
-    private readonly SseService _sseService;
-
-    public KeepSseAlive(SseService sseService, ILogger<KeepSseAlive> logger)
-    {
-        _sseService = sseService;
-        _logger = logger;
-        // Tick += Execute;
-    }
-
     public async Coroutine Execute()
     {
         await Coroutine.Delay(10_000);
-        _sseService.BroadcastKeepAlive();
+        sseHandler.BroadcastKeepAlive();
     }
-}
-
-public interface ITask
-{
-    Coroutine Execute();
 }
