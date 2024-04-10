@@ -53,6 +53,17 @@ public class DebugLogger : ILogger
 
     private string GetPrefix(LogLevel logLevel)
     {
-        return $"{DateTime.Now:HH:mm:ss} [{logLevel}] {_categoryName}: ";
+        var logLevelString = logLevel.ToString();
+        if (logLevel is LogLevel.Information or LogLevel.Critical or LogLevel.Warning)
+            logLevelString = logLevel.ToString().Substring(0, 4);
+
+        if (logLevelString.Length < 5)
+        {
+            // Pad with space to align log levels
+            var padAmount = 5 - logLevelString.Length;
+            logLevelString = logLevelString.PadRight(padAmount + logLevelString.Length);
+        }
+        
+        return $"{DateTime.Now:HH:mm:ss} [{logLevelString}] {_categoryName}: ";
     }
 }
