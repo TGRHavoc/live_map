@@ -89,17 +89,15 @@ public class LiveMap : BaseScript
         var methods = AppDomain.CurrentDomain.GetAssemblies()
             .SelectMany(s => s.GetTypes())
             .Where(p => p.GetMethods().Any(m =>
-                m.GetCustomAttribute<CommandAttribute>() != null))
+                m.GetCustomAttribute<CommandAttribute>() != null) && p.IsSubclassOf(typeof(BaseScript)))
             .ToArray();
 
         _logger.LogDebug("Found {CommandCount} commands to register", methods.Length);
         
         foreach (var method in methods)
         {
-            if (method.DeclaringType == null || method.DeclaringType == typeof(LiveMap)) continue;
-
-            _logger.LogDebug("Getting instance for {Type}", method.DeclaringType.Name);
-            var instance = (BaseScript?)_serviceProvider.GetService(method.DeclaringType);
+            _logger.LogDebug("Getting instance for {Type}", method.Name);
+            var instance = (BaseScript?)_serviceProvider.GetService(method);
             RegisterScript(instance);
         }
     }
