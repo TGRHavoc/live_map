@@ -1,6 +1,6 @@
 ﻿using CitizenFX.Core;
 using CitizenFX.Server;
-using LiveMap.Server.Utils;
+using LiveMap.Shared;
 using LiveMap.Shared.Extensions;
 using Microsoft.Extensions.Logging;
 

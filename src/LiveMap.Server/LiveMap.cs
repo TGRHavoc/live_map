@@ -1,10 +1,12 @@
 ﻿using System.Reflection;
 using CitizenFX.Core;
+using CitizenFX.Server;
 using CitizenFX.Server.Native;
 using LiveMap.Server.Extensions;
 using LiveMap.Server.Handlers;
 using LiveMap.Server.Tasks;
 using LiveMap.Server.Utils;
+using LiveMap.Shared;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -35,12 +37,13 @@ public class LiveMap : BaseScript
         _serviceProvider = services.BuildServiceProvider();
         _logger = _serviceProvider.GetRequiredService<ILogger<LiveMap>>();
 
-        Natives.SetConvarServerInfo("sv_livemap:version", Constants.LiveMapVersion.ToString());
+        Natives.SetConvarServerInfo("sv_livemap:version", LiveMapVersion.ToString());
 
         SetUp();
     }
 
     public static string ResourceName => _resourceName ??= Natives.GetCurrentResourceName();
+    public static readonly Version LiveMapVersion = Assembly.GetExecutingAssembly().GetName().Version;
 
     private void SetUp()
     {
@@ -99,27 +102,6 @@ public class LiveMap : BaseScript
             var instance = (BaseScript?)_serviceProvider.GetService(method.DeclaringType);
             RegisterScript(instance);
         }
-
-        // foreach (var method in methods)
-        // {
-        //     var commandAttribute = method.GetCustomAttribute<CommandAttribute>();
-        //     if (commandAttribute == null || method.DeclaringType == null) continue;
-        //
-        //     var instance = _serviceProvider.GetService(method.DeclaringType);
-        //
-        //     _logger.LogDebug(
-        //         "Adding command handler for {Command}, with Restricted: {Restricted} & Remap: {RemapParams}",
-        //         commandAttribute.Command, commandAttribute.Restricted, commandAttribute.RemapParameters);
-        //
-        //     var del = Reflection.CreateDelegateFrom(method, instance);
-        //     
-        //     Natives.RegisterCommand(commandAttribute.Command,
-        //         Func.Create(del), commandAttribute.Restricted);
-        // }
-
-        //var blipHandler = _serviceProvider.GetRequiredService<BlipHandler>();
-        //Natives.RegisterCommand("blips",blipHandler.BlipsCommand, true);
-        //Natives.RegisterCommand("blips", blipHandler.BlipsCommandFromPlayer, true);
     }
 
     private void AddEventHandlers()
@@ -142,6 +124,30 @@ public class LiveMap : BaseScript
                 string.Join(", ", method.GetParameters().Select(p => p.ParameterType.Name)));
 
             EventHandlers[eventAttribute.Event].Add(Func.Create(del), eventAttribute.Binding);
+        }
+    }
+    
+    // ReSharper disable once UnusedMember.Local
+    [EventHandler("onResourceStart")]
+    private void OnResourceStart(string resourceName)
+    {
+        if (resourceName != ResourceName) return;
+
+        _logger.LogDebug("LiveMap resource started. Initializing...");
+        var playerList = new PlayerList();
+        
+        if (!playerList.Any()) return;
+        
+        var ph = _serviceProvider.GetRequiredService<PlayerHandler>();
+        var sseHandler = _serviceProvider.GetRequiredService<SseHandler>();
+        _logger.LogDebug("Players are already connected. Initializing them with PlayerHandler...");
+            
+        foreach (var player in playerList)
+        {
+            var update = ph.AddPlayer(player);
+            
+            // Just in case we have anyone listening already...
+            sseHandler.BroadcastEvent(Constants.Sse.PlayerJoin, update);
         }
     }
 

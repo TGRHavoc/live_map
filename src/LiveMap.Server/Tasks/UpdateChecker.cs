@@ -3,7 +3,7 @@ using System.Net.Http;
 using System.Text.Json;
 using CitizenFX.Core;
 using LiveMap.Server.Models;
-using LiveMap.Server.Utils;
+using LiveMap.Shared;
 using Microsoft.Extensions.Logging;
 
 namespace LiveMap.Server.Tasks;
@@ -13,7 +13,7 @@ public class UpdateChecker(ILogger<UpdateChecker> logger, LiveMap liveMap) : ITa
 {
     public async Coroutine Execute()
     {
-        ServicePointManager.ServerCertificateValidationCallback += (_,_,_,_) => true;
+        ServicePointManager.ServerCertificateValidationCallback += (_, _, _, _) => true;
         var client = new HttpClient();
         client.DefaultRequestHeaders.Add("Accept", "application/vnd.github+json");
         // Spoof the user agent to avoid 403
@@ -23,18 +23,19 @@ public class UpdateChecker(ILogger<UpdateChecker> logger, LiveMap liveMap) : ITa
         {
             var response = await client.GetAsync(Constants.LiveMapUpdateUrl);
             response.EnsureSuccessStatusCode();
+
             var releaseString = await response.Content.ReadAsStringAsync();
             var release = JsonSerializer.Deserialize<GithubRelease>(releaseString);
             var latestVersion = new Version(release.TagName.Replace("v", ""));
 
-            if (latestVersion.CompareTo(Constants.LiveMapVersion) > 0)
+            if (latestVersion.CompareTo(LiveMap.LiveMapVersion) > 0)
                 logger.LogWarning(@"
             |===================================================|
             |             Live Map Update Available             |
             |===================================================|
             Current Version: {CurrentVersion}
             New Version: {NewVersion}
-            Download at: https://github.com/TGRHavoc/live_map/releases/latest", Constants.LiveMapVersion,
+            Download at: https://github.com/TGRHavoc/live_map/releases/latest", LiveMap.LiveMapVersion,
                     latestVersion);
             else
                 logger.LogInformation("LiveMap is up to date");

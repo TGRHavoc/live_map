@@ -1,13 +1,12 @@
 ﻿using System.Reflection;
 
-namespace LiveMap.Server.Utils;
+namespace LiveMap.Shared;
 
 public static class Constants
 {
     public const string DefaultBlipFile = "blips.json";
 
     public const string LiveMapUpdateUrl = "https://api.github.com/repos/TGRHavoc/live_map/releases/latest";
-    public static readonly Version LiveMapVersion = Assembly.GetExecutingAssembly().GetName().Version;
 
     public static class Config
     {
@@ -25,8 +24,20 @@ public static class Constants
         public static class Server
         {
             public const string GeneratedBlips = "livemap:blipsGenerated";
-            public const string AddBlip = "livemap:AddBlip";
-            public const string UpdateBlip = "livemap:UpdateBlip";
+            public const string AddBlip = "livemap:addBlip";
+            public const string UpdateBlip = "livemap:updateBlip";
+            
+            public const string PlayerSpawned = "livemap:playerSpawned";
+            public const string RemovePlayer = "livemap:removePlayer";
+            
+            public const string AddPlayerData = "livemap:addPlayerData";
+            public const string UpdatePlayerData = "livemap:updatePlayerData";
+            public const string RemovePlayerData = "livemap:removePlayerData";
+            
+            public const string AddPlayerIdentifier = "livemap:addPlayerIdentifier";
+            public const string RemovePlayerIdentifier = "livemap:removePlayerIdentifier";
+            public const string UpdatePlayerIdentifier = "livemap:updatePlayerIdentifier";
+            
         }
 
         public static class Client

@@ -2,6 +2,7 @@
 using LiveMap.Server.Extensions;
 using LiveMap.Server.Models;
 using LiveMap.Server.Utils;
+using LiveMap.Shared;
 using Microsoft.Extensions.Logging;
 
 namespace LiveMap.Server.Handlers;

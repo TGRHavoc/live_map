@@ -1,6 +1,7 @@
 ﻿using System.Text.Json;
 using CitizenFX.Server.Native;
 using LiveMap.Server.Utils;
+using LiveMap.Shared;
 using LiveMap.Shared.Models;
 using Microsoft.Extensions.Logging;
 
