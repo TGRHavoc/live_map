@@ -24,7 +24,7 @@
         "koa-router": "^10.0.0",
         "simple-console-logger": "^2.0.2",
         "socket.io": "^3.0.4",
-        "webpack": "^5.37.0",
+        "webpack": "^5.94.0",
         "ws": "^7.4.6"
     },
     "devDependencies": {
